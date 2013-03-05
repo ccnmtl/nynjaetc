@@ -177,6 +177,13 @@ def see_header(step, text):
         #header = world.dom.cssselect('.hero-unit>h1')[0]
         assert text.strip() == header.text_content().strip()
 
+@step(r'I see the sidebar')
+def see_sidebar(self):
+    if world.using_selenium:
+        assert False, "this step needs to be implemented for selenium"
+    else:
+        assert len(world.dom.cssselect('#sidebar')) == 1
+
 @step(r'I see the page title "(.*)"')
 def see_title(step, text):
     if world.using_selenium:
