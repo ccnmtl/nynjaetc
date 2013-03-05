@@ -25,7 +25,8 @@ urlpatterns = patterns(
     '',
     auth_urls,
     logout_page,
-    (r'^$', 'nynjaetc.main.views.index'),
+    (r'^_pagetree/', include('pagetree.urls')),
+    (r'^_quiz/', include('quizblock.urls')),
     (r'^admin/', include(admin.site.urls)),
     (r'^munin/', include('munin.urls')),
     (r'^stats/', direct_to_template, {'template': 'stats.html'}),
@@ -34,4 +35,10 @@ urlpatterns = patterns(
      'django.views.static.serve', {'document_root': site_media_root}),
     (r'^uploads/(?P<path>.*)$',
      'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
+    # these need to be last
+    (r'^edit/(?P<path>.*)$', 'nynjaetc.main.views.edit_page',
+     {}, 'edit-page'),
+    (r'^instructor/(?P<path>.*)$',
+     'nynjaetc.main.views.instructor_page'),
+    (r'^(?P<path>.*)$', 'nynjaetc.main.views.page'),
 ) + staticmedia.serve()
