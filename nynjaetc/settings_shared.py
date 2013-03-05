@@ -117,7 +117,20 @@ INSTALLED_APPS = [
     'smoketest',
     'django_extensions',
     'nynjaetc.main',
+    'pagetree',
+    'pageblocks',
+    'quizblock',
 ]
+
+PAGEBLOCKS = [
+    'pageblocks.TextBlock',
+    'pageblocks.HTMLBlock',
+    'pageblocks.PullQuoteBlock',
+    'pageblocks.ImageBlock',
+    'pageblocks.ImagePullQuoteBlock',
+    'quizblock.Quiz',
+]
+
 
 LETTUCE_APPS = (
     'nynjaetc.main',

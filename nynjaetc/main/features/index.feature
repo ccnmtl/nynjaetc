@@ -6,11 +6,11 @@ stuff is all hooked up properly and running.
 
     Scenario: Index Page Load
         Given I am not logged in
-        When I access the url "/"
-        Then I see the header "It works"
+        When I access the url "/intro/"
+        Then I see the header "nynjaetc"
 
     Scenario: Index Page Load With Selenium
         Using selenium
-        When I access the url "/"
-        Then I see the header "It works"
+        When I access the url "/intro/"
+        Then I see the header "nynjaetc"
         Finished using selenium
