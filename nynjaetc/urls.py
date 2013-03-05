@@ -25,7 +25,6 @@ urlpatterns = patterns(
     '',
     auth_urls,
     logout_page,
-    (r'^$', 'nynjaetc.main.views.index'),
     (r'^_pagetree/', include('pagetree.urls')),
     (r'^_quiz/', include('quizblock.urls')),
     (r'^admin/', include(admin.site.urls)),
