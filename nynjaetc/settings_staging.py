@@ -25,6 +25,7 @@ DATABASES = {
 COMPRESS_ROOT = "/var/www/nynjaetc/nynjaetc/media/"
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
+STAGING_ENV = True
 
 STATSD_PREFIX = 'nynjaetc-staging'
 SENTRY_SITE = 'nynjaetc-staging'
