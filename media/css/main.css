@@ -33,6 +33,8 @@ body > .container {
 .navbar-top {
   margin-bottom: 0px;
 }
+
+/* If you navbar background color is lighter than medium grey, add the class navbar-inverse to the navbar element in base.html */
 /*
 #primarynav .navbar-inner {
 	background-color: blue;
