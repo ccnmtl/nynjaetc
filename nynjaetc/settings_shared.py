@@ -170,6 +170,10 @@ STATICMEDIA_MOUNTS = (
 COMPRESS_URL = "/site_media/"
 COMPRESS_ROOT = "media/"
 
+COMPRESS_PRECOMPILERS = (
+    ('text/less', 'lessc {infile} {outfile}'),
+)
+
 # WIND settings
 
 AUTHENTICATION_BACKENDS = ('djangowind.auth.WindAuthBackend',

@@ -9,10 +9,14 @@
   <meta name="author" content="CCNMTL">
 
 {% compress css %}
-    <link href="/site_media/bootstrap/css/bootstrap.css" rel="stylesheet">
-    <link href="/site_media/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="/site_media/css/main.css?site=nynjaetc" rel="stylesheet">
+    <link href="/site_media/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="/site_media/bootstrap/css/bootstrap-responsive.css" rel="stylesheet" type="text/css">
 {% endcompress %}
+
+{% compress css %}
+    <link href="/site_media/css/main.less" rel="stylesheet" type="text/less">
+{% endcompress %}
+
 	<link rel="shortcut icon" href="/site_media/img/favicon.ico" type="image/x-icon" />
 	{% block css %}{% endblock %}
   <script src="/site_media/js/jquery-1.7.2.min.js"></script>
