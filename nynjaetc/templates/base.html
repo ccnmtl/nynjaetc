@@ -74,26 +74,34 @@
     </header>
 
 {% block primarynav %}
-    <div class="navbar" id="primarynav">
-      <div class="navbar-inner">
-        <div class="container">
-          <ul class="nav">
-          {% block primarynavtabs %}
-{% for section in modules %}
-<li{% ifequal section.id module.id %} class="active"{% endifequal %}><a href="{{section.get_absolute_url}}">{{section.label}}</a></li>
-{% endfor %}
-          {% endblock %}
-					{% block primarynavtabsextra %}{% endblock %}
-          </ul>
+<div class="navbar" id="primarynav">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+        
+      <div class="nav-collapse collapse">
+        <ul class="nav">   
+        {% block primarynavtabs %}
+        {% for section in modules %}
+          <li{% ifequal section.id module.id %} class="active"{% endifequal %}><a href="{{section.get_absolute_url}}">{{section.label}}</a></li>
+        {% endfor %}
+        {% endblock %}
+				{% block primarynavtabsextra %}{% endblock %}
+        </ul>
 
-          <ul class="nav pull-right">
-            {% block primarynavrightextra %}{% endblock %}
-			<li><a href="{{section.get_absolute_url}}">View Page</a></li>
-            <li><a href="/edit{{section.get_absolute_url}}">Edit</a></li>
-          </ul>
-        </div>
-      </div>
+        <ul class="nav pull-right">
+        {% block primarynavrightextra %}{% endblock %}
+          <li><a href="{{section.get_absolute_url}}">View Page</a></li>
+          <li><a href="/edit{{section.get_absolute_url}}">Edit</a></li>
+        </ul>
+      </div>          
     </div>
+  </div>
+</div>
 {% endblock %}
 
 {% endblock %}
