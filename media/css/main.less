@@ -3,7 +3,7 @@
  */
 
 @learnblue: #34c6c6;
-
+@learnlightblue: @learnblue + #333;
 
 /*Body Set*/
 
@@ -16,8 +16,17 @@
 /*Top Navigation*/
 
 .navbar-fixed-top .navbar-inner {
-  background: @learnblue!important;
-    
+
+  background-color: @learnblue;
+  background-image: -moz-linear-gradient(top, @learnlightblue, @learnblue);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@learnlightblue), to(@learnblue));
+  background-image: -webkit-linear-gradient(top, @learnlightblue, @learnblue);
+  background-image: -o-linear-gradient(top, @learnlightblue, @learnblue);
+  background-image: linear-gradient(to bottom, @learnlightblue, @learnblue);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='@learnlightblue', endColorstr='@learnblue', GradientType=0);
+  
+        
      ul.nav {
        
        a {
