@@ -29,50 +29,35 @@
 	{% block feeds %}{% endblock %}
 </head>
 <body>
-
 {% block topnavbar %}
-  <div class="navbar navbar-fixed-top">
-    <div class="navbar-inner">
-      <div class="container">
-        <ul class="nav">
-          <li><a class="brand" href="/">nynjaetc</a></li>
-          {% block topnavbarleftitems %}{% endblock %}
-        </ul>
-
-
-          {% block topnavbarrightitems %}{% endblock %}
-{% block usernav %}
-          {% if request.user.is_anonymous %}
-          <a href="/accounts/login/?next=/" class="btn btn-success pull-right">login</a>
-
-          {% else %}		  
-		<a href="/accounts/logout/" class="btn btn-inverse pull-right">logout</a>
-		<p class="navbar-text pull-right">
+<div class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <ul class="nav">
+        <li>
+          <a class="brand" href="/">learn.nynjaetc.org</a>
+        </li>
+      {% block topnavbarleftitems %}{% endblock %}
+      </ul>
+      {% block topnavbarrightitems %}{% endblock %}
+      {% block usernav %}
+      {% if request.user.is_anonymous %}
+        <a href="/accounts/login/?next=/" class="btn btn-success pull-right">login</a>
+      {% else %}		  
+        <a href="/accounts/logout/" class="btn btn-inverse pull-right">logout</a>
+        <p class="navbar-text pull-right">
           logged in as {{request.user.first_name}} {{request.user.last_name}}
-		</p>
-
-          {% endif %}
-{% endblock %}
-       </p>
-
-       </div>
-     </div>
+        </p>
+      {% endif %}
+      {% endblock %}
+    </div>
   </div>
+</div>
 {% endblock %}
 
   <div class="container" id="outer-container">
 {% block masthead %}
-    <header class="subhead hidden-phone" id="masthead">
-      <h1><a href="./" title="nynjaetc">nynjaetc</a></h1>
-      <h4 id="logo-ccnmtl">
-        <a href="http://ccnmtl.columbia.edu" target="_blank"
-          title="Columbia Center for New Media Teaching and Learning">
-          <span>Produced by the Columbia Center for New Media Teaching
-          and Learning</span>
-        </a>
-      </h4>
-    </header>
-
+  
 {% block primarynav %}
 <div class="navbar" id="primarynav">
   <div class="navbar-inner">
