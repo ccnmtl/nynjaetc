@@ -1,11 +1,41 @@
+/*Color Scheme
+ Learn.nynjaetc.org
+ */
+
+@learnblue: #34c6c6;
+
+
 /*Body Set*/
 
-body {
-  margin-top: 40px;
+@media (min-width: 979px) {
+  body {
+    padding-top: 40px;
+   }
 }
 
-
 /*Top Navigation*/
+
+.navbar-fixed-top .navbar-inner {
+  background: @learnblue!important;
+    
+     ul.nav {
+       
+       a {
+         color: #fff;
+         text-shadow: none;
+          
+          &:hover {
+            text-decoration: underline;
+          }   
+                
+       }
+       
+     }
+     
+     .navbar-text {
+       color: #fff;
+     }
+}
 
 .navbar-text.pull-right {
   padding-right: 20px;
