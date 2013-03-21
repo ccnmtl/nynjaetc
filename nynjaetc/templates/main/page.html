@@ -26,6 +26,15 @@
         {% endif %}
 {% endblock %}
 
+{% block navrightextra %}
+    <ul class="nav pull-right">
+        {% if not request.user.is_anonymous %}
+        <li><a href="/edit{{section.get_absolute_url}}">edit page</a></li>
+        {% endif %}
+    </ul>
+{% endblock %}
+
+
 {% block content %}
 <div id="content">
 {% if needs_submit %}

@@ -107,8 +107,11 @@ $(function() {
 {% endblock %}
 
 {% block navrightextra %}
-<li><a href="{{section.get_absolute_url}}" class="btn-success">view page</a></li>
+    <ul class="nav pull-right">
+        <li><a href="{{section.get_absolute_url}}" >view page</a></li>
+    </ul>
 {% endblock %}
+
 
 {% block content %}
 <h1>{{ section.label }}</h1>
