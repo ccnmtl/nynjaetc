@@ -43,10 +43,14 @@
       {% block usernav %}
       {% if request.user.is_anonymous %}
         <a href="/accounts/login/?next=/" class="btn btn-success pull-right">login</a>
-      {% else %}		  
+      {% else %}
         <a href="/accounts/logout/" class="btn btn-inverse pull-right">logout</a>
         <p class="navbar-text pull-right">
-          logged in as {{request.user.first_name}} {{request.user.last_name}}
+          logged in as {{request.user.first_name}}
+          {{request.user.last_name}}
+          {% if request.user.is_superuser %}
+          <a href="{% url impersonate-list %}">[impersonate]</a>
+          {% endif %}
         </p>
       {% endif %}
       {% endblock %}
@@ -127,5 +131,11 @@
 <p>This site was last updated on: <b>{{STAGING_DEPLOY_TIME}}</b></p>
 </div>
 {% endif %}
+{% if request.user.is_impersonate %}
+<div class="alert alert-error" style="position: fixed; left: 0px; top: 75px">
+You are impersonating. <a href="{% url impersonate-stop %}">stop</a>.
+</div>
+{% endif %}
+
 </body>
 </html>
