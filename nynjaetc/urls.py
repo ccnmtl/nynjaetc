@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import patterns, include
+from django.conf.urls.defaults import patterns, include, url
 from django.contrib import admin
 from django.conf import settings
 from django.views.generic.simple import direct_to_template
@@ -25,6 +25,7 @@ urlpatterns = patterns(
     '',
     auth_urls,
     logout_page,
+    url(r'^_impersonate/', include('impersonate.urls')),
     (r'^_pagetree/', include('pagetree.urls')),
     (r'^_quiz/', include('quizblock.urls')),
     (r'^admin/', include(admin.site.urls)),
