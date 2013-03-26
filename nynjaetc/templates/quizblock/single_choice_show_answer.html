@@ -1,0 +1,29 @@
+{% load markup %}
+
+
+
+{% if block.rhetorical %}
+      <div class="casesanswerdisplay">
+        <a href="#q{{question.id}}" class="moretoggle">Show answer &gt;&gt;</a>
+        <div id="q{{question.id}}" class="toggleable">
+          <p>
+            {% if question.correct_answer_letter %}
+              <i>The correct answer is {{question.correct_answer_letter}}.</i>
+            {{response}}
+            {% endif %} 
+            {{question.explanation|markdown}}
+            
+            {% for answer in question.answer_set.all %}
+                {% if answer.explanation %}
+                    <div class = "one_per_answer_explanation {{answer.id}}">
+                       <p class ="the_answer">{{answer }}</p>
+                       <p class ="the_explanation">{{answer.explanation }}</p>
+                    </div>
+                {%endif %}
+            {%endfor %}
+          </p>
+        </div>
+      </div>
+{% else %}
+<p>{{question.explanation|markdown}}</p>
+{% endif %}

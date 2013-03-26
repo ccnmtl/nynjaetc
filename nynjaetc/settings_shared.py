@@ -83,6 +83,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'django.middleware.transaction.TransactionMiddleware',
+    'impersonate.middleware.ImpersonateMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'waffle.middleware.WaffleMiddleware',
 )
@@ -122,6 +123,7 @@ INSTALLED_APPS = [
     'pagetree',
     'pageblocks',
     'quizblock',
+    'impersonate',
 ]
 
 PAGEBLOCKS = [
@@ -193,3 +195,4 @@ WIND_SUPERUSER_MAPPER_GROUPS = [
 
 SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 SESSION_COOKIE_HTTPONLY = True
+LOGIN_REDIRECT_URL = "/"

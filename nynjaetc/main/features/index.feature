@@ -7,11 +7,11 @@ stuff is all hooked up properly and running.
     Scenario: Index Page Load
         Given I am not logged in
         When I access the url "/intro/"
-        Then I see the header "nynjaetc"
+        Then I see the header "Introduction"
         Then I see the sidebar
 
     Scenario: Index Page Load With Selenium
         Using selenium
         When I access the url "/intro/"
-        Then I see the header "nynjaetc"
+        Then I see the header "Introduction"
         Finished using selenium

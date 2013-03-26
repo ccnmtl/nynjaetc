@@ -16,7 +16,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'nynjaetc',
         'HOST': '',
-        'PORT': 6432,
+        'PORT': 6432, #see /etc/pgbouncer/pgbouncer.ini
         'USER': '',
         'PASSWORD': '',
         }

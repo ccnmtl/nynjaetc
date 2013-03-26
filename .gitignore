@@ -6,3 +6,4 @@ reports
 .coverage
 media/CACHE
 local_settings.py
+x
