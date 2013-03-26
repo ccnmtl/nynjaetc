@@ -4,6 +4,7 @@
 
 @learnblue: #34c6c6;
 @learnlightblue: @learnblue + #333;
+@learndarkblue: @learnblue + #000;
 
 /*Body Set*/
 
@@ -12,6 +13,17 @@
     padding-top: 40px;
    }
 }
+
+/*Base Typography*/
+
+#content {
+  a   {
+      &:link, &:visited, &:active {
+      color: @learndarkblue;
+    }
+  }
+}
+
 
 /*Top Navigation*/
 
@@ -27,19 +39,16 @@
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='@learnlightblue', endColorstr='@learnblue', GradientType=0);
   
         
-     ul.nav {
-       
-       a {
-         color: #fff;
-         text-shadow: none;
+  ul.nav {
+    a {
+      color: #fff;
+      text-shadow: none;
           
-          &:hover {
-            text-decoration: underline;
-          }   
-                
-       }
-       
-     }
+      &:hover {
+        text-decoration: underline;
+      }        
+    }
+ }
      
      .navbar-text {
        color: #fff;
@@ -50,6 +59,10 @@
   padding-right: 20px;
  }
 
+/*Masthead*/
+
+#logo {
+}
 
 /*Main Menu*/
 
