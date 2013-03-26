@@ -96,16 +96,26 @@
 {% endblock %}
 
     <div class="container-fluid" id="content">
+        <!-- ok, first row has just the title in it. -->
       <div class="row-fluid">
-        <div class="span2" id="sidebar">
-{% block sidenav %}{% endblock %}
+        <div class="span12">
+            <h1>{% block pagetitle %}{% endblock %}</h1>
         </div>
-        <div class="span10" id="right-content">
-{% block pagetitle %}{% endblock %}
-{% block content %}{% endblock %}
-{% block content-nav %}{% endblock %}
-        </div>
-      </div>
+      </div> <!-- end first row -->
+      
+        <!-- ok, second row has the nav and the content in it. (including the back and next buttons. -->
+      <div class="row-fluid">
+      
+            <div class="span2" id="sidebar">
+    {% block sidenav %}{% endblock %}
+            </div>
+            <div class="span10" id="right-content">
+    
+    {% block content %}{% endblock %}
+    {% block content-nav %}{% endblock %}
+            </div>
+
+      </div> <!-- end second row -->
     </div>
   </div>
 </div>
