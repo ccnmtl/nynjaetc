@@ -45,8 +45,15 @@
         <p>Middle level is:  <strong>{{path.1}}</strong></p>
         <p>Bottom level is:  <strong>{{path.2}}</strong></p>
         <p>Depth is  <strong>{{depth}}</strong></p>
+        
+        <p><strong>Breadcrumbs:</strong></p>
+        <ul>
+            {% for breadcrumb in path %}
+                <li><a href = "{{breadcrumb.get_absolute_url}}">{{ breadcrumb }}</a></li>
+            {% endfor %}
+        </ul>
+        
     </div>
-
 {% endblock breadcrumbs %}
 
 
