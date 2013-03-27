@@ -96,12 +96,24 @@
 {% endblock %}
 
     <div class="container-fluid" id="content">
+    
+    
+      <div class="row-fluid">
+        <div class="span12">
+            {% block breadcrumbs %}{% endblock %}
+        </div>
+      </div> <!-- end first row -->
+    
+    
+    
         <!-- ok, first row has just the title in it. -->
       <div class="row-fluid">
         <div class="span12">
             <h1>{% block pagetitle %}{% endblock %}</h1>
         </div>
       </div> <!-- end first row -->
+      
+      
       
         <!-- ok, second row has the nav and the content in it. (including the back and next buttons. -->
       <div class="row-fluid">
