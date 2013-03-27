@@ -42,6 +42,10 @@
       {% block topnavbarrightitems %}{% endblock %}
       {% block usernav %}
       {% if request.user.is_anonymous %}
+      
+      
+        <a href="/accounts/register/" class="btn btn-success pull-right">register</a>
+        
         <a href="/accounts/login/?next=/" class="btn btn-success pull-right">login</a>
       {% else %}
         <a href="/accounts/logout/" class="btn btn-inverse pull-right">logout</a>
