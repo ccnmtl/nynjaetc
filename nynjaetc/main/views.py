@@ -27,18 +27,13 @@ def page(request, path):
         else:
             # giving them feedback before they proceed
             return HttpResponseRedirect(section.get_absolute_url())
-    else:
-        path = list(section.get_ancestors())[1:]
-        path.append(section)
-        return dict(section=section,
-                    path=path,
-                    depth=len(path),
                     module=module,
                     needs_submit=needs_submit(section),
                     is_submitted=submitted(section, request.user),
                     modules=root.get_children(),
                     root=section.hierarchy.get_root(),
                     )
+
 
 
 @login_required
