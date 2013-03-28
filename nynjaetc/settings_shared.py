@@ -127,7 +127,6 @@ INSTALLED_APPS = [
     'registration',
 ]
 
-    
 PAGEBLOCKS = [
     'pageblocks.TextBlock',
     'pageblocks.HTMLBlock',
@@ -167,8 +166,8 @@ EMAIL_HOST = 'localhost'
 SERVER_EMAIL = "nynjaetc@ccnmtl.columbia.edu"
 DEFAULT_FROM_EMAIL = SERVER_EMAIL
 
-ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window; you may, of course, use a different value.
-    
+# One-week activation window; you may, of course, use a different value.
+ACCOUNT_ACTIVATION_DAYS = 7
 
 # put any static media here to override app served static media
 STATICMEDIA_MOUNTS = (

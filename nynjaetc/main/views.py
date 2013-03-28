@@ -5,9 +5,6 @@ from pagetree.helpers import get_module, needs_submit, submitted
 from django.contrib.auth.decorators import login_required
 
 
-
-
-
 @render_to('main/page.html')
 def page(request, path):
     section = get_section_from_path(path)
@@ -18,7 +15,7 @@ def page(request, path):
         if section.get_next():
             # just send them to the first child
             return HttpResponseRedirect(section.get_next().get_absolute_url())
-          
+
     if request.method == "POST":
         # user has submitted a form. deal with it
         if request.POST.get('action', '') == 'reset':
@@ -30,26 +27,18 @@ def page(request, path):
         else:
             # giving them feedback before they proceed
             return HttpResponseRedirect(section.get_absolute_url())
-    
-        
-        
-    
     else:
-    
         path = list(section.get_ancestors())[1:]
-        path.append (section)
-        
+        path.append(section)
         return dict(section=section,
-                    path = path,
-                    depth  = len(path),
+                    path=path,
+                    depth=len(path),
                     module=module,
                     needs_submit=needs_submit(section),
                     is_submitted=submitted(section, request.user),
                     modules=root.get_children(),
                     root=section.hierarchy.get_root(),
                     )
-
-
 
 
 @login_required
