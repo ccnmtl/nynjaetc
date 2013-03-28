@@ -23,7 +23,7 @@
 
   <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
   <!--[if lt IE 9]>
-    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
 
 	{% block feeds %}{% endblock %}
@@ -45,10 +45,16 @@
       
       
         <a href="/accounts/register/" class="btn btn-success pull-right">register</a>
-        
         <a href="/accounts/login/?next=/" class="btn btn-success pull-right">login</a>
       {% else %}
+      
+      
         <a href="/accounts/logout/" class="btn btn-inverse pull-right">logout</a>
+                
+        {% if can_download_stats %}
+                <a href="javascript:alert ('Coming soon.');" class="btn btn-inverse pull-right">stats</a>
+        {%endif %}
+      
         <p class="navbar-text pull-right">
           logged in as {{request.user.first_name}}
           {{request.user.last_name}}
@@ -149,7 +155,7 @@
  
 {% endblock %}
 
-<script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
+<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
 
 {% compress js %}
 <script src="/site_media/bootstrap/js/bootstrap.js"></script>
