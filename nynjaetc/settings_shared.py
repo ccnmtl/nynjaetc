@@ -124,8 +124,10 @@ INSTALLED_APPS = [
     'pageblocks',
     'quizblock',
     'impersonate',
+    'registration',
 ]
 
+    
 PAGEBLOCKS = [
     'pageblocks.TextBlock',
     'pageblocks.HTMLBlock',
@@ -164,6 +166,9 @@ EMAIL_SUBJECT_PREFIX = "[nynjaetc] "
 EMAIL_HOST = 'localhost'
 SERVER_EMAIL = "nynjaetc@ccnmtl.columbia.edu"
 DEFAULT_FROM_EMAIL = SERVER_EMAIL
+
+ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window; you may, of course, use a different value.
+    
 
 # put any static media here to override app served static media
 STATICMEDIA_MOUNTS = (

@@ -26,8 +26,42 @@
         {% endif %}
 {% endblock %}
 
+{% block navrightextra %}
+    <ul class="nav pull-right">
+        {% if not request.user.is_anonymous %}
+        <li><a href="/edit{{section.get_absolute_url}}">edit page</a></li>
+        {% endif %}
+    </ul>
+{% endblock %}
+
+
+
+{% block breadcrumbs %}
+ <div style = "font-size:70%" >
+ <!--
+        <p>Section is <strong>{{section}}</strong></p>
+        <p>Path is  <strong>{{path}}</strong></p>
+        <p>Module is <strong>{{module}}</strong></p>
+        <p>Top level is:  <strong>{{path.0}}</strong></p>
+        <p>Middle level is:  <strong>{{path.1}}</strong></p>
+        <p>Bottom level is:  <strong>{{path.2}}</strong></p>
+        <p>Depth is  <strong>{{depth}}</strong></p>
+        </div>
+-->
+
+       {% for breadcrumb in path %}
+                <a href ="{{breadcrumb.get_absolute_url}}">{{breadcrumb}}</a>
+       {% endfor %}        
+            
+{% endblock breadcrumbs %}
+
+
+
 {% block content %}
 <div id="content">
+
+
+
 {% if needs_submit %}
 {% if is_submitted %}
 {% else %}
