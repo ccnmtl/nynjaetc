@@ -30,11 +30,11 @@
 </head>
 <body>
 <div class="container" id="outer-container">
-  <div class="row">
+  <div class="row-fluid">
     <div class="span8">
           <a href="/"><img src="/site_media/img/workinglogo.png" id="logo" /></a>
     </div>
-    <div class="span4">
+    <div class="span4" id="nav">
       {% block topnavbar %}
       <ul class="nav">
       {% block topnavbarleftitems %}{% endblock %}
@@ -43,10 +43,10 @@
       {% block usernav %}
       {% if request.user.is_anonymous %}
       
-       <a href="/accounts/register/" class="btn btn-mini pull-right">register</a>
-       <a href="/accounts/login/?next=/" class="btn btn-mini pull-right">login</a>
+       <a href="/accounts/register/" class="btn pull-right">Register</a>
+       <a href="/accounts/login/?next=/" class="btn pull-right">Log In</a>
       {% else %}
-        <a href="/accounts/logout/" class="btn btn-mini pull-right">logout</a>
+        <a href="/accounts/logout/" class="btn pull-right">Log Out</a>
         <p class="navbar-text pull-right">
           logged in as {{request.user.first_name}}
           {{request.user.last_name}}
@@ -57,6 +57,11 @@
       {% endif %}
       {% endblock %}
 {% endblock %}
+    </div>
+  </div>
+  <div class="row-fluid">
+    <div class="span12 subbrand">
+      Hepatitis C Treatment Self-Study Module
     </div>
   </div>
 {% block masthead %}
