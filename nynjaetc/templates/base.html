@@ -12,7 +12,7 @@
     <link href="/site_media/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
 {% endcompress %}
     <link href="/site_media/bootstrap/css/bootstrap-responsive.css" rel="stylesheet" type="text/css"> 
-
+    <link href='http://fonts.googleapis.com/css?family=Asap:400,700' rel='stylesheet' type='text/css'>
 {% compress css %}
     <link href="/site_media/css/main.less" rel="stylesheet" type="text/less">
 {% endcompress %}
@@ -29,10 +29,13 @@
 	{% block feeds %}{% endblock %}
 </head>
 <body>
-{% block topnavbar %}
-<div class="navbar navbar-fixed-top">
-  <div class="navbar-inner">
-    <div class="container">
+<div class="container" id="outer-container">
+  <div class="row">
+    <div class="span8">
+          <a href="/"><img src="/site_media/img/workinglogo.png" id="logo" /></a>
+    </div>
+    <div class="span4">
+      {% block topnavbar %}
       <ul class="nav">
       {% block topnavbarleftitems %}{% endblock %}
       </ul>
@@ -53,19 +56,10 @@
         </p>
       {% endif %}
       {% endblock %}
+{% endblock %}
     </div>
   </div>
-</div>
-{% endblock %}
-
-  <div class="container" id="outer-container">
 {% block masthead %}
-<div class="row-fluid">
-  <div class="span12">
-    <a href="/"><img src="/site_media/img/workinglogo.png" id="logo" /></a>
-  </div>
- </div> 
-  
 {% block primarynav %}
 <div class="navbar" id="primarynav">
   <div class="navbar-inner">
@@ -113,7 +107,7 @@
         <!-- ok, first row has just the title in it. -->
       <div class="row-fluid">
         <div class="span12">
-            <h1>{% block pagetitle %}{% endblock %}</h1>
+            {% block pagetitle %}{% endblock %}
         </div>
       </div> <!-- end first row -->
       

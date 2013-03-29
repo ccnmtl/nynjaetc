@@ -16,12 +16,11 @@
 
 {% block title %}{{section.label}}{% endblock %}
 
-{% block pagetitle %}<h1>{{section.label}}</h1>{% endblock %}
+{% block pagetitle %}<h2 class="pagetitle">{{section.label}}</h2>{% endblock %}
 
 {% block sidenav %}
         <!-- ###### Secondary Navigation ###### -->
         {% if module.get_children %}
-        <h3>Sections</h3>
         {% include "main/menu.html" %}
         {% endif %}
 {% endblock %}

@@ -9,9 +9,7 @@
 /*Body Set*/
 
 @media (min-width: 979px) {
-  body {
-    padding-top: 40px;
-   }
+
 }
 
 /*Base Typography*/
@@ -28,28 +26,7 @@
 /*Top Navigation*/
 
 .navbar {
-  margin: 0 0 7px 0;
-}
-
-.navbar-fixed-top .navbar-inner {
-  .btn {
-    margin: 7px 5px 0 0;
-  }
-  
-  ul.nav {
-    a {
-      color: #222;
-      text-shadow: none;
-          
-      &:hover {
-        text-decoration: underline;
-      }        
-    }
- }
-     
-     .navbar-text {
-       color: #fff;
-     }
+  margin: 0;
 }
 
 .navbar-text.pull-right {
@@ -67,25 +44,44 @@
 /*Content*/
 
 ul#breadcrumbs {
-  margin: 0;
+  margin: 13px 0 0 0;
 
  li {
-  list-style-type: none;
-  display: inline;
-  color: #ccc;
-  font-size: 11px;
-  margin: 0 3px 0 0;
+   font-family: 'Arial', sans-serif;
+   list-style-type: none;
+   display: inline;
+   color: #ccc;
+   font-size: 12px;
+   margin: 0 3px 0 0;
   
+    a:link, a:visited, a:active {
+      color:#ccc;
+     }
+     
+     a:hover {
+      color:#333;
+      text-decoration: none;
+     }
+
     &:after {
       content:">";
       margin: 0 0 0 5px;
       font-size: 8px;
     }
+    
     &:last-child:after {
       content: none;
     }
   }
 }
+
+.pagetitle {
+  font-family: 'Asap', 'HelveticaNeue', 'Arial', sans-serif;
+  margin: 7px 0 25px 0;
+  color: #444;
+}
+
+
 /*
 .one_per_answer_explanation {
     display: none;
