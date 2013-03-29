@@ -27,21 +27,18 @@
 
 /*Top Navigation*/
 
-.navbar-fixed-top .navbar-inner {
+.navbar {
+  margin: 0 0 7px 0;
+}
 
-  background-color: @learnblue;
-  background-image: -moz-linear-gradient(top, @learnlightblue, @learnblue);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@learnlightblue), to(@learnblue));
-  background-image: -webkit-linear-gradient(top, @learnlightblue, @learnblue);
-  background-image: -o-linear-gradient(top, @learnlightblue, @learnblue);
-  background-image: linear-gradient(to bottom, @learnlightblue, @learnblue);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='@learnlightblue', endColorstr='@learnblue', GradientType=0);
+.navbar-fixed-top .navbar-inner {
+  .btn {
+    margin: 7px 5px 0 0;
+  }
   
-        
   ul.nav {
     a {
-      color: #fff;
+      color: #222;
       text-shadow: none;
           
       &:hover {
@@ -69,10 +66,26 @@
 
 /*Content*/
 
-ul#breadcrumbs li {
-  list-style-type: none;
-}
+ul#breadcrumbs {
+  margin: 0;
 
+ li {
+  list-style-type: none;
+  display: inline;
+  color: #ccc;
+  font-size: 11px;
+  margin: 0 3px 0 0;
+  
+    &:after {
+      content:">";
+      margin: 0 0 0 5px;
+      font-size: 8px;
+    }
+    &:last-child:after {
+      content: none;
+    }
+  }
+}
 /*
 .one_per_answer_explanation {
     display: none;

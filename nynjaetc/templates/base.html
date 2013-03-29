@@ -34,21 +34,16 @@
   <div class="navbar-inner">
     <div class="container">
       <ul class="nav">
-        <li>
-          <a class="brand" href="/">learn.nynjaetc.org</a>
-        </li>
       {% block topnavbarleftitems %}{% endblock %}
       </ul>
       {% block topnavbarrightitems %}{% endblock %}
       {% block usernav %}
       {% if request.user.is_anonymous %}
       
-      
-        <a href="/accounts/register/" class="btn btn-success pull-right">register</a>
-        
-        <a href="/accounts/login/?next=/" class="btn btn-success pull-right">login</a>
+       <a href="/accounts/register/" class="btn btn-mini pull-right">register</a>
+       <a href="/accounts/login/?next=/" class="btn btn-mini pull-right">login</a>
       {% else %}
-        <a href="/accounts/logout/" class="btn btn-inverse pull-right">logout</a>
+        <a href="/accounts/logout/" class="btn btn-mini pull-right">logout</a>
         <p class="navbar-text pull-right">
           logged in as {{request.user.first_name}}
           {{request.user.last_name}}
