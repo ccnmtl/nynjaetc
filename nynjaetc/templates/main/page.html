@@ -36,7 +36,7 @@
 
 
 {% block breadcrumbs %}
-  <ul id="breadcrumbs">
+  <ul class="breadcrumb" id="breadcrumbs">
  <!--
         <p>Section is <strong>{{section}}</strong></p>
         <p>Path is  <strong>{{path}}</strong></p>
@@ -49,7 +49,7 @@
 -->
 
        {% for breadcrumb in path %}
-                <li><a href ="{{breadcrumb.get_absolute_url}}">{{breadcrumb}}</a></li>
+                <li><a href ="{{breadcrumb.get_absolute_url}}">{{breadcrumb}}</a><span class="divider">/</span></li>
        {% endfor %}        
             
   </ul>
