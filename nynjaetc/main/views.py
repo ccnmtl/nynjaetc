@@ -28,24 +28,23 @@ def page(request, path):
             # giving them feedback before they proceed
             return HttpResponseRedirect(section.get_absolute_url())
 
-    
     else:
-
         path = list(section.get_ancestors())[1:]
-        path.append (section)
-        
-        
-        return dict(section=section,
-                    path = path,
-                    depth  = len(path),
-                    can_download_stats = ('can_dowload_stats' in [g.name for g in request.user.groups.all()]),
-                    module=module,
-                    needs_submit=needs_submit(section),
-                    is_submitted=submitted(section, request.user),
-                    modules=root.get_children(),
-                    root=section.hierarchy.get_root(),
-                    )
-
+        path.append(section)
+        return dict(
+            section=section,
+            path=path,
+            depth=len(path),
+            can_download_stats=(
+                'can_dowload_stats'
+                in [g.name for g in request.user.groups.all()]
+            ),
+            module=module,
+            needs_submit=needs_submit(section),
+            is_submitted=submitted(section, request.user),
+            modules=root.get_children(),
+            root=section.hierarchy.get_root(),
+        )
 
 
 @login_required
