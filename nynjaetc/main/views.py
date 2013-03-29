@@ -22,7 +22,7 @@ def page(request, path):
             section.reset(request.user)
             return HttpResponseRedirect(section.get_absolute_url())
         proceed = section.submit(request.POST, request.user)
-        if proceed:
+        if proceed and section.get_next():
             return HttpResponseRedirect(section.get_next().get_absolute_url())
         else:
             # giving them feedback before they proceed
