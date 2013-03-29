@@ -98,10 +98,8 @@
 
 {% endblock %}
 
-    <div class="container-fluid" id="content">
-    
-    
-      <div class="row-fluid">
+<div class="container-fluid" id="content">
+    <div class="row-fluid">
         <div class="span12">
             {% block breadcrumbs %}{% endblock %}
         </div>
@@ -120,15 +118,14 @@
       
         <!-- ok, second row has the nav and the content in it. (including the back and next buttons. -->
       <div class="row-fluid">
-      
-            <div class="span2" id="sidebar">
+         <div class="span2" id="sidebar">
     {% block sidenav %}{% endblock %}
-            </div>
-            <div class="span10" id="right-content">
+         </div>
+         <div class="span10" id="right-content">
     
     {% block content %}{% endblock %}
     {% block content-nav %}{% endblock %}
-            </div>
+         </div>
 
       </div>
       <div class="row-fluid">
