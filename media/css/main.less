@@ -22,25 +22,27 @@
 
 
 /*Top Navigation*/
-
-.subbrand {
-font-size: 20px;
-color: #555;
-font-weight: 200;
-font-family: 'Asap', 'Arial';
-margin: 33px 0 0 0 !important;
+#header {
+  .subbrand {
+    font-size: 20px;
+    color: #555;
+    font-weight: 200;
+    font-family: 'Asap', 'Arial';
+    margin: 33px 0 0 0 !important;
+  }
 }
 
 
 #nav {
    .btn {
      margin: 14px 0 0 7px;
+     
+     @media (max-width: 767px) {
+      float: left; 
+     }
    }
 }
 
-.navbar-text.pull-right {
-  padding-right: 20px;
- }
 
 /*Masthead*/
 
