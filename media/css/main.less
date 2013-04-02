@@ -13,8 +13,14 @@
 
 /*Body Set*/
 
-@media (min-width: 979px) {
+body, html {
+  height: 100%;
+}
 
+#outer-container {
+  min-height: 100%;
+  margin-bottom: -70px;
+  position: relative;
 }
 
 /*Base Typography*/
@@ -152,6 +158,17 @@ ul#breadcrumbs {
   color: #444;
 }
 
+/*Footer*/
+
+#clearfooter {
+  height: 70px;
+  clear:both;
+}
+
+#footer {
+  height: 70px;
+  position: relative;
+}
 
 /*
 .one_per_answer_explanation {
