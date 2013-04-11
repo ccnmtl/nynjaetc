@@ -16,12 +16,11 @@
 
 {% block title %}{{section.label}}{% endblock %}
 
-{% block pagetitle %}<h1>{{section.label}}</h1>{% endblock %}
+{% block pagetitle %}<h2 class="pagetitle">{{section.label}}</h2>{% endblock %}
 
 {% block sidenav %}
         <!-- ###### Secondary Navigation ###### -->
         {% if module.get_children %}
-        <h3>Sections</h3>
         {% include "main/menu.html" %}
         {% endif %}
 {% endblock %}
@@ -37,7 +36,7 @@
 
 
 {% block breadcrumbs %}
- <div style = "font-size:70%" >
+  <ul id="breadcrumbs">
  <!--
         <p>Section is <strong>{{section}}</strong></p>
         <p>Path is  <strong>{{path}}</strong></p>
@@ -50,9 +49,10 @@
 -->
 
        {% for breadcrumb in path %}
-                <a href ="{{breadcrumb.get_absolute_url}}">{{breadcrumb}}</a>
+                <li><a href ="{{breadcrumb.get_absolute_url}}">{{breadcrumb}}</a><span class="divider">/</span></li>
        {% endfor %}        
             
+  </ul>
 {% endblock breadcrumbs %}
 
 
@@ -72,7 +72,7 @@
 
 {% for block in section.pageblock_set.all %}
 <div class="pageblock{% if block.css_extra %} {{block.css_extra}}{% endif %}">
-{% if block.label %}<h3>{{block.label}}</h3>{% endif %}
+{% if block.label %}<h4>{{block.label}}</h4>{% endif %}
 {% render block %}
 </div>
 {% endfor %}
