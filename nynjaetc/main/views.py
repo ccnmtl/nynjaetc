@@ -5,9 +5,6 @@ from pagetree.helpers import get_module, needs_submit, submitted
 from django.contrib.auth.decorators import login_required
 
 
-
-
-
 @render_to('main/page.html')
 def page(request, path):
     section = get_section_from_path(path)
@@ -18,38 +15,36 @@ def page(request, path):
         if section.get_next():
             # just send them to the first child
             return HttpResponseRedirect(section.get_next().get_absolute_url())
-          
+
     if request.method == "POST":
         # user has submitted a form. deal with it
         if request.POST.get('action', '') == 'reset':
             section.reset(request.user)
             return HttpResponseRedirect(section.get_absolute_url())
         proceed = section.submit(request.POST, request.user)
-        if proceed:
+        if proceed and section.get_next():
             return HttpResponseRedirect(section.get_next().get_absolute_url())
         else:
             # giving them feedback before they proceed
             return HttpResponseRedirect(section.get_absolute_url())
-    
-    
+
     else:
-
         path = list(section.get_ancestors())[1:]
-        path.append (section)
-        
-        
-        return dict(section=section,
-                    path = path,
-                    depth  = len(path),
-                    can_download_stats = ('can_dowload_stats' in [g.name for g in request.user.groups.all()]),
-                    module=module,
-                    needs_submit=needs_submit(section),
-                    is_submitted=submitted(section, request.user),
-                    modules=root.get_children(),
-                    root=section.hierarchy.get_root(),
-                    )
-
- 
+        path.append(section)
+        return dict(
+            section=section,
+            path=path,
+            depth=len(path),
+            can_download_stats=(
+                'can_dowload_stats'
+                in [g.name for g in request.user.groups.all()]
+            ),
+            module=module,
+            needs_submit=needs_submit(section),
+            is_submitted=submitted(section, request.user),
+            modules=root.get_children(),
+            root=section.hierarchy.get_root(),
+        )
 
 
 @login_required
