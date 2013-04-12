@@ -57,8 +57,13 @@
 
 
         <p class="navbar-text pull-right">
-          logged in as {{request.user.first_name}}
-          {{request.user.last_name}}
+          logged in as
+          {% if  request.user.first_name or  request.user.first_name %}
+              {{request.user.first_name}}
+              {{request.user.last_name}}
+          {%else %}
+            {{request.user}}
+          {%endif %}
           {% if request.user.is_superuser %}
           <a href="{% url impersonate-list %}">[impersonate]</a>
           {% endif %}
