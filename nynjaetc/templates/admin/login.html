@@ -1,4 +1,3 @@
-
 {% extends "base.html" %}
 {% load i18n %}
 
@@ -20,7 +19,7 @@
 <input type="hidden" name="destination" value="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/accounts/windlogin/?next=/admin/&this_is_the_login_form=1" />
 <p>To access the admin pages of this site, click <input type="submit" value="here" />.</p>
 </form>
-<p>You can also log in or register for the training portion of the site using the links on the top right. </p>
+<p>Or you can log in or register for the training portion of the site using the links on the top right. </p>
 </div>
 {% endblock %}
 
