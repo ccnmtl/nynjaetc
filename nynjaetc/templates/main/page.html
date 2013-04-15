@@ -13,7 +13,7 @@
 {% endfor %}
 {% endblock %}
 
-
+{% block module_slug %}{{module.slug}}{% endblock %}
 {% block title %}{{section.label}}{% endblock %}
 
 {% block pagetitle %}<h2 class="pagetitle">{{section.label}}</h2>{% endblock %}
@@ -58,7 +58,7 @@
 
 
 {% block content %}
-<div id="content">
+<div id="content" class ="module-{{module.slug}}">
 
 
 
