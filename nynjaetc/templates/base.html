@@ -66,11 +66,11 @@
           {%else %}
             {{request.user}}
           {%endif %}
-{%comment %}
+	  {%comment %}
           {% if request.user.is_superuser %}
           <a href="{% url impersonate-list %}">[impersonate]</a>
           {% endif %}
-{%endcomment %}
+	  {%endcomment %}
         </p>
       {% endif %}
       {% endblock %}

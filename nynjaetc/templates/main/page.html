@@ -27,7 +27,7 @@
 
 {% block navrightextra %}
     <ul class="nav pull-right">
-        {% if not request.user.is_anonymous %}
+        {% if user.is_staff %}
         <li><a href="/edit{{section.get_absolute_url}}">edit page</a></li>
         {% endif %}
     </ul>

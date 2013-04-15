@@ -3,8 +3,10 @@ from django.http import HttpResponseRedirect
 from pagetree.helpers import get_section_from_path
 from pagetree.helpers import get_module, needs_submit, submitted
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 
 
+@login_required
 @render_to('main/page.html')
 def page(request, path):
     section = get_section_from_path(path)
@@ -48,7 +50,7 @@ def page(request, path):
         )
 
 
-@login_required
+@staff_member_required
 @render_to('main/edit_page.html')
 def edit_page(request, path):
     section = get_section_from_path(path)
