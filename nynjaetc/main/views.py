@@ -30,7 +30,6 @@ def page(request, path):
             # giving them feedback before they proceed
             return HttpResponseRedirect(section.get_absolute_url())
 
-
     else:
         path = list(section.get_ancestors())[1:]
         path.append(section)
