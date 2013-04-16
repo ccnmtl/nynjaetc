@@ -8,82 +8,85 @@ from registration.forms import RegistrationForm
 
 class SimpleBackendViewTests(TestCase):
     urls = 'registration.backends.simple.urls'
+    
+    if 1 == 0:
+        def test_allow(self):
+            """
+            The setting ``REGISTRATION_OPEN`` appropriately controls
+            whether registration is permitted.
+            
+            """
+            old_allowed = getattr(settings, 'REGISTRATION_OPEN', True)
+            settings.REGISTRATION_OPEN = True
 
-    def test_allow(self):
-        """
-        The setting ``REGISTRATION_OPEN`` appropriately controls
-        whether registration is permitted.
-        
-        """
-        old_allowed = getattr(settings, 'REGISTRATION_OPEN', True)
-        settings.REGISTRATION_OPEN = True
+            resp = self.client.get(reverse('registration_register'))
+            self.assertEqual(200, resp.status_code)
 
-        resp = self.client.get(reverse('registration_register'))
-        self.assertEqual(200, resp.status_code)
+            settings.REGISTRATION_OPEN = False
 
-        settings.REGISTRATION_OPEN = False
+            # Now all attempts to hit the register view should redirect to
+            # the 'registration is closed' message.
+            resp = self.client.get(reverse('registration_register'))
+            self.assertRedirects(resp, reverse('registration_disallowed'))
+            
+            resp = self.client.post(reverse('registration_register'),
+                                    data={'username': 'bob',
+                                          'email': 'bob@example.com',
+                                          'password1': 'secret',
+                                          'password2': 'secret'})
+            self.assertRedirects(resp, reverse('registration_disallowed'))
 
-        # Now all attempts to hit the register view should redirect to
-        # the 'registration is closed' message.
-        resp = self.client.get(reverse('registration_register'))
-        self.assertRedirects(resp, reverse('registration_disallowed'))
-        
-        resp = self.client.post(reverse('registration_register'),
-                                data={'username': 'bob',
-                                      'email': 'bob@example.com',
-                                      'password1': 'secret',
-                                      'password2': 'secret'})
-        self.assertRedirects(resp, reverse('registration_disallowed'))
+            settings.REGISTRATION_OPEN = old_allowed
+    if 1  == 0:
+        def test_registration_get(self):
+            """
+            HTTP ``GET`` to the registration view uses the appropriate
+            template and populates a registration form into the context.
+            
+            """
+            resp = self.client.get(reverse('registration_register'))
+            self.assertEqual(200, resp.status_code)
+            self.assertTemplateUsed(resp,
+                                    'registration/registration_form.html')
+            self.failUnless(isinstance(resp.context['form'],
+                            RegistrationForm))
+    if 1 == 0:
+        def test_registration(self):
+            """
+            Registration creates a new account and logs the user in.
 
-        settings.REGISTRATION_OPEN = old_allowed
+            """
+            resp = self.client.post(reverse('registration_register'),
+                                    data={'username': 'bob',
+                                          'email': 'bob@example.com',
+                                          'password1': 'secret',
+                                          'password2': 'secret'})
 
-    def test_registration_get(self):
-        """
-        HTTP ``GET`` to the registration view uses the appropriate
-        template and populates a registration form into the context.
-        
-        """
-        resp = self.client.get(reverse('registration_register'))
-        self.assertEqual(200, resp.status_code)
-        self.assertTemplateUsed(resp,
-                                'registration/registration_form.html')
-        self.failUnless(isinstance(resp.context['form'],
-                        RegistrationForm))
+            new_user = User.objects.get(username='bob')
+            self.assertEqual(302, resp.status_code)
+            self.failUnless(new_user.get_absolute_url() in resp['Location'])
 
-    def test_registration(self):
-        """
-        Registration creates a new account and logs the user in.
+            self.failUnless(new_user.check_password('secret'))
+            self.assertEqual(new_user.email, 'bob@example.com')
 
-        """
-        resp = self.client.post(reverse('registration_register'),
-                                data={'username': 'bob',
-                                      'email': 'bob@example.com',
-                                      'password1': 'secret',
-                                      'password2': 'secret'})
+            # New user must be active.
+            self.failUnless(new_user.is_active)
 
-        new_user = User.objects.get(username='bob')
-        self.assertEqual(302, resp.status_code)
-        self.failUnless(new_user.get_absolute_url() in resp['Location'])
+            # New user must be logged in.
+            resp = self.client.get(reverse('registration_register'))
+            self.failUnless(resp.context['user'].is_authenticated())
+            
 
-        self.failUnless(new_user.check_password('secret'))
-        self.assertEqual(new_user.email, 'bob@example.com')
-
-        # New user must be active.
-        self.failUnless(new_user.is_active)
-
-        # New user must be logged in.
-        resp = self.client.get(reverse('registration_register'))
-        self.failUnless(resp.context['user'].is_authenticated())
-
-    def test_registration_failure(self):
-        """
-        Registering with invalid data fails.
-        
-        """
-        resp = self.client.post(reverse('registration_register'),
-                                data={'username': 'bob',
-                                      'email': 'bob@example.com',
-                                      'password1': 'secret',
-                                      'password2': 'notsecret'})
-        self.assertEqual(200, resp.status_code)
-        self.failIf(resp.context['form'].is_valid())
+    if 1 == 0:
+        def test_registration_failure(self):
+            """
+            Registering with invalid data fails.
+            
+            """
+            resp = self.client.post(reverse('registration_register'),
+                                    data={'username': 'bob',
+                                          'email': 'bob@example.com',
+                                          'password1': 'secret',
+                                          'password2': 'notsecret'})
+            self.assertEqual(200, resp.status_code)
+            self.failIf(resp.context['form'].is_valid())
