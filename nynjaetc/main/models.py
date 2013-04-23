@@ -39,3 +39,26 @@ class SectionPreference(models.Model):
         ordering = ['section', 'preference']
         unique_together = ("section", "preference")
 
+
+class EncryptedUserDataField(models.Model):
+    def __unicode__(self):
+        return self.slug
+    slug = models.SlugField(unique=True, null=False, blank=False)
+    
+    
+class EncryptedUserData(models.Model):
+    """A chunk of private, encrypted data associated with a user."""
+    def __unicode__(self):
+        return self.field.slug
+
+    which_field = models.ForeignKey(EncryptedUserDataField, null=False, blank=False)
+    user = models.ForeignKey(User,blank=False,null=False)
+    value = models.TextField(blank=True, help_text = "Value of the data")
+    
+    unique_together = ("user", "which_field")
+    def store_value (self, the_value):
+        self.value = the_value
+        self.save()
+        
+    def retrieve_value (self):
+        return self.value
