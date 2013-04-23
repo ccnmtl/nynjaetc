@@ -40,7 +40,10 @@ urlpatterns = patterns(
     # these need to be last
     (r'^edit/(?P<path>.*)$', 'nynjaetc.main.views.edit_page',
      {}, 'edit-page'),
-    (r'^instructor/(?P<path>.*)$',
-     'nynjaetc.main.views.instructor_page'),
+
+    
+    (r'^latest/(?P<path>.*)$', 'nynjaetc.main.views.latest_page',
+     {}, 'latest-page'),
+     
     (r'^(?P<path>.*)$', 'nynjaetc.main.views.page'),
 ) + staticmedia.serve()
