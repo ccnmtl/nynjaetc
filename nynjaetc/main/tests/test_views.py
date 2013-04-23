@@ -22,10 +22,6 @@ class BasicTest(TestCase):
         response = self.c.get("/edit/")
         self.assertEquals(response.status_code, 200)
 
-    def test_instructor_page(self):
-        response = self.c.get("/instructor/")
-        self.assertEquals(response.status_code, 200)
-
     def test_reset(self):
         response = self.c.post(
             "/",
