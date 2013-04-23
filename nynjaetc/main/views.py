@@ -101,7 +101,9 @@ def latest_page(request, path):
     """Returns the most recently viewed section in {the page itself or its descendants}."""
     section = get_section_from_path(path)
     pool = self_and_descendants(section)
-    user_timestamps = SectionTimestamp.objects.filter(user=request.user)
+    if  request.user.is_anonymous():
+        return page (request, section.get_path())
+    user_timestamps = SectionTimestamp.objects.filter(user=request.user)    
     already_visited = [t for t in user_timestamps if t.section in pool]
     if len(already_visited) == 0:
         return page (request, section.get_path())
