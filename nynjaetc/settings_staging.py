@@ -22,6 +22,13 @@ DATABASES = {
         }
 }
 
+
+ENCRYPT_EMAIL_ADDRESSES = True
+ENCRYPT_HRSA_IDS = True
+ENCRYPT_KEY = 'DUMMY DUMMY DUMMY DUMMY.' #overridden by local_settings.py
+
+
+
 COMPRESS_ROOT = "/var/www/nynjaetc/nynjaetc/media/"
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
@@ -48,3 +55,7 @@ try:
     from local_settings import *
 except ImportError:
     pass
+    
+    
+    
+    
