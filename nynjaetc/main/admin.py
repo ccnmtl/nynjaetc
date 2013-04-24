@@ -7,13 +7,10 @@ class PreferenceAdmin (admin.ModelAdmin):
     fields = ('slug', )     
 admin.site.register(Preference, PreferenceAdmin)
 
-
 class SectionPreferenceAdmin (admin.ModelAdmin):
     list_display = ( 'section', 'preference', )
     fields =  ( 'section', 'preference', )
 admin.site.register(SectionPreference, SectionPreferenceAdmin)
-
-
 
 class EncryptedUserDataFieldAdmin (admin.ModelAdmin):
     list_display = ( 'slug',)
