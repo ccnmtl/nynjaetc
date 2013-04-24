@@ -66,7 +66,7 @@ class EncryptedUserData(models.Model):
     the_key = settings.ENCRYPT_KEY
     
     if the_key == None or the_key == '':
-        throw RuntimeError ("Can't find the ENCRYPT_KEY, which we need to encrypt and decrypt this data.")
+        raise RuntimeError ("Can't find the ENCRYPT_KEY, which we need to encrypt and decrypt this data.")
     
     aes = AES.new(the_key, AES.MODE_ECB)
     enc, dec = aes.encrypt, aes.decrypt
