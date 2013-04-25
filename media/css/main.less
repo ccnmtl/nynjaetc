@@ -2,9 +2,7 @@
  Learn.nynjaetc.org
  */
 
-@learnblue: #0e7bc6;
-@learnlightblue: @learnblue + #333;
-@learndarkblue: @learnblue + #000;
+@learnblue: #0079c4;
 
 .pull-left {
   float: left;
@@ -109,26 +107,33 @@ ul#breadcrumbs {
 
 /*Main Menu*/
 
+.navbar-inner {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}
+
 /*Sidebar*/
 #sidebar {
-  font-size: 12px;
-    
+    margin: 10px 0 0 0;
+   
   ul {
     margin: 0;
     list-style-type: none;
     
     &>li {
       line-height: 20px;
-      margin: 5px 0;
       padding: 5px 0;
-      border-bottom: solid 1px #c1c1c1;
+        
+        &.menu-3>b
+        {
+          font-weight: bold;
+        }
+        
         
         a {
-          color: #777;
-          font-weight: bold;
+          color: @learnblue;
             &:hover {
-              text-decoration: none;
-              color: @learnblue;
+              text-decoration: underline;
             }
         }
       
@@ -148,6 +153,11 @@ ul#breadcrumbs {
    
   }
   
+  b {
+    font-weight: normal;
+    color: @learnblue;
+  }
+  
 }
 
 /*Content*/
@@ -156,6 +166,7 @@ ul#breadcrumbs {
   font-family: 'Asap', 'HelveticaNeue', 'Arial', sans-serif;
   margin: 0 0 20px 0;
   color: #444;
+  border-bottom: solid 1px #ccc;
 }
 
 /*Footer*/
