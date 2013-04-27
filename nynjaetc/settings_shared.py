@@ -125,6 +125,7 @@ INSTALLED_APPS = [
     'quizblock',
     'impersonate',
     'registration',
+    'nynjaetc.treatment_activity'
 ]
 
 PAGEBLOCKS = [
@@ -134,6 +135,7 @@ PAGEBLOCKS = [
     'pageblocks.ImageBlock',
     'pageblocks.ImagePullQuoteBlock',
     'quizblock.Quiz',
+    'treatment_activity.TreatmentActivityBlock'
 ]
 
 

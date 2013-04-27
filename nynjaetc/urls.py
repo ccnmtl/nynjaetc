@@ -28,6 +28,7 @@ urlpatterns = patterns(
     url(r'^_impersonate/', include('impersonate.urls')),
     (r'^_pagetree/', include('pagetree.urls')),
     (r'^_quiz/', include('quizblock.urls')),
+    (r'^_rgt/', include('nynjaetc.treatment_activity.urls')),
     (r'^admin/', include(admin.site.urls)),
     (r'^accounts/', include('registration.backends.default.urls')),
     (r'^munin/', include('munin.urls')),
@@ -41,9 +42,8 @@ urlpatterns = patterns(
     (r'^edit/(?P<path>.*)$', 'nynjaetc.main.views.edit_page',
      {}, 'edit-page'),
 
-    
     (r'^latest/(?P<path>.*)$', 'nynjaetc.main.views.latest_page',
      {}, 'latest-page'),
-     
+
     (r'^(?P<path>.*)$', 'nynjaetc.main.views.page'),
 ) + staticmedia.serve()
