@@ -25,11 +25,10 @@ function hide_all_unchecked_rhetorical_answer_feedback() {
     jQuery('input:radio').each (hide_unchecked_rhetorical_answer_feedback);
 }
 
-
 function the_init() {
-    already_visited = true;
     jQuery('input:radio').change (hide_all_unchecked_rhetorical_answer_feedback);
-    if (already_visited) {
+    
+    if (jQuery ('.already_answered.true').length > 0) {
         // the user has already visited the page
         // and wants to review the correct answer he/she already chose:
         jQuery(jQuery ('.is_correct')[0]).prop('checked',true);
@@ -38,7 +37,6 @@ function the_init() {
         jQuery('li.next').hide();
     }
 }
-
 
 jQuery (the_init);
 /*

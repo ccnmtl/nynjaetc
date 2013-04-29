@@ -116,4 +116,15 @@
     {% endif %}
 {% endif %}
 </ul>
+
+        <p>Section is <strong>{{section}}</strong></p>
+        <p>Path is  <strong>{{path}}</strong></p>
+        <p>Module is <strong>{{module}}</strong></p>
+        <p>Top level is:  <strong>{{path.0}}</strong></p>
+        <p>Middle level is:  <strong>{{path.1}}</strong></p>
+        <p>Bottom level is:  <strong>{{path.2}}</strong></p>
+        <p>Depth is  <strong>{{depth}}</strong></p>
+        <p>in_quiz_sequence is  <strong>{{in_quiz_sequence}}</strong></p>
+        <p>already_visited is  <strong>{{already_visited}}</strong></p>
+        <p>already_answered is  <strong>{{already_answered}}</strong></p>
 {% endblock %}

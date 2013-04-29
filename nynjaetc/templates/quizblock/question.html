@@ -47,5 +47,17 @@
         {% include 'quizblock/show_answer.html' %}
       {% endif %}
   {% endif %}
+
   </div>
 </div>
+<div>
+  {% if already_answered %}
+    <div class = "already_answered true">
+    ALREADY ANSWERED
+    </div>
+  {%else %}
+    <div class = "already_answered false">
+    NOT YET ANSWERED
+    </div>
+  {% endif %}
+  </div>

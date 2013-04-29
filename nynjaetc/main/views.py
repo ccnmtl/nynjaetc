@@ -15,8 +15,6 @@ def set_timestamp_for_section (section, user):
     assert section_timestamp != None
     section_timestamp.set_to_now()
 
-
-
 def module_info (section):
     """ In the top nav (and nowhere else),
     some modules need to have a special URL
@@ -42,10 +40,30 @@ def page(request, path):
     section = get_section_from_path(path)
     root = section.hierarchy.get_root()
     module = get_module(section)
-    set_timestamp_for_section (section, request.user)
     tmp = SectionPreference.objects.filter(section=section)
     section_preferences = dict((sp.preference.slug, True) for sp in tmp)
-
+    
+    
+    #figure out which questions the user has already answered:    
+    quiz_sequences = Preference.objects.get(slug='quiz_sequence').sections()
+    
+    in_quiz_sequence = False
+    for q in quiz_sequences:
+        if section in self_and_descendants(q):
+            in_quiz_sequence = True
+    
+    
+    already_visited = whether_already_visited (section, request.user)
+    
+    
+    already_answered = False
+    for q in quiz_sequences:
+        if section in already_visited_pages_except_most_forward_one(q, request.user):
+            already_answered = True
+            
+    # for future reference, log the fact that we have displayed this page.
+    set_timestamp_for_section (section, request.user)
+    
     
     
     if section.id == root.id:
@@ -83,8 +101,23 @@ def page(request, path):
             modules=root.get_children(),
             root=section.hierarchy.get_root(),
             section_preferences = section_preferences,
-            module_info = module_info(section)
+            module_info = module_info(section),            
+            already_answered = already_answered,
+            in_quiz_sequence = in_quiz_sequence,
+            already_visited = already_visited
+            
         )
+
+def whether_already_visited (section, user):
+
+
+    #print 'goat'
+    #import pdb
+    #pdb.set_trace()
+    
+    
+    return SectionTimestamp.objects.filter(user=user, section = section).exists()
+
 
 @staff_member_required
 @render_to('main/edit_page.html')
@@ -98,7 +131,8 @@ def edit_page(request, path):
                 root=section.hierarchy.get_root())
 
 def latest_page(request, path):
-    """Returns the most recently viewed section in {the page itself or its descendants}."""
+    """Returns the most recently viewed section BY TIMESTAMP in {the page itself or its descendants}."""
+    """Used only for nav purposes."""
     section = get_section_from_path(path)
     pool = self_and_descendants(section)
     if  request.user.is_anonymous():
@@ -109,9 +143,36 @@ def latest_page(request, path):
         return page (request, section.get_path())
     most_recently_visited = sorted(already_visited, key=lambda x: x.timestamp)[-1]
     latest_section_visited =  most_recently_visited.section
+    
+    
+    
     return page (request, latest_section_visited.get_path())
 
+
+
+def already_visited_pages_except_most_forward_one (section, user):
+    """Removes the most-forward page from already_visited_pages.
+    If we didn't remove this last page, it would be possible to find out the answer of the last page just by reloading it."""
+    result = already_visited_pages (section, user)
+    if len(result) == 0:
+        return result
+        
+    #print ("Visited descendents, EXCEPT FOR ONE, of  ", section)
+    #print (result [0:-1])
+    return result [0:-1]
+    
+
+def already_visited_pages (section, user):
+    """The already_visited_pages in a section or its descendants, in DFS order."""
+    if  user.is_anonymous():
+        return section
+        
+    user_timestamp_sections = [st.section for st in SectionTimestamp.objects.filter(user=user)]
+    return [t for t in self_and_descendants(section) if t in user_timestamp_sections]
+        
+
 def self_and_descendants(section):
+    """Self and descendants, in depth-first order."""
     result = []
     traverse_tree(section, result)
     return result

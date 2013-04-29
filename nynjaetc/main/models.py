@@ -31,6 +31,12 @@ class Preference(models.Model):
     """
     slug = models.SlugField(unique=True, null=False, blank=False)
     
+    def sections(self):
+        #Preference.objects.get(slug='quiz_sequence').sectionpreference_set.all()
+        #[<Section: Telaprevir Path>, <Section: Boceprevir Path>]
+        
+        return [s.section for s in self.sectionpreference_set.all()]
+
 
 class SectionPreference(models.Model):
     def __unicode__(self):
