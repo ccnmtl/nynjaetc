@@ -45,10 +45,8 @@ urlpatterns = patterns(
     (r'^latest/(?P<path>.*)$', 'nynjaetc.main.views.latest_page',
      {}, 'latest-page'),
      
-     
     (r'^record_section_as_answered_correctly/$', 'nynjaetc.main.views.record_section_as_answered_correctly',
      {}, 'record_section_as_answered_correctly'),
-     
      
     (r'^(?P<path>.*)$', 'nynjaetc.main.views.page'),
 ) + staticmedia.serve()

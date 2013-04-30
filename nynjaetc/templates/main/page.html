@@ -99,32 +99,32 @@
 {% endblock %}
 
 {% block content-nav %}
-<ul class="pager">
-{% if not section_preferences.hide_previous_button %}
-    {% if section.get_previous %}
-      <li class="previous">
-		    <a href="{{section.get_previous.get_absolute_url}}">&larr; {{section.get_previous.label}}</a>
-      </li>
+    <ul class="pager">
+    {% if not section_preferences.hide_previous_button %}
+        {% if section.get_previous %}
+          <li class="previous">
+		        <a href="{{section.get_previous.get_absolute_url}}">&larr; {{section.get_previous.label}}</a>
+          </li>
+        {% endif %}
     {% endif %}
-{% endif %}
 
-{% if not section_preferences.hide_next_button %}
-    {% if section.get_next %}
-    {% with section.get_next as next_section %}
-    <li class="next"><a href="{{section.get_next.get_absolute_url}}">{{section.get_next.label}} &rarr;</a></li>
-    {% endwith %}
+    {% if not section_preferences.hide_next_button %}
+        {% if section.get_next %}
+        {% with section.get_next as next_section %}
+        <li class="next"><a href="{{section.get_next.get_absolute_url}}">{{section.get_next.label}} &rarr;</a></li>
+        {% endwith %}
+        {% endif %}
     {% endif %}
-{% endif %}
-</ul>
+    </ul>
 
-        <p>Section is <strong>{{section}}</strong></p>
-        <p>Path is  <strong>{{path}}</strong></p>
-        <p>Module is <strong>{{module}}</strong></p>
-        <p>Top level is:  <strong>{{path.0}}</strong></p>
-        <p>Middle level is:  <strong>{{path.1}}</strong></p>
-        <p>Bottom level is:  <strong>{{path.2}}</strong></p>
-        <p>Depth is  <strong>{{depth}}</strong></p>
-        <p>in_quiz_sequence is  <strong>{{in_quiz_sequence}}</strong></p>
-        <p>already_visited is  <strong>{{already_visited}}</strong></p>
-        <p>already_answered is  <strong>{{already_answered}}</strong></p>
+    <p class ="debug_info">Section is <strong>{{section}}</strong></p>
+    <p class ="debug_info">Path is  <strong>{{path}}</strong></p>
+    <p class ="debug_info">Module is <strong>{{module}}</strong></p>
+    <p class ="debug_info">Top level is:  <strong>{{path.0}}</strong></p>
+    <p class ="debug_info">Middle level is:  <strong>{{path.1}}</strong></p>
+    <p class ="debug_info">Bottom level is:  <strong>{{path.2}}</strong></p>
+    <p class ="debug_info">Depth is  <strong>{{depth}}</strong></p>
+    <p class ="debug_info">in_quiz_sequence is  <strong>{{in_quiz_sequence}}</strong></p>
+    <p class ="debug_info">already_visited is  <strong>{{already_visited}}</strong></p>
+    <p class ="debug_info">already_answered is  <strong>{{already_answered}}</strong></p>
 {% endblock %}

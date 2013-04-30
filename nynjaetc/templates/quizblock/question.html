@@ -52,15 +52,15 @@
 </div>
 <div>
   {% if already_answered %}
-    <div class = "already_answered true">
+    <div class = "already_answered true debug_info">
     ALREADY ANSWERED
     </div>
   {%else %}
-    <div class = "already_answered false">
+    <div class = "already_answered false debug_info">
     NOT YET ANSWERED
     </div>
   {% endif %}
   
-    <div class = "section_id">{{section.id}}</div>
+    <div class = "section_id  debug_info">{{section.id}}</div>
   
   </div>
