@@ -45,7 +45,6 @@ class DefaultBackendViewTests(TestCase):
             settings.ACCOUNT_ACTIVATION_DAYS = self.old_activation # pragma: no cover
 
     if 1 == 0:
-
         def test_allow(self):
             """
             The setting ``REGISTRATION_OPEN`` appropriately controls
@@ -74,7 +73,6 @@ class DefaultBackendViewTests(TestCase):
 
             settings.REGISTRATION_OPEN = old_allowed
 
-    if 1  == 0:
         def test_registration_get(self):
             """
             HTTP ``GET`` to the registration view uses the appropriate
@@ -88,7 +86,6 @@ class DefaultBackendViewTests(TestCase):
             self.failUnless(isinstance(resp.context['form'],
                             RegistrationForm))
                             
-    if 1 == 0:
         def test_registration(self):
             """
             Registration creates a new inactive account and a new profile
@@ -145,7 +142,6 @@ class DefaultBackendViewTests(TestCase):
 
             Site._meta.installed = True
             
-    if 1 == 0:
         def test_registration_failure(self):
             """
             Registering with invalid data fails.
@@ -159,26 +155,25 @@ class DefaultBackendViewTests(TestCase):
             self.assertEqual(200, resp.status_code)
             self.failIf(resp.context['form'].is_valid())
             self.assertEqual(0, len(mail.outbox))
+            
+        def test_activation(self):
+            """
+            Activation of an account functions properly.
+            
+            """
+            resp = self.client.post(reverse('registration_register'),
+                                    data={'username': 'bob',
+                                          'email': 'bob@example.com',
+                                          'password1': 'secret',
+                                          'password2': 'secret'})
 
-    def test_activation(self):
-        """
-        Activation of an account functions properly.
-        
-        """
-        resp = self.client.post(reverse('registration_register'),
-                                data={'username': 'bob',
-                                      'email': 'bob@example.com',
-                                      'password1': 'secret',
-                                      'password2': 'secret'})
+            profile = RegistrationProfile.objects.get(user__username='bob')
 
-        profile = RegistrationProfile.objects.get(user__username='bob')
+            resp = self.client.get(reverse('registration_activate',
+                                           args=(),
+                                           kwargs={'activation_key': profile.activation_key}))
+            self.assertRedirects(resp, reverse('registration_activation_complete'))
 
-        resp = self.client.get(reverse('registration_activate',
-                                       args=(),
-                                       kwargs={'activation_key': profile.activation_key}))
-        self.assertRedirects(resp, reverse('registration_activation_complete'))
-
-    if 1 == 0:
         def test_activation_expired(self):
             """
             An expired account can't be activated.

@@ -19,8 +19,11 @@ def page(request, path):
     tmp = SectionPreference.objects.filter(section=section)
     section_preferences = dict((sp.preference.slug, True) for sp in tmp)
     
-    #figure out which questions the user has already answered:    
-    quiz_sequences = Preference.objects.get(slug='quiz_sequence').sections()
+    #figure out which questions the user has already answered:
+    try:
+        quiz_sequences = Preference.objects.get(slug='quiz_sequence').sections()
+    except Preference.DoesNotExist:
+        quiz_sequences = []
     in_quiz_sequence = is_in_one_of (section, quiz_sequences)
     already_visited = whether_already_visited (section, request.user)
     
@@ -107,8 +110,7 @@ def record_section_as_answered_correctly(request):
     if request.method == "POST" and request.is_ajax and request.POST.has_key ('section_id'):
         section_id = int (request.POST['section_id'])
         section = Section.objects.get(pk=section_id)
-        receipt = SectionQuizAnsweredCorrectly(section = section, user = request.user)
-        receipt.save()
+        receipt = SectionQuizAnsweredCorrectly.objects.create(section = section, user = request.user)
         return HttpResponse('ok')
     return HttpResponse('')
     
