@@ -12,7 +12,7 @@ function hide_unchecked_rhetorical_answer_feedback (id, elem) {
 }
 
 function correct_answer_chosen() {
-    jQuery('li.next').show();
+    record_success();
     // prevent them from choosing any more wrong answers:
     jQuery('input:radio').each (disable_radio_buttons);
 }
@@ -38,7 +38,24 @@ function the_init() {
     }
 }
 
+function allow_to_proceed() {
+    jQuery('li.next').show();
+}
+
+
+
+function record_success (){
+    jQuery.ajax({
+        data: {'section_id':jQuery('.section_id').html()},
+        type: 'POST',
+        url: '/record_section_as_answered_correctly/',
+        success: allow_to_proceed
+    });
+    return false;
+}
+
 jQuery (the_init);
+
 /*
 Rules:
 

@@ -21,6 +21,16 @@ class SectionTimestamp(models.Model):
         self.timestamp = the_now
         self.save()
 
+
+class SectionQuizAnsweredCorrectly(models.Model):
+    """Marks, for nav purposes, when a section has been correctly answered."""
+    def __unicode__(self):
+        return self.section.get_path()    
+    section = models.ForeignKey(Section, null=False, blank=False)
+    user = models.ForeignKey(User,blank=False,null=False)
+    unique_together = ("user", "section")
+
+
 class Preference(models.Model):
     def __unicode__(self):
         return self.slug
