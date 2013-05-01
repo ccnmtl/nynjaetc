@@ -185,52 +185,92 @@ ul#breadcrumbs {
   }
   
   .tabscontent {
-    margin: 91px 0 0 10px;    
-    width: 378px;
-    height: 405px;
+  margin: 78px 0 0 16px;
+  width: 378px;
+  height: 405px;
         
+    .tabpage ul {
+      width: 300px;
+    }
+      
+       
     h2 {
       margin: 0;
       font-size: 14px;
     }
-  }
-  
-  
-  #tabpage_1 {
-  background: top no-repeat url('/site_media/img/tab1.png');
-  background-size: 100% 100%;
-  width: 345px;
-  height: 394px;
-  float: left;
-  font-size: 13px;
-  padding: 10px 0 0 33px;
-  box-shadow: 1px #ccc;
-   }
-     
-   #tabpage_2 {
-  background: top no-repeat url('/site_media/img/tab2.png');
-  background-size: 100% 100%;
-  width: 345px;
-  height: 394px;
-  float: left;
-  font-size: 13px;
-  padding: 10px 0 0 33px;
-  box-shadow: 1px #ccc;
-   }
-   
+       
     ul li {
          list-style-type: none;
          margin: 0 0 0 -25px;
-       }
-       
-  .tabs {
-     
-     ul li {
-       display: inline;
-       margin: 0 40px 0 -25px;
-     }
+       } 
   }
   
+  
+    #tabpage_1 {
+background: top no-repeat url('/site_media/img/tab1.png');
+background-size: 100% 100%;
+width: 401px;
+height: 425px;
+float: left;
+font-size: 13px;
+padding: 10px 0 0 24px;
+   }
+     
+    #tabpage_2 {
+background: top no-repeat url('/site_media/img/tab2.png');
+background-size: 100% 100%;
+width: 401px;
+height: 425px;
+float: left;
+font-size: 13px;
+padding: 10px 0 0 24px;
+   }
+
+  .tabs {
+     
+    ul li {
+     list-style-type: none;
+     cursor: pointer;
+    }
+   
+    &.rotate {
+      position: relative;
+      top: 142px;
+      left: 201px;
+    }
+    
+    #tabHeader_1 {
+      display: inline;
+      position: relative;
+      left: 122px;
+    }
+    
+    #tabHeader_2 {
+      display: inline;
+      right: 83px;
+      position: relative;
+    }
+
+    
+  }
+  
+.rotate {
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+
+  /* also accepts left, right, top, bottom coordinates; not required, but a good idea for styling */
+  -webkit-transform-origin: 50% 50%;
+  -moz-transform-origin: 50% 50%;
+  -ms-transform-origin: 50% 50%;
+  -o-transform-origin: 50% 50%;
+  transform-origin: 50% 50%;
+
+  /* Should be unset in IE9+ I think. */
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}  
 
 }
   
