@@ -12,7 +12,9 @@ from django.contrib import admin
 
 
 #"""Let's turn off the ability to change email from the admin tool.
-#(We can build a new version of this form later if it's needed.
+# (We can build a new version of this form later if it's needed.
+# note -- if you need a new email address, just re-register.
+
 admin.site.unregister(User)
 old_personal_fields = UserAdmin.fieldsets[1][1]['fields']
 new_personal_fields = tuple(x for x in old_personal_fields if x != 'email')
@@ -168,44 +170,15 @@ def my_email_user(self, subject, message, from_email=None):
     """
     Sends an email to this User. If an encrypted address is available, use that one.
     """
-    #print "my_email_user"
     decrypted_email = retrieve_encrypted_email (self)
     if decrypted_email != None:
         self.email = decrypted_email
-        #print "found a decrypted email; sending to %s" % self.email
-        #print "sent to %s" %  self.email
         self.original_email_user(subject, message, from_email)
         self.email = '*****' # note -- this isn't stored.
+    #removing the else clause.
+    #else:
+    #    self.original_email_user(subject, message, from_email)
 
-    else:
-        
-        #print "found a regular email; sending to %s" % self.email
-        self.original_email_user(subject, message, from_email)
-    
-    
-def store_encrypted_email (user):
-    """
-    Saves the email to an EncryptedUserDataField object, which encrypts it.
-    Then replaces it with an arbitrary value."""
-    
-    print "storing encrypted"
-    assert user != None
-    assert user.email != None
-    
-    email_field = EncryptedUserDataField.objects.get(slug='email')
-    assert email_field != None
-    
-    encrypted_email = EncryptedUserData(which_field = email_field, user = user)
-    encrypted_email.store_value (user.email)
-    encrypted_email.save()
-    
-    #decrypt just to double-check:
-    assert encrypted_email.retrieve_value() == user.email
-    #save dummy value in regular user field:
-    user.email = '*****'
-    user.save()
-    
-    
 def store_encrypted_email (user):
     """
     Saves the email to an EncryptedUserDataField object, which encrypts it.
@@ -232,28 +205,22 @@ def store_encrypted_email (user):
     user.email = '*****'
     user.save()
     
-    
-    
-
 
 def steal_email(sender, instance, **kwargs):
     if kwargs['created']:
         store_encrypted_email(instance)
 
-#TODO: make a new form that saves a new encrypted email for a user.
         
-        
-
 def steal_email_new(sender, instance, **kwargs):
     store_encrypted_email_new(instance)
 
 User.email_user = my_email_user
 signals.post_save.connect(steal_email, sender=User)
-
-
-#note -- attempting to use pre-save doesn't work because we want a new 
-#EncryptedUserDataField
-#to refer to an already existing User.
-#null value in column "user_id" violates not-null constraint
+#Note: attempting to use pre-save doesn't work because we want a new 
+#EncryptedUserDataField to refer to an already existing User.
+# (null value in column "user_id" violates not-null constraint)
 
         
+        
+#TODO: make a new form that saves a new encrypted email for a user. ? not sure.
+
