@@ -9,6 +9,13 @@ from django.db import models
 from django.db import transaction
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
+from django.core.mail import send_mail
+#TODO remove this
+from nynjaetc.main.models import EncryptedUserData, EncryptedUserDataField
+
+#from nynjaetc.main.monkey_patch_auth_user import monkey_patch_user
+
+print "registration"
 
 try:
     from django.utils.timezone import now as datetime_now
@@ -28,6 +35,7 @@ class RegistrationManager(models.Manager):
     keys), and for cleaning out expired inactive accounts.
     
     """
+    
     def activate_user(self, activation_key):
         """
         Validate an activation key and activate the corresponding
@@ -47,6 +55,7 @@ class RegistrationManager(models.Manager):
         after successful activation.
 
         """
+        
         # Make sure the key we're trying conforms to the pattern of a
         # SHA1 hash; if it doesn't, no point trying to look it up in
         # the database.
@@ -64,6 +73,20 @@ class RegistrationManager(models.Manager):
                 return user
         return False
     
+    def store_encrypted_email (self, user, email_to_store):
+        assert email_to_store != ''
+        assert email_to_store != None
+        assert user != None
+        encrypted_email = EncryptedUserData()
+        email_field = EncryptedUserDataField.objects.get(slug='email')
+        assert email_field != None
+        encrypted_email.which_field = email_field
+        encrypted_email.user = user
+        encrypted_email.store_value (email_to_store)
+        encrypted_email.save()
+        assert encrypted_email.retrieve_value() == email_to_store
+
+    
     def create_inactive_user(self, username, email, password,
                              site, send_email=True):
         """
@@ -75,12 +98,21 @@ class RegistrationManager(models.Manager):
         user. To disable this, pass ``send_email=False``.
         
         """
+        
+        #email_to_store = None
+        #if settings.ENCRYPT_EMAIL_ADDRESSES:
+        #    email_to_store = email
+        #    email = "*****"
+        
         new_user = User.objects.create_user(username, email, password)
         new_user.is_active = False
         new_user.save()
-
+        
         registration_profile = self.create_profile(new_user)
-
+        
+        #if settings.ENCRYPT_EMAIL_ADDRESSES:
+        #    self.store_encrypted_email (new_user, email_to_store)
+                
         if send_email:
             registration_profile.send_activation_email(site)
 
@@ -177,6 +209,8 @@ class RegistrationProfile(models.Model):
     activation_key = models.CharField(_('activation key'), max_length=40)
     
     objects = RegistrationManager()
+
+    
     
     class Meta:
         verbose_name = _('registration profile')
@@ -184,6 +218,7 @@ class RegistrationProfile(models.Model):
     
     def __unicode__(self):
         return u"Registration information for %s" % self.user
+    
     
     def activation_key_expired(self):
         """
@@ -211,6 +246,21 @@ class RegistrationProfile(models.Model):
         return self.activation_key == self.ACTIVATED or \
                (self.user.date_joined + expiration_date <= datetime_now())
     activation_key_expired.boolean = True
+
+
+    def send_email_to_encrypted_address(self, user, subject, message, from_email=None):
+        """Gets this user's encrypted address and sends them an email."""
+        #TODO fail a bit more gracefully if DB isn't configured correctly.
+        assert user != None
+        email_field = EncryptedUserDataField.objects.get(slug='email')
+        assert email_field != None
+        email_data = EncryptedUserData.objects.get(user = user, which_field=email_field)
+        assert email_data != None
+        decrypted_email = email_data.retrieve_value()
+        assert decrypted_email != None
+        assert decrypted_email != ''
+        email_result = send_mail(subject, message, from_email, [decrypted_email])
+        assert email_result == 1
 
     def send_activation_email(self, site):
         """
@@ -260,6 +310,9 @@ class RegistrationProfile(models.Model):
         
         message = render_to_string('registration/activation_email.txt',
                                    ctx_dict)
-        
+        #if settings.ENCRYPT_EMAIL_ADDRESSES:
+        #    self.send_email_to_encrypted_address(self.user, subject, message, settings.DEFAULT_FROM_EMAIL)
+        #else:
+        #    self.user.email_user(subject, message, settings.DEFAULT_FROM_EMAIL)
         self.user.email_user(subject, message, settings.DEFAULT_FROM_EMAIL)
-    
+             
