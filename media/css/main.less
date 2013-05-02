@@ -35,6 +35,10 @@ body, html {
 }
 
 /*Base Typography*/
+body {
+  font-familiy: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  font-weight: 200;
+}
 
 #content {
   float: left;
@@ -52,7 +56,7 @@ body, html {
     font-size: 20px;
     color: #555;
     font-weight: 200;
-    font-family: 'Asap', 'Arial';
+    font-family: 'Asap', 'Helvetica Neue', 'Arial', sans-serif;
     margin: 27px 0 0 0;
 
     @media (max-width: 979px) and (min-width: 768px) {
@@ -179,24 +183,35 @@ ul#breadcrumbs {
 /*Content*/
 
 .pagetitle {
-  font-family: 'Asap', 'HelveticaNeue', 'Arial', sans-serif;
+  font-family: 'Asap', 'Helvetica Neue', 'Arial', sans-serif;
   margin: 0 0 20px 0;
   color: #444;
-  border-bottom: solid 1px #ccc;
 }
 
 
 /*RGT Patient Case*/
 .module-patient-case-rgt
 {
-  
+    
   .pageblock.intro {
-    float: right;
-    width: 60%;
+    float: left;
+    width: 400px;
+    margin: 0 20px 0 0;
+    
+    @media (max-width: 979px){
+      clear: both;
+    }
   }
   
   .pageblock.history {
     float: left;
+    width: 400px;
+    margin: -55px 0 0 0;
+    
+    @media (max-width: 979px) {
+      clear: both;
+      margin: 10px 0 0 0;
+    }
   }
   
   .row-fluid .span9 {
@@ -214,16 +229,16 @@ ul#breadcrumbs {
   margin: 78px 0 0 16px;
   width: 378px;
   height: 405px;
-  font-family: "Asap", "Arial", sans-serif;
+  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
         
     .tabpage { 
       ul, p {
-        width: 300px;
+        width: 295px;
       }
     }
 
     h2 {
-      margin: 0;
+      margin: 10px 0;
       font-size: 18px;
       text-transform: uppercase;
       line-height: 32px;
@@ -237,7 +252,7 @@ ul#breadcrumbs {
        
     ul li {
       list-style-type: none;
-      margin: 9px 0 0 -25px;
+      margin: 7px 0 0 -25px;      
       border-bottom: solid 1px #ccc;
          
          &:last-child {
@@ -254,21 +269,21 @@ ul#breadcrumbs {
   #tabpage_1 {
     background: top no-repeat url('/site_media/img/tab1.png');
     background-size: 100% 100%;
-    width: 393px;
+    width: 387px;
     height: 426px;
     float: left;
     font-size: 13px;
-    padding: 10px 0 0 24px;
+    padding: 10px 0 0 30px;
   }
      
   #tabpage_2 {
     background: top no-repeat url('/site_media/img/tab2.png');
     background-size: 100% 100%;
-    width: 393px;
+    width: 387px;
     height: 426px;
     float: left;
     font-size: 13px;
-    padding: 10px 0 0 24px;
+    padding: 10px 0 0 30px;
   }
 
   .tabs {
