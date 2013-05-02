@@ -30,11 +30,16 @@ body, html {
 
 .pager {
   clear: both;
+  float: left;
+  width: 100%;
 }
 
 /*Base Typography*/
 
 #content {
+  float: left;
+  clear:both;
+  
   a   {
    color: @learnblue;
   }
@@ -210,20 +215,34 @@ ul#breadcrumbs {
   width: 378px;
   height: 405px;
   font-family: "Asap", "Arial", sans-serif;
-
         
-    .tabpage ul {
-      width: 300px;
+    .tabpage { 
+      ul, p {
+        width: 300px;
+      }
     }
-             
+
     h2 {
       margin: 0;
-      font-size: 14px;
+      font-size: 18px;
+      text-transform: uppercase;
+      line-height: 32px;
+    }
+    
+    h3 {
+      font-size: 16px;
+      line-height: 26px;
+      margin: 0;
     }
        
     ul li {
-         list-style-type: none;
-         margin: 0 0 0 -25px;
+      list-style-type: none;
+      margin: 9px 0 0 -25px;
+      border-bottom: solid 1px #ccc;
+         
+         &:last-child {
+           border-bottom: none;
+         }   
        }
     
     img.headshot {
@@ -232,26 +251,25 @@ ul#breadcrumbs {
     } 
   }
   
-  
-    #tabpage_1 {
-      background: top no-repeat url('/site_media/img/tab1.png');
-      background-size: 100% 100%;
-      width: 393px;
-      height: 426px;
-      float: left;
-      font-size: 13px;
-      padding: 10px 0 0 24px;
-   }
+  #tabpage_1 {
+    background: top no-repeat url('/site_media/img/tab1.png');
+    background-size: 100% 100%;
+    width: 393px;
+    height: 426px;
+    float: left;
+    font-size: 13px;
+    padding: 10px 0 0 24px;
+  }
      
-    #tabpage_2 {
-      background: top no-repeat url('/site_media/img/tab2.png');
-      background-size: 100% 100%;
-      width: 393px;
-      height: 426px;
-      float: left;
-      font-size: 13px;
-      padding: 10px 0 0 24px;
-   }
+  #tabpage_2 {
+    background: top no-repeat url('/site_media/img/tab2.png');
+    background-size: 100% 100%;
+    width: 393px;
+    height: 426px;
+    float: left;
+    font-size: 13px;
+    padding: 10px 0 0 24px;
+  }
 
   .tabs {
      
@@ -265,7 +283,6 @@ ul#breadcrumbs {
      &:hover {
        color:@learnlightblue;
      }
-     
     }
    
     &.rotate {
@@ -286,29 +303,26 @@ ul#breadcrumbs {
       right: 112px;
       position: relative;
       padding: 10px;
-    }
-
-    
+    } 
   }
   
-.rotate {
-  -webkit-transform: rotate(-90deg);
-  -moz-transform: rotate(-90deg);
-  -ms-transform: rotate(-90deg);
-  -o-transform: rotate(-90deg);
-  transform: rotate(-90deg);
+  .rotate {
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    transform: rotate(-90deg);
 
-  /* also accepts left, right, top, bottom coordinates; not required, but a good idea for styling */
-  -webkit-transform-origin: 50% 50%;
-  -moz-transform-origin: 50% 50%;
-  -ms-transform-origin: 50% 50%;
-  -o-transform-origin: 50% 50%;
-  transform-origin: 50% 50%;
+    /* also accepts left, right, top, bottom coordinates; not required, but a good idea for styling */
+    -webkit-transform-origin: 50% 50%;
+    -moz-transform-origin: 50% 50%;
+    -ms-transform-origin: 50% 50%;
+    -o-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
 
-  /* Should be unset in IE9+ I think. */
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
-}  
-
+    /* Should be unset in IE9+ I think. */
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+  }  
 }
   
 
