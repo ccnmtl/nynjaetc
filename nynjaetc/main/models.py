@@ -149,8 +149,10 @@ class EncryptedUserData(models.Model):
 ####################################
 
 
-
-User.original_email_user = User.email_user
+#Note: attempting to use pre-save doesn't work because we want a new 
+#EncryptedUserDataField to refer to an already existing User.
+# (null value in column "user_id" violates not-null constraint)
+# Consider making a new form that saves a new encrypted email for a user.
 
 def retrieve_encrypted_email (user):
     assert user != None
@@ -168,16 +170,13 @@ def retrieve_encrypted_email (user):
 
 def my_email_user(self, subject, message, from_email=None):
     """
-    Sends an email to this User. If an encrypted address is available, use that one.
+    Sends an email to this user's encrypted email, if there is one.
     """
     decrypted_email = retrieve_encrypted_email (self)
     if decrypted_email != None:
         self.email = decrypted_email
         self.original_email_user(subject, message, from_email)
         self.email = '*****' # note -- this isn't stored.
-    #removing the else clause.
-    #else:
-    #    self.original_email_user(subject, message, from_email)
 
 def store_encrypted_email (user):
     """
@@ -186,21 +185,19 @@ def store_encrypted_email (user):
     Note -- since this triggers a second save, don't call it from signals.post_save.connect
     on an updated object.
     We should probably add a new form somewhere to allow users to change their email.
-    """
+    """    
     
-    #print "storing encrypted"
-    assert user != None
-    assert user.email != None
+    if user == None or user.email == None:
+        raise ValueError ('User or email is None.')
     
     email_field = EncryptedUserDataField.objects.get(slug='email')
-    assert email_field != None
+    if email_field == None:
+        raise ValueError ('We need an EncryptedUserDataField defined in the database.')
     
     encrypted_email = EncryptedUserData(which_field = email_field, user = user)
     encrypted_email.store_value (user.email)
     encrypted_email.save()
     
-    #decrypt just to double-check:
-    assert encrypted_email.retrieve_value() == user.email
     #save dummy value in regular user field:
     user.email = '*****'
     user.save()
@@ -209,18 +206,44 @@ def store_encrypted_email (user):
 def steal_email(sender, instance, **kwargs):
     if kwargs['created']:
         store_encrypted_email(instance)
-
         
-def steal_email_new(sender, instance, **kwargs):
-    store_encrypted_email_new(instance)
+####################################
+####################################
+####################################
+####################################
+####################################
+####################################
+####################################
+####################################
+####################################
+####################################
+####################################
+####################################
+####################################
+####################################
+####################################
+####################################
+        
 
+#MONKEY-PATCHERY
+    
+User.original_email_user = User.email_user
 User.email_user = my_email_user
 signals.post_save.connect(steal_email, sender=User)
-#Note: attempting to use pre-save doesn't work because we want a new 
-#EncryptedUserDataField to refer to an already existing User.
-# (null value in column "user_id" violates not-null constraint)
 
-        
-        
-#TODO: make a new form that saves a new encrypted email for a user. ? not sure.
-
+####################################
+####################################
+####################################
+####################################
+####################################
+####################################
+####################################
+####################################
+####################################
+####################################
+####################################
+####################################
+####################################
+####################################
+####################################
+####################################
