@@ -119,6 +119,7 @@ INSTALLED_APPS = [
     'django_jenkins',
     'smoketest',
     'django_extensions',
+    'django_fields', ## this needs to be defined before nynjaetc.main
     'nynjaetc.main',
     'pagetree',
     'pageblocks',

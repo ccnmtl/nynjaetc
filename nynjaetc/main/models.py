@@ -6,6 +6,27 @@ from django.utils.timezone import utc
 from Crypto.Cipher import AES
 import base64
 from django.conf import settings
+from django.contrib import admin
+import sys
+
+from nynjaetc.main.monkey_patch_auth_user import monkey_patch_user
+
+
+if 1 == 0:
+    #TODO come back to this.
+
+    try:
+        admin.site.unregister(User)
+        UserAdmin.fieldsets[1][1]['fields'] = ('first_name', 'last_name')
+        admin.site.register(User, UserAdmin)
+    except NotRegistered: # django.contrib.admin.sites.NotRegistered:
+        #import pdb
+        #pdb.set_trace()
+        #print sys.exc_info()[0]
+
+        import pdb
+        pdb.set_trace()
+
 
 class SectionTimestamp(models.Model):
     """Marks when this section was last visited by a particular user."""
@@ -90,10 +111,12 @@ class EncryptedUserData(models.Model):
     def pad (self, a_string):
         """ The encryption algorithm assumes the string length is a multiple of 8.
         Accordingly, this return a padded string, prefixed with its original length"""
-        block_length = 8 # the return value will be an integer multiple of this length
+        block_length = 16 # the return value will be an integer multiple of this length
         bytes = bytearray (a_string.encode('utf-8'))
         prefixed_bytes = '%s,%s' % (len (bytes), bytes)
-        padding = (len (prefixed_bytes) % block_length) * '#'
+        padding_length = 2 * block_length -  len (prefixed_bytes) % block_length
+        padding = padding_length * '#'
+        assert len (prefixed_bytes + padding) % block_length == 0
         return prefixed_bytes + padding
 
     def unpad (self, some_bytes):
@@ -113,3 +136,8 @@ class EncryptedUserData(models.Model):
         
     def retrieve_value (self):
         return self.get(self.value)
+
+
+monkey_patch_user(User, EncryptedUserDataField, EncryptedUserData)
+
+        

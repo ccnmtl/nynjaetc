@@ -10,7 +10,12 @@ from django.db import transaction
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
 from django.core.mail import send_mail
+#TODO remove this
 from nynjaetc.main.models import EncryptedUserData, EncryptedUserDataField
+
+#from nynjaetc.main.monkey_patch_auth_user import monkey_patch_user
+
+print "registration"
 
 try:
     from django.utils.timezone import now as datetime_now
@@ -94,10 +99,10 @@ class RegistrationManager(models.Manager):
         
         """
         
-        email_to_store = None
-        if settings.ENCRYPT_EMAIL_ADDRESSES:
-            email_to_store = email
-            email = "*****"
+        #email_to_store = None
+        #if settings.ENCRYPT_EMAIL_ADDRESSES:
+        #    email_to_store = email
+        #    email = "*****"
         
         new_user = User.objects.create_user(username, email, password)
         new_user.is_active = False
@@ -105,8 +110,8 @@ class RegistrationManager(models.Manager):
         
         registration_profile = self.create_profile(new_user)
         
-        if settings.ENCRYPT_EMAIL_ADDRESSES:
-            self.store_encrypted_email (new_user, email_to_store)
+        #if settings.ENCRYPT_EMAIL_ADDRESSES:
+        #    self.store_encrypted_email (new_user, email_to_store)
                 
         if send_email:
             registration_profile.send_activation_email(site)
@@ -305,8 +310,9 @@ class RegistrationProfile(models.Model):
         
         message = render_to_string('registration/activation_email.txt',
                                    ctx_dict)
-        if settings.ENCRYPT_EMAIL_ADDRESSES:
-            self.send_email_to_encrypted_address(self.user, subject, message, settings.DEFAULT_FROM_EMAIL)
-        else:
-            self.user.email_user(subject, message, settings.DEFAULT_FROM_EMAIL)
-            
+        #if settings.ENCRYPT_EMAIL_ADDRESSES:
+        #    self.send_email_to_encrypted_address(self.user, subject, message, settings.DEFAULT_FROM_EMAIL)
+        #else:
+        #    self.user.email_user(subject, message, settings.DEFAULT_FROM_EMAIL)
+        self.user.email_user(subject, message, settings.DEFAULT_FROM_EMAIL)
+             
