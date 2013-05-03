@@ -27,7 +27,7 @@
 {% endblock %}
 
 {% block navrightextra %}
-    <ul class="nav pull-right">
+    <ul class="nav">
         {% if user.is_staff %}
         <li><a href="/edit{{section.get_absolute_url}}">edit page</a></li>
         {% endif %}

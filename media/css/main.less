@@ -27,10 +27,7 @@ body, html {
   min-height: 100%;
   margin-bottom: -70px;
   position: relative;
-  background-color: #fff;
 }
-
-
 
 .pager {
   clear: both;
@@ -39,6 +36,10 @@ body, html {
   border-bottom: solid 1px #ccc;
   border-top: solid 1px #ccc;
   padding: 10px 0;
+  
+  a {
+    color: #ec1c23;
+  }
 }
 
 
@@ -144,6 +145,13 @@ ul#breadcrumbs {
 .navbar-inner {
   padding-left: 0px !important;
   padding-right: 0px !important;
+  
+   ul.mainnav li
+  {
+    &:first-child {
+      display: none;
+    }
+  }
 }
 
 /*Sidebar*/

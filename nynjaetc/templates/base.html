@@ -98,7 +98,7 @@
       </a>
         
       <div class="nav-collapse collapse">
-        <ul class="nav">   
+        <ul class="nav mainnav">   
         {% block primarynavtabs %}
         {% for section in module_info %}
           <li{% ifequal section.id module.id %} class="active"{% endifequal %}><a href="{{section.url}}">{{section.label}}</a></li>
