@@ -27,7 +27,10 @@ body, html {
   min-height: 100%;
   margin-bottom: -70px;
   position: relative;
+  background-color: #fff;
 }
+
+
 
 .pager {
   clear: both;
@@ -37,6 +40,7 @@ body, html {
   border-top: solid 1px #ccc;
   padding: 10px 0;
 }
+
 
 /*Base Typography*/
 body {
@@ -72,12 +76,15 @@ body {
 
 
 #header {
+   background: url('/site_media/img/nynjaetcbg.png') repeat;
+  
   .subbrand {
     font-size: 20px;
     color: #555;
     font-weight: 200;
     font-family: 'Asap', 'Helvetica Neue', 'Arial', sans-serif;
     margin: 27px 0 0 0;
+
 
     @media (max-width: 979px) and (min-width: 768px) {
       font-size: 14px;
@@ -94,17 +101,7 @@ body {
 
 #nav {
    .btn {
-     margin: 3px 0 0 7px;
-     
-     @media (max-width: 979px) and (min-width: 768px) {
-       margin: -8px 0 0 7px;
-     }
-     
-     @media (max-width: 767px) {
-       margin: -15px 7px 10px 0;       
-       .pull-left
-     }
-     
+     margin: 3px 0 0 7px;     
     }
 }
 
@@ -142,9 +139,6 @@ ul#breadcrumbs {
 
 }
 
-
-
-
 /*Main Menu*/
 
 .navbar-inner {
@@ -153,52 +147,6 @@ ul#breadcrumbs {
 }
 
 /*Sidebar*/
-#sidebar {
-    margin: 10px 0 0 0;
-   
-  ul {
-    margin: 0;
-    list-style-type: none;
-    
-    &>li {
-      line-height: 20px;
-      padding: 5px 0;
-        
-        &.menu-3>b
-        {
-          font-weight: bold;
-          
-        }
-        
-        a {
-          color: @learnblue;
-            &:hover {
-              text-decoration: underline;
-            }
-        }
-      
-        &.menu-4 {
-          margin-left: 7px;
-        } 
-      
-        &>ul>li:last-child{
-          border-bottom: none;
-        }
-      
-    }
-   
-   &>li:last-child {
-     border-bottom: none;
-   }
-   
-  }
-  
-  b {
-    font-weight: normal;
-    color: @learnblue;
-  }
-  
-}
 
 /*Content*/
   
