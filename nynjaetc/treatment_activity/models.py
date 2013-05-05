@@ -2,6 +2,65 @@ from django.db import models
 from django.contrib.contenttypes import generic
 from pagetree.models import PageBlock
 from django import forms
+from treebeard.mp_tree import MP_Node
+
+
+NODE_CHOICES = (
+    ('RT', 'Root'),
+    ('PR', 'Parent'),
+    ('IF', 'TreatmentStep'),
+    ('DP', 'DecisionPoint'),
+    ('ST', 'Stop')
+)
+
+STATUS_CHOICES = (
+    (0, 'Treatment Naive'),
+    (1, 'Prior Null Responder'),
+    (2, 'Prior Relapser'),
+    (3, 'Prior Partial Responder')
+)
+
+DRUG_CHOICES = (
+    ('boceprevir', 'Boceprevir'),
+    ('telaprevir', 'Telaprevir')
+)
+
+
+class TreatmentNode(MP_Node):
+    name = models.CharField(max_length=256)
+    type = models.CharField(max_length=2, choices=NODE_CHOICES)
+    text = models.TextField(null=True, blank=True)
+    help = models.TextField(null=True, blank=True)
+    duration = models.IntegerField(default=0)
+    value = models.IntegerField(default=0)
+
+    def __unicode__(self):
+        if self.type == 'DP':
+            return "Decision Point:" + self.name
+        else:
+            return self.name
+
+    def to_json(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'type': self.type,
+            'text': self.text,
+            'help':  self.help,
+            'duration': self.duration,
+            'value': self.value
+        }
+
+
+class TreatmentPath(models.Model):
+    name = models.CharField(max_length=512)
+    tree = models.ForeignKey(TreatmentNode)
+    cirrhosis = models.BooleanField()
+    treatment_status = models.IntegerField(choices=STATUS_CHOICES)
+    drug_choice = models.CharField(max_length=12, choices=DRUG_CHOICES)
+
+    def __unicode__(self):
+        return self.name
 
 
 class TreatmentActivityBlock(models.Model):
@@ -44,6 +103,9 @@ class TreatmentActivityBlock(models.Model):
             This view is unlocked if:
         '''
         return True
+
+    def treatment_paths(self):
+        return TreatmentPath.objects.all()
 
 
 class TreatmentActivityBlockForm(forms.ModelForm):
