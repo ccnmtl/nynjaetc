@@ -46,8 +46,6 @@ def page(request, path):
     tmp = SectionPreference.objects.filter(section=section)
     section_preferences = dict((sp.preference.slug, True) for sp in tmp)
 
-    
-    
     if section.id == root.id:
         # trying to visit the root page
         if section.get_next():

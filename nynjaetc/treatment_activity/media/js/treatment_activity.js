@@ -3,14 +3,15 @@
     Backbone.sync = function (method, model, success, error) {
     };
     
+    String.prototype.capitalize = function() {
+        return this.charAt(0).toUpperCase() + this.slice(1);
+    }
+    
     var TreatmentStep = Backbone.Model.extend({
         defaults: {
             'minimized': false,
             'decision': undefined,
-            'visible': true
-        },
-        url: function() {
-            
+            'initial': true
         }
     });
     
@@ -24,46 +25,19 @@
         initialize: function (options, render) {
             _.bindAll(this, "render", "unrender");
             this.model.bind("destroy", this.unrender);
-            this.template = _.template(jQuery("#treatment-step").html());
-
-            this.el.innerHTML = this.template(this.model.toJSON());
-            var eltStep = jQuery(this.el).find("div.treatment-step");
-            jQuery(eltStep).fadeIn("slow");
+            this.model.bind("change:minimized", this.render);
             
             this.render();
+            this.model.set('initial', false);
             
-            this.model.bind("change:visible", this.render);
-            this.model.bind("change:minimized", this.render);
+            var eltStep = jQuery(this.el).find("div.treatment-step");           
+            jQuery(eltStep).fadeIn("slow");
         },
         render: function () {
             var eltStep = jQuery(this.el).find("div.treatment-step");
-            if (this.model.get('visible') === false) {
-                jQuery(this.el).fadeOut("slow");
-            } else if (this.model.get('visible') === true) {
-                jQuery(this.el).fadeIn("slow");
-            }
             
-            if (this.model.get("minimized") === true &&
-                !jQuery(eltStep).hasClass("minimzed")) {
-                // @todo -- create a visual transition
-                // between the minimized & maximized state
-                //
-                /**
-                jQuery(eltStep).animate({height: '60px'}, 200, function() {
-                    jQuery(eltStep)
-                        .find("div.height-0,div.height-4, div.height-8,div.height-12,div.height-24")
-                        .removeClass("height-0 height-4 height-8 height-12 height-24");
-                    jQuery(eltStep).removeClass("height-0 height-4 height-8 height-12 height-24");
-                    jQuery(eltStep).addClass("minimized");
-                });
-                **/
-                
-                jQuery(eltStep)
-                    .find("div.height-0,div.height-4, div.height-8,div.height-12,div.height-24")
-                    .removeClass("height-0 height-4 height-8 height-12 height-24");
-                jQuery(eltStep).removeClass("height-0 height-4 height-8 height-12 height-24");
-                jQuery(eltStep).addClass("minimized");
-            }
+            this.template = _.template(jQuery("#treatment-step").html());
+            this.el.innerHTML = this.template(this.model.toJSON());
         },
         unrender: function () {
             jQuery(this.el).fadeOut('slow', function() {
@@ -132,11 +106,11 @@
         events: {
             "click div.treatment-activity-container input[type='radio']":
                 "onSelectPatientFactor",
-            "click input[type='button'].continue":
-                "onContinue",
+            "click #select-patient-factors": "onContinue",
             "click .reset-state": "onResetState",
             "click .decision-point-button": "onDecisionPoint",
-            "click .choose-again": "onChooseAgain"
+            "click .choose-again": "onChooseAgain",
+            "click i.icon-question-sign": "onHelp"
         },
         initialize: function(options) {
             _.bindAll(this,
@@ -147,7 +121,8 @@
                 "onDecisionPoint",
                 "onChooseAgain",
                 "onAddStep",
-                "onRemoveStep"
+                "onRemoveStep",
+                "onHelp"
             );
             
             jQuery('li.previous').hide();
@@ -197,26 +172,20 @@
                                             'path': json.path,
                                             'node': json.node});
                     
+                    // Minimize steps 0 - n-1
                     var week = 0;
-                    self.treatmentSteps.initial().forEach(function(step, idx) {
+                    self.treatmentSteps.forEach(function(step, idx) {
                         week += step.get('duration');
                         step.set('minimized', true);                
                     });
                     
-                    setTimeout(function() {
-                        var last = self.treatmentSteps.last();
-                        if (last) {
-                            last.set('visible', false);
-                        }
-                        setTimeout(function() {
-                            for (var i = 0; i < json.steps.length; i++) {
-                                var ts = new TreatmentStep(json.steps[i]);
-                                ts.set('week', week);
-                                self.treatmentSteps.add(ts);
-                                week += ts.get('duration');
-                            }    
-                        }, 1000);                            
-                    }, 1000);
+                    // Appear the new treatment steps
+                    for (var i = 0; i < json.steps.length; i++) {
+                        var ts = new TreatmentStep(json.steps[i]);
+                        ts.set('week', week);
+                        self.treatmentSteps.add(ts);
+                        week += ts.get('duration');
+                    }    
                 }
             });
         },
@@ -245,7 +214,7 @@
             var srcElement = evt.srcElement || evt.target || evt.originalTarget;
             jQuery(srcElement).button("loading");
 
-            while (model = self.treatmentSteps.first()) {
+            while ((model = self.treatmentSteps.first()) !== undefined) {
                 model.destroy();
             }
             self.treatmentSteps.reset();            
@@ -258,36 +227,42 @@
             var srcElement = evt.srcElement || evt.target || evt.originalTarget;
             jQuery(srcElement).button("loading");
             
-            var decision = jQuery(srcElement).attr('value') === 'Yes'? 1: 0;
-            
             var last = this.treatmentSteps.last();
-            last.set({'decision': decision});
+            last.set({'decision': parseInt(jQuery(srcElement).attr('value'), 10)});
             this.activityState.set('node', last.get('id'));
             
             self.next();            
         },
         onChooseAgain: function(evt) {
             var srcElement = evt.srcElement || evt.target || evt.originalTarget;
-            var rollbackTo = jQuery(srcElement).data('id');
+            var rollbackId = jQuery(srcElement).data('id');
             
-            var use_previous;
+            var prevId;
             var chosen;
-            while (step = this.treatmentSteps.last()) {
-                if (chosen !== undefined) {
+            while ((step = this.treatmentSteps.last()) !== undefined) {
+                if (prevId === rollbackId) {
+                    step.set({
+                        "minimized": false,
+                        "decision": undefined
+                    });
+                    
                     if (step.get('type') === "DP") {
                         break;
                     }
-                    step.set("minimized", false);
-                    step.set("visible", true);
                 }
-                if (use_previous) {
-                    chosen = step.get("id");
-                } else {
-                    use_previous = step.get('id') === rollbackTo;
-                    step.destroy();
-                }
+                prevId = step.get('id');
+                step.destroy();
             }
             this.activityState.set('node', chosen);
+        },
+        onHelp: function(evt) {
+            
+            var srcElement = evt.srcElement || evt.target || evt.originalTarget;
+            var parent = jQuery(srcElement).parents('div.treatment-step')[0];
+            var helpText = jQuery(parent).find('div.treatment-step-help');
+            
+            jQuery("div.treatment-step-help:visible").not(helpText).hide();
+            jQuery(helpText).toggle();
         }
     });
 }(jQuery));    

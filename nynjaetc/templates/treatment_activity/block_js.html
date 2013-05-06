@@ -31,16 +31,16 @@
     <div>
         Choose a drug to use:
         <input type="radio" name="drug" value="boceprevir" <% if (drug === "boceprevir") { %>checked="checked"<% } %>/>Boceprevir
-        <input type="radio" name="drug" value="teleprevir" <% if (drug === "teleprevir") { %>checked="checked"<% } %>/>Teleprevir
+        <input type="radio" name="drug" value="telaprevir" <% if (drug === "telaprevir") { %>checked="checked"<% } %>/>Telaprevir
     </div>
 
-    <input id="select-patient-factors" type="button" class="continue"
-        value="Continue" <% if (!patient_factors_complete) { %>disabled="disabled"<% } %> />
+    <button id="select-patient-factors" class="btn btn-primary">Continue</button>
 </script>
 
 <script type="text/template" id="treatment-flow">
     <div class="patient-factors">
-        <b><%= drug %></b> for <b><%= status_description %></b> patients <b><%= cirrhosis_description %></b>
+        <b>debug: path_id</b>: <%= path %><br />
+        <b><%= drug.capitalize() %></b> for a <b><%= status_description %></b> patient <b><%= cirrhosis_description %></b>
 
         <div>
             <button type="button" class="btn reset-state"
@@ -51,64 +51,69 @@
 
 <script type="text/template" id="treatment-step">
     <div id="treatment-step-<%=id%>" 
-        class="treatment-step <%=type%> <% if (duration > 0) { %>height-<%=duration%><% } %> <% if (minimized) { %>minimized<% } %>"
-        style="display: none">
-                    <% if (type === 'IF') { /* Treatment Step */ %>                    
-                        <div class="timeline">
-                            <% if (week === 0) { %>
-                                <div class="week">Week <%=week%></div>
-                            <% } %>
-                            <div class="duration <%=type%> height-<%=duration %>"></div>
-                            <% if (duration > 0) { %>
-                                <div class="week">Week <%=week + duration%></div>
-                            <% } %>
-                        </div>
-                        <div class="medication height-<%=duration %>">
-                            <p><%= name %></p>
-                        </div>
-                    <% } else if (type === 'DP' && decision === undefined) { /* Decision Point */ %>
-                        <div class="timeline">
-                            <div class="duration <%=type%>"></div>
-                        </div>
-                        <div class="medication">
-                            <p>
-                                <%= name %>
-                                <div>
-                                    <button type="button" class="btn btn-primary decision-point-button"
-                                        data-id="<%=id%> data-loading-text="Loading..." value="Yes">Yes</button>
-                                    <button type="button" class="btn btn-primary decision-point-button"
-                                        data-id="<%=id%> data-loading-text="Loading..." value="No">No</button>
-                                </div>
-                                <div style="clear: both"></div>
-                            </p>
-                        </div>
-                    <% } else if (type === 'PR') { /* Decision Point Branch -- Yes/No */ %>
-                        <div class="timeline">
-                            <div class="duration <%=type%>"></div>
-                        </div>
-                        <div class="medication">
-                            <p>
-                                <%= text %>
-                            </p>
-                            <button type="button" class="btn choose-again"
-                                data-id="<%=id%>" data-loading-text="Loading...">Choose again</button>
-                        </div>
-                    <% } else if (type === 'ST') { /* Stop */ %>
-                        <div class="timeline">
-                            <div class="duration <%=type%>"></div>
-                        </div>
-                        <div class="medication">
-                            <p>
-                                <%= name %>
-                                <div>
-                                    To view other treatment paths, reset patient factors.
-    
-                                    <button type="button" class="btn reset-state"
-                                        data-loading-text="Resetting...">Reset Patient Factors</button>
-                                </div>
-                            </p>
+        class="treatment-step <%=type%>
+            <% if (minimized) { %>minimized<% } %>"
+            <% if (initial) { %> style="display: none" <% } %>>
+        
+        <% if (type === 'IF') { /* Generic Treatment Step */ %>                    
+            <div class="timeline">
+                <div class="week">WEEK <%=week%></div>
+                
+                <div class="duration height-<%=duration %>"></div>
+                <% if (duration > 0) { %>
+                    <div class="week">WEEK <%=week + duration%></div>
+                <% } %>
+            </div>
+            <div class="medication <% if (!minimized && duration > 0) { %>height-<%=duration%><% } %>">
+                <i class="icon-question-sign"></i>
+                <p><%= name %></p>
+            </div>
+            <div class="treatment-step-help" style="display: none">
+                Morbi bibendum odio in nibh convallis vel tincidunt nisl elementum. Etiam posuere orci sit amet mauris sagittis vel vestibulum leo commodo. In eleifend tellus tortor, sed facilisis neque. Donec sagittis tellus mauris. Nullam dignissim facilisis diam, sed dignissim leo dignissim at. Sed consectetur purus nisl, sed aliquam ante. Donec nec dolor dolor, in hendrerit nibh. Aliquam sit amet sapien vitae orci gravida adipiscing
+            </div>
+        <% } else if (type === 'DP') { /* Decision Point */ %>
+            <div class="timeline">
+                <div class="duration"></div>
+            </div>
+            <div class="medication">
+                <p>
+                    <%= name %>?
+                    <% if (decision === undefined) { %>
+                        <div class="decision_buttons">
+                            <button type="button" class="btn btn-primary decision-point-button"
+                                data-id="<%=id%> data-loading-text="Loading..." value="1">Yes</button>
+                            <button type="button" class="btn btn-primary decision-point-button"
+                                data-id="<%=id%> data-loading-text="Loading..." value="0">No</button>
                         </div>
                     <% } %>
+                </p>
+            </div>
+        <% } else if (type === 'PR') { /* Decision Point Branch -- Yes/No */ %>
+            <div class="timeline"></div>
+            <div class="medication">
+                <p>
+                    <%= text %>
+                </p>
+                <button type="button" class="btn choose-again"
+                    data-id="<%=id%>" data-loading-text="Loading...">Choose again</button>
+            </div>
+        <% } else if (type === 'ST') { /* Stop */ %>
+            <div class="timeline">
+                <div class="duration"></div>
+            </div>
+            <div class="medication">
+                <p>
+                    <%= name %>
+                    <div>
+                        To view other treatment paths, reset patient factors.
+                        <div>
+                        <button type="button" class="btn reset-state"
+                            data-loading-text="Resetting...">Reset Patient Factors</button>
+                        </div>
+                    </div>
+                </p>
+            </div>
+        <% } %>
     </div>
     <div style="clear: both"></div>
 </script>

@@ -36,9 +36,11 @@ class TreatmentNode(MP_Node):
 
     def __unicode__(self):
         if self.type == 'DP':
-            return "Decision Point:" + self.name
+            return "  Decision Point: " + self.name
+        elif self.duration:
+            return "  %s weeks: %s" % (self.duration, self.name)
         else:
-            return self.name
+            return "  %s" % self.name
 
     def to_json(self):
         return {
@@ -99,9 +101,6 @@ class TreatmentActivityBlock(models.Model):
             form.save()
 
     def unlocked(self, user):
-        '''
-            This view is unlocked if:
-        '''
         return True
 
     def treatment_paths(self):

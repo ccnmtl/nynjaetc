@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TreatmentPaths>
     <TreatmentPath>
-        <TreatmentNode Type="Root" Label="Boceprevir for treatment-naive patients without known cirrhosis">
+        <TreatmentNode Type="Root" Label="Boceprevir for prior relapsers and partial responders without known cirrhosis">
             <TreatmentNode Type="TreatmentStep" Label="PEG-IFN/RBV Lead-In" Duration="4"></TreatmentNode>
             <TreatmentNode Type="DecisionPoint" Label="Week 4: &lt;1 log drop viral load">
-                <TreatmentNode Type="Parent" Value="0" Label="No" Text="&gt; 1 log drop viral load">
+                <TreatmentNode Type="Parent" Value="0" Label="No" Text="&gt;= 1 log drop viral load">
                     <TreatmentNode Type="TreatmentStep" Label="PEG-IFN/RBV + Boceprevir" Duration="4">
                     </TreatmentNode>
-                    <TreatmentNode Type="DecisionPoint" Label="Week 8: HCV RNA detected?">
+                    <TreatmentNode Type="DecisionPoint" Label="Week 8: HCV RNA detected">
                         <TreatmentNode Type="Parent" Value="0" Label="No" Text="HCV RNA not detected">
                             <TreatmentNode Type="TreatmentStep" Label="PEG-IFN/RBV + Boceprevir" Duration="4"></TreatmentNode>
                             <TreatmentNode Type="DecisionPoint" Label="Week 12: HCV RNA &gt;= 100 IU/ml">
@@ -15,7 +15,7 @@
                                     <TreatmentNode Type="TreatmentStep" Label="PEG-IFN/RBV + Boceprevir" Duration="12"></TreatmentNode>
                                     <TreatmentNode Type="DecisionPoint" Label="Week 24: HCV RNA Detected">
                                         <TreatmentNode  Type="Parent" Value="0" Label="No" Text="HCV RNA not detected">
-                                            <TreatmentNode Type="TreatmentStep" Label="PEG-IFN/RBV + Boceprevir" Duration="4"></TreatmentNode>
+                                            <TreatmentNode Type="TreatmentStep" Label="PEG-IFN/RBV + Boceprevir" Duration="12"></TreatmentNode>
                                             <TreatmentNode Type="Stop" Label="Treatment Complete"></TreatmentNode>
                                         </TreatmentNode>
                                         <TreatmentNode Type="Parent" Label="Yes" Value="1" Text="HCV RNA detected">
@@ -59,7 +59,7 @@
                     <TreatmentNode Type="DecisionPoint" Label="HCV RNA &gt;= 1,000 IU/ml">
                         <TreatmentNode Type="Parent" Value="0" Label="No" Text="HCV RNA &lt; 1,000 IU/ml">
                             <TreatmentNode Type="TreatmentStep" Label="PEG-IFN/RBV + Boceprevir" Duration="12"></TreatmentNode>
-                            <TreatmentNode Type="DecisionPoint" Label="HCV RNA detected?">
+                            <TreatmentNode Type="DecisionPoint" Label="HCV RNA detected">
                                 <TreatmentNode Type="Parent" Value="0" Label="No" Text="HCV RNA not detected">
                                     <TreatmentNode Type="TreatmentStep" Label="PEG-IFN/RBV + Boceprevir" Duration="24">
                                     </TreatmentNode>
