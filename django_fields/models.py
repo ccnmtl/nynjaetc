@@ -4,8 +4,6 @@ import re
 from django.db import models
 
 
-print "django_fields"
-
 class PrivateFieldsMetaclass(models.base.ModelBase):
     """Metaclass to set right default db_column values
     for mangled private fields.

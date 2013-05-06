@@ -128,6 +128,8 @@ INSTALLED_APPS = [
     'registration',
 ]
 
+AUTH_PROFILE_MODULE = "main.UserProfile"
+
 PAGEBLOCKS = [
     'pageblocks.TextBlock',
     'pageblocks.HTMLBlock',

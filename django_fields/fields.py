@@ -60,23 +60,45 @@ class BaseEncryptedField(models.Field):
 
 
     def to_python(self, value):
+        print ''
+        print "to_python. encrypted is:"
+        print value
+        #import pdb
+        #pdb.set_trace()
         if self._is_encrypted(value):
+            print "decrypting: plaintext obtained:"
+            print force_unicode(
+                self.cipher.decrypt(
+                    binascii.a2b_hex(value[len(self.prefix):])
+                ).split('\0')[0]
+            )
             return force_unicode(
                 self.cipher.decrypt(
                     binascii.a2b_hex(value[len(self.prefix):])
                 ).split('\0')[0]
             )
+        print 'not encrypted.'
+        print value
         return value
 
     def get_db_prep_value(self, value, connection=None, prepared=False):
+        print ''
+        print "Encrypting. plaintext is:"
+        print value
+        #import pdb
+        #pdb.set_trace()
         value = smart_str(value)
 
         if value is not None and not self._is_encrypted(value):
+            print "here goes"
             padding  = self._get_padding(value)
             if padding > 0:
                 value += "\0" + ''.join([random.choice(string.printable)
                     for index in range(padding-1)])
             value = self.prefix + binascii.b2a_hex(self.cipher.encrypt(value))
+            
+        print 'ciphertext obtained:'
+        print value
         return value
 
 

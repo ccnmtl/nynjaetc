@@ -9,6 +9,9 @@ from django.conf import settings
 from django.db.models import signals
 from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
+from django_fields.fields import EncryptedEmailField, EncryptedCharField
+
+
 
 
 #"""Let's turn off the ability to change email from the admin tool.
@@ -21,6 +24,13 @@ new_personal_fields = tuple(x for x in old_personal_fields if x != 'email')
 UserAdmin.fieldsets[1][1]['fields'] = new_personal_fields
 admin.site.register(User, UserAdmin)
 
+class UserProfile(models.Model):
+    class Meta:
+        app_label = 'main'
+
+    user = models.ForeignKey(User, unique=True)
+    encrypted_email = EncryptedEmailField ()
+    hrsa_id = EncryptedCharField ()
 
 class SectionTimestamp(models.Model):
     """Marks when this section was last visited by a particular user."""
@@ -74,63 +84,6 @@ class SectionPreference(models.Model):
         unique_together = ("section", "preference")
 
 
-class EncryptedUserDataField(models.Model):
-    def __unicode__(self):
-        return self.slug
-    slug = models.SlugField(unique=True, null=False, blank=False)
-    #TODO add some methods:
-        #get_for_one_user
-        #set_for_one_user
-        #get_for_all_users field
-    
-    
-class EncryptedUserData(models.Model):
-    """A chunk of private, encrypted data associated with a user."""
-    def __unicode__(self):
-        return 'encrypted %s for %s' %(self.which_field.slug, self.user)
-
-    which_field = models.ForeignKey(EncryptedUserDataField, null=False, blank=False)
-    user = models.ForeignKey(User,blank=False,null=False)
-    value = models.TextField(blank=True, help_text = "Value of the data")
-    unique_together = ("user", "which_field")
-    
-    the_key = settings.ENCRYPT_KEY
-    
-    if the_key == None or the_key == '':
-        raise RuntimeError ("Can't find the ENCRYPT_KEY, which we need to encrypt and decrypt this data.")
-    
-    aes = AES.new(the_key, AES.MODE_ECB)
-    enc, dec = aes.encrypt, aes.decrypt
-    
-    def pad (self, a_string):
-        """ The encryption algorithm assumes the string length is a multiple of 8.
-        Accordingly, this return a padded string, prefixed with its original length"""
-        block_length = 16 # the return value will be an integer multiple of this length
-        bytes = bytearray (a_string.encode('utf-8'))
-        prefixed_bytes = '%s,%s' % (len (bytes), bytes)
-        padding_length = 2 * block_length -  len (prefixed_bytes) % block_length
-        padding = padding_length * '#'
-        assert len (prefixed_bytes + padding) % block_length == 0
-        return prefixed_bytes + padding
-
-    def unpad (self, some_bytes):
-        """ The reverse operation of pad """
-        the_len, comma, the_string = some_bytes.partition (',')
-        return unicode(the_string)[0: int(the_len)]
-    
-    def put (self, plain):
-        return base64.b64encode(self.enc(self.pad(plain)))
-        
-    def get (self, ciph):
-        return self.unpad(self.dec(base64.b64decode(ciph)))
-    
-    def store_value (self, the_value):
-        self.value = self.put (the_value)
-        self.save()
-        
-    def retrieve_value (self):
-        return self.get(self.value)
-
 ####################################
 ####################################
 ####################################
@@ -154,30 +107,15 @@ class EncryptedUserData(models.Model):
 # (null value in column "user_id" violates not-null constraint)
 # Consider making a new form that saves a new encrypted email for a user.
 
-def retrieve_encrypted_email (user):
-    assert user != None
-    email_field = EncryptedUserDataField.objects.get(slug='email')
-    assert email_field != None
-    try:
-        email_data = EncryptedUserData.objects.get(user = user, which_field=email_field)
-    except EncryptedUserData.DoesNotExist:
-        return None
-    assert email_data != None
-    decrypted_email = email_data.retrieve_value()
-    assert decrypted_email != None
-    assert decrypted_email != ''
-    return decrypted_email
 
 def my_email_user(self, subject, message, from_email=None):
     """
     Sends an email to this user's encrypted email, if there is one.
     """
-    decrypted_email = retrieve_encrypted_email (self)
-    if decrypted_email != None:
-        self.email = decrypted_email
-        self.original_email_user(subject, message, from_email)
-        self.email = '*****' # note -- this isn't stored.
-
+    self.email = self.get_profile().encrypted_email
+    self.original_email_user(subject, message, from_email)
+    self.email = '*****' # note -- this isn't stored.
+    
 def store_encrypted_email (user):
     """
     Saves the email to an EncryptedUserDataField object, which encrypts it.
@@ -189,15 +127,9 @@ def store_encrypted_email (user):
     
     if user == None or user.email == None:
         raise ValueError ('User or email is None.')
-    
-    email_field = EncryptedUserDataField.objects.get(slug='email')
-    if email_field == None:
-        raise ValueError ('We need an EncryptedUserDataField defined in the database.')
-    
-    encrypted_email = EncryptedUserData(which_field = email_field, user = user)
-    encrypted_email.store_value (user.email)
-    encrypted_email.save()
-    
+    the_profile, created = UserProfile.objects.get_or_create(user=user)
+    the_profile.encrypted_email = user.email
+    the_profile.save()
     #save dummy value in regular user field:
     user.email = '*****'
     user.save()
@@ -226,10 +158,11 @@ def steal_email(sender, instance, **kwargs):
         
 
 #MONKEY-PATCHERY
-    
+
 User.original_email_user = User.email_user
 User.email_user = my_email_user
 signals.post_save.connect(steal_email, sender=User)
+
 
 ####################################
 ####################################
