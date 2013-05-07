@@ -163,8 +163,13 @@ body {
 /*Sidebar*/
 
 /*Content*/
+
+#right-content {
+  background-color: #fff;
+  padding: 20px;
+}
   
-  .pagetitle {
+.pagetitle {
     font-family: 'Asap', 'Helvetica Neue', 'Arial', sans-serif;
     margin: 0 0 20px 0;
     color: #444;
@@ -180,10 +185,19 @@ body {
 /*RGT Patient Case*/
 .module-patient-case
 {
-    
+  #sidebar {
+    display: none;
+  }
+  div#breadcrumbs {
+    display: none;
+  }
+  #right-content {
+    margin: 0;    
+  }
+  
   .pageblock.intro {
     float: left;
-    width: 400px;
+    width: 50%;
     margin: 0 20px 0 0;
     
       p {
@@ -191,6 +205,7 @@ body {
       }
     
     @media (max-width: 979px){
+      width: 100%;
       clear: both;
     }
   }
@@ -198,7 +213,6 @@ body {
   .pageblock.history {
     float: left;
     width: 400px;
-    margin: -55px 0 0 0;
     
     @media (max-width: 979px) {
       clear: both;
@@ -313,6 +327,14 @@ body {
       position: relative;
       padding: 10px;
     } 
+    
+    .telaprevir {
+      img {
+        float: left;
+        width: 300px;
+      }
+    }
+    
   }
   
   .rotate {
@@ -332,6 +354,8 @@ body {
     /* Should be unset in IE9+ I think. */
     filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
   }  
+  
+  
   
   /*Quiz*/
  
@@ -381,19 +405,6 @@ div.one_per_answer_explanation {
     color: gray;
 }
 
-/*RGT Activity*/
-
-body.module-patient-case {
-  #sidebar {
-    display: none;
-  }
-  ul#breadcrumbs {
-    display: none;
-  }
-  #right-content {
-    margin: 0;    
-  }
-}
 
 .debug_info {
     display: none;
