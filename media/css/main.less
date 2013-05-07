@@ -164,21 +164,18 @@ body {
 
 /*Content*/
 
-#right-content {
-  background-color: #fff;
-  padding: 20px;
-}
-  
 .pagetitle {
     font-family: 'Asap', 'Helvetica Neue', 'Arial', sans-serif;
     margin: 0 0 20px 0;
     color: #444;
+    font-size: 22px;
   }
  
 #content { 
   h4 {
     font-weight: 200;
     font-size: 20px;
+    margin: 0 0 20px 0;
   }
 }
 
@@ -193,6 +190,12 @@ body {
   }
   #right-content {
     margin: 0;    
+    
+    img {
+      border: solid 10px #f5f5f5;
+      border-radius: 6px;
+      margin: 0 10px 10px 0;
+    }
   }
   
   .pageblock.intro {
@@ -327,14 +330,8 @@ body {
       position: relative;
       padding: 10px;
     } 
-    
-    .telaprevir {
-      img {
-        float: left;
-        width: 300px;
-      }
-    }
-    
+
+
   }
   
   .rotate {
@@ -361,10 +358,32 @@ body {
  
  .cases {
    .casetitle {
-     font-family: 'Asap', 'Helvetica Neue', 'Arial', sans-serif;
+     font-family: 'Helvetica Neue', 'Arial', sans-serif;
      font-size: 18px;
      color: #444;
+     margin: 0 0 10px 5px;
    }
+   
+   .casequestion {
+     p {
+       font-weight: bold;
+     }
+     
+     li {
+       margin: 0 0 15px 0;
+       
+       input {
+         margin: 0 5px 0 0;
+       }
+     }
+     
+   }
+   .casecontent {
+     background-color: #fff;
+     border-radius: 4px;
+     padding: 20px;
+   }
+   
  }
   
 }
