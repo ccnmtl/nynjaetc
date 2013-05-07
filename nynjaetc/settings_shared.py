@@ -122,6 +122,7 @@ INSTALLED_APPS = [
     'django_jenkins',
     'smoketest',
     'django_extensions',
+    'django_fields', ## this needs to be defined before nynjaetc.main
     'nynjaetc.main',
     'pagetree',
     'pageblocks',
@@ -129,6 +130,8 @@ INSTALLED_APPS = [
     'impersonate',
     'registration',
 ]
+
+AUTH_PROFILE_MODULE = "main.UserProfile"
 
 PAGEBLOCKS = [
     'pageblocks.TextBlock',

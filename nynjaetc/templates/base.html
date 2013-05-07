@@ -20,6 +20,7 @@
 	<link rel="shortcut icon" href="/site_media/img/favicon.ico" type="image/x-icon" />
 	{% block css %}{% endblock %}
   <script src="/site_media/js/jquery-1.7.2.min.js"></script>
+  <script src="/site_media/js/nynjaetc.js"></script>
 
   <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
   <!--[if lt IE 9]>
@@ -31,16 +32,9 @@
 
 
 <body class="module-{%block module_slug%}{%endblock module_slug %}">
-<div class="container" id="outer-container">
-  <div class="container">
-  <div class="row-fluid" id="header">
-    <div class="span3">
-          <a href="/"><img src="/site_media/img/workinglogo.png" id="logo" /></a>
-    </div>
-    <div class="span5 subbrand">      
-      Hepatitis C Treatment Self-Study Module
-    </div>
-    <div class="span4" id="nav">
+ <div class="container-fluid" id="login">
+ <div class="row-fluid">
+    <div class="span12" id="nav">
       {% block topnavbar %}
       <ul class="nav">
       {% block topnavbarleftitems %}{% endblock %}
@@ -59,25 +53,38 @@
 
 
         <p class="navbar-text pull-right">
-          logged in as
-          {% if  request.user.first_name or  request.user.first_name %}
+          Logged in as
+          <strong>{% if  request.user.first_name or  request.user.first_name %}
               {{request.user.first_name}}
               {{request.user.last_name}}
           {%else %}
             {{request.user}}
           {%endif %}
-	  {%comment %}
+    {%comment %}
           {% if request.user.is_superuser %}
           <a href="{% url impersonate-list %}">[impersonate]</a>
           {% endif %}
-	  {%endcomment %}
+    {%endcomment %}
+    </strong>
         </p>
       {% endif %}
       {% endblock %}
 {% endblock %}
     </div>
-  </div>
+    </div>  
 </div>
+<div class="container" id="outer-container">
+  <div class="container">
+   
+  <div class="row-fluid" id="header">
+    <div class="span3">
+          <a href="/"><img src="/site_media/img/workinglogo.png" id="logo" /></a>
+    </div>
+    <div class="span9 subbrand">      
+      Hepatitis C Treatment Self-Study Module
+    </div>
+  </div>
+  </div>
 {% block masthead %}
 {% block primarynav %}
 <div class="container">
@@ -117,8 +124,8 @@
 </div>    
     
     
-        <!-- ok, first row has just the title in it. -->
-<div class="container">
+<div class="container main">
+          <!-- ok, first row has just the title in it. -->
       <div class="row-fluid">
         <div class="span12">
             {% block pagetitle %}{% endblock %}
@@ -135,9 +142,11 @@
          <div class="span9" id="right-content">
     
     {% block content %}{% endblock %}
-    {% block content-nav %}{% endblock %}
          </div>
-
+      </div>
+      <div class="row-fluid">
+            <!-- pager -->     
+        {% block content-nav %}{% endblock %}
       </div>
 </div>
   <div id="clearfooter"></div>
