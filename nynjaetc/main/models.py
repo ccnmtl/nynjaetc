@@ -9,7 +9,8 @@ from django.conf import settings
 from django.db.models import signals
 from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
-from django_fields.fields import EncryptedEmailField, EncryptedCharField
+from django_fields.fields import EncryptedEmailField, EncryptedCharField, EncryptedTextField
+from quizblock.models import Quiz
 
 
 
@@ -130,6 +131,7 @@ def store_encrypted_email (user):
     user.save()
     
 
+
 def steal_email(sender, instance, **kwargs):
     if kwargs['created']:
         store_encrypted_email(instance)
@@ -158,6 +160,29 @@ User.original_email_user = User.email_user
 User.email_user = my_email_user
 signals.post_save.connect(steal_email, sender=User)
 
+
+Quiz.original_submit = Quiz.submit
+
+
+def my_quiz_submit(self, user, data):
+    hrsa_question_id = 17 # get_from_settings ?
+    hrsa_question_key = 'question%d'  % hrsa_question_id
+    
+    try:
+        hrsa_id = data[hrsa_question_key]
+    except KeyError:
+        hrsa_id = None
+    
+    if hrsa_id != None:   
+        hrsa_id = data[hrsa_question_key]
+        the_profile, created = UserProfile.objects.get_or_create(user=user)
+        the_profile.hrsa_id = hrsa_id
+        user.get_profile().save()
+        data[hrsa_question_key] = "*****"
+    self.original_submit(user, data)
+
+
+Quiz.submit = my_quiz_submit
 
 ####################################
 ####################################
