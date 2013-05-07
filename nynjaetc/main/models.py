@@ -102,11 +102,6 @@ class SectionPreference(models.Model):
 ####################################
 
 
-#Note: attempting to use pre-save doesn't work because we want a new 
-#EncryptedUserDataField to refer to an already existing User.
-# (null value in column "user_id" violates not-null constraint)
-# Consider making a new form that saves a new encrypted email for a user.
-
 
 def my_email_user(self, subject, message, from_email=None):
     """
@@ -118,7 +113,7 @@ def my_email_user(self, subject, message, from_email=None):
     
 def store_encrypted_email (user):
     """
-    Saves the email to an EncryptedUserDataField object, which encrypts it.
+    Saves the email to the profile.
     Then replaces it with an arbitrary value.
     Note -- since this triggers a second save, don't call it from signals.post_save.connect
     on an updated object.
