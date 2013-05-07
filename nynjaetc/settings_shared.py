@@ -35,6 +35,7 @@ if 'test' in sys.argv or 'jenkins' in sys.argv:
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 SOUTH_TESTS_MIGRATE = False
 
+# anything under nynjaetc will be tested by ./manage py test.
 NOSE_ARGS = [
     '--with-coverage',
     '--cover-package=nynjaetc',
@@ -47,7 +48,9 @@ JENKINS_TASKS = (
     'django_jenkins.tasks.run_pep8',
     'django_jenkins.tasks.run_pyflakes',
 )
-PROJECT_APPS = [
+
+# BY CONTRAST, anything in this list will be tested by Jenkins, otherwise the build will fail.
+PROJECT_APPS = [ 
     'nynjaetc.main',
 ]
 
@@ -119,6 +122,7 @@ INSTALLED_APPS = [
     'django_jenkins',
     'smoketest',
     'django_extensions',
+    'django_fields', ## this needs to be defined before nynjaetc.main
     'nynjaetc.main',
     'pagetree',
     'pageblocks',
@@ -126,6 +130,8 @@ INSTALLED_APPS = [
     'impersonate',
     'registration',
 ]
+
+AUTH_PROFILE_MODULE = "main.UserProfile"
 
 PAGEBLOCKS = [
     'pageblocks.TextBlock',

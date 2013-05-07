@@ -3,7 +3,7 @@
 <ol type="A">
   {% for answer in question.answer_set.all %}
     {% if block.rhetorical %}
-      <li><input name="question{{question.id}}" value="{{answer.label}}" id= "{{answer.id}}" type="radio" />{{answer.label}}</li>
+      <li><input name="question{{question.id}}" value="{{answer.label}}" id= "{{answer.id}}" type="radio" {%if answer.correct %}class="is_correct"{%endif %}  {%if not answer.correct %}class="is_incorrect"{%endif %} />{{answer.label}}</li>
     {% else %}
       <li>
         {% if response %}

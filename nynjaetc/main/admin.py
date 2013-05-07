@@ -1,6 +1,6 @@
 from pagetree.models import Section
 from django.contrib import admin
-from models import Preference, SectionPreference, EncryptedUserDataField
+from models import Preference, SectionPreference
 
 class PreferenceAdmin (admin.ModelAdmin):
     list_display = ( 'slug',)
@@ -11,8 +11,3 @@ class SectionPreferenceAdmin (admin.ModelAdmin):
     list_display = ( 'section', 'preference', )
     fields =  ( 'section', 'preference', )
 admin.site.register(SectionPreference, SectionPreferenceAdmin)
-
-class EncryptedUserDataFieldAdmin (admin.ModelAdmin):
-    list_display = ( 'slug',)
-    fields = ('slug', )
-admin.site.register(EncryptedUserDataField, EncryptedUserDataFieldAdmin)
