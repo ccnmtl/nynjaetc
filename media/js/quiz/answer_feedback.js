@@ -14,7 +14,7 @@ function hide_unchecked_rhetorical_answer_feedback (id, elem) {
 function correct_answer_chosen() {
     record_success();
     // prevent them from choosing any more wrong answers:
-    jQuery('input:radio').each (disable_radio_buttons);
+    //jQuery('input:radio').each (disable_radio_buttons);
 }
 
 function disable_radio_buttons(id, elem) {
@@ -39,6 +39,8 @@ function the_init() {
 }
 
 function allow_to_proceed() {
+    jQuery ('.is_correct').parent().addClass('highlight_correct')
+
     jQuery('li.next').show();
 }
 

@@ -3,15 +3,15 @@ from pagetree.models import Section
 from django.contrib.auth.models import User
 from datetime import datetime
 from django.utils.timezone import utc
-from Crypto.Cipher import AES
-import base64
 from django.conf import settings
 from django.db.models import signals
 from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
 from django_fields.fields import EncryptedEmailField, EncryptedCharField, EncryptedTextField
 from quizblock.models import Quiz
-
+from django.contrib.auth.hashers import UNUSABLE_PASSWORD
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth.forms import PasswordResetForm
 
 
 
@@ -32,6 +32,10 @@ class UserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)
     encrypted_email = EncryptedEmailField ()
     hrsa_id = EncryptedCharField ()
+    
+    @staticmethod
+    def find_user_profiles_by_plaintext_email(plaintext_email):
+        return [ x for x in UserProfile.objects.all() if x.encrypted_email == plaintext_email ]
 
 class SectionTimestamp(models.Model):
     """Marks when this section was last visited by a particular user."""
@@ -118,7 +122,11 @@ def store_encrypted_email (user):
     Then replaces it with an arbitrary value.
     Note -- since this triggers a second save, don't call it from signals.post_save.connect
     on an updated object.
-    We should probably add a new form somewhere to allow users to change their email.
+    We're NOT allowing people to change their email, but they can
+    
+    
+    reset their passwords at: 
+        /accounts/password_change/
     """    
     
     if user == None or user.email == None:
@@ -130,7 +138,6 @@ def store_encrypted_email (user):
     user.email = '*****'
     user.save()
     
-
 
 def steal_email(sender, instance, **kwargs):
     if kwargs['created']:
@@ -162,8 +169,6 @@ signals.post_save.connect(steal_email, sender=User)
 
 
 Quiz.original_submit = Quiz.submit
-
-
 def my_quiz_submit(self, user, data):
     hrsa_question_id = 17 # get_from_settings ?
     hrsa_question_key = 'question%d'  % hrsa_question_id
@@ -180,9 +185,45 @@ def my_quiz_submit(self, user, data):
         user.get_profile().save()
         data[hrsa_question_key] = "*****"
     self.original_submit(user, data)
-
-
 Quiz.submit = my_quiz_submit
+
+
+PasswordResetForm.original_save        = PasswordResetForm.save
+def my_password_reset_form_save (self, domain_override=None,
+    subject_template_name='registration/password_reset_subject.txt',
+    email_template_name='registration/password_reset_email.html',
+    use_https=False, token_generator=default_token_generator,
+    from_email=None, request=None):
+     
+    #unencrypt emails
+    for user in self.users_cache:
+        user.email = user.get_profile().encrypted_email
+    
+    #send emails
+    self.original_save (domain_override,
+        subject_template_name,
+        email_template_name,
+        use_https, token_generator,
+        from_email, request)
+    
+    #re-encrypt emails
+    for user in self.users_cache:
+        user.email = "*****"
+PasswordResetForm.save = my_password_reset_form_save
+
+
+PasswordResetForm.original_clean_email = PasswordResetForm.clean_email
+def my_password_reset_form_clean_email (self):
+    plaintext_email = self.cleaned_data["email"]
+    user_profiles = UserProfile.find_user_profiles_by_plaintext_email(plaintext_email)
+    self.users_cache = [u.user for u in user_profiles if u.user.is_active]
+    if not len(self.users_cache):
+            raise forms.ValidationError(self.error_messages['unknown'])
+    if any((user.password == UNUSABLE_PASSWORD) for user in self.users_cache):
+        raise forms.ValidationError(self.error_messages['unusable'])
+    return plaintext_email        
+PasswordResetForm.clean_email = my_password_reset_form_clean_email
+
 
 ####################################
 ####################################
