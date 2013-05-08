@@ -46,6 +46,7 @@
        <a href="/accounts/register/" class="btn pull-right">Register</a>
        <a href="/accounts/login/?next=/" class="btn pull-right">Log In</a>
       {% else %}
+       <a href="/accounts/password_change/" class="btn pull-right">Change Password</a>
        <a href="/accounts/logout/" class="btn pull-right">Log Out</a>
         {% if can_download_stats %}
                 <a href="javascript:alert ('Coming soon.');" class="btn btn-inverse pull-right">stats</a>
@@ -98,7 +99,7 @@
       </a>
         
       <div class="nav-collapse collapse">
-        <ul class="nav">   
+        <ul class="nav mainnav">   
         {% block primarynavtabs %}
         {% for section in module_info %}
           <li{% ifequal section.id module.id %} class="active"{% endifequal %}><a href="{{section.url}}">{{section.label}}</a></li>
@@ -116,7 +117,7 @@
 
 {% endblock %}
 
-    <div class="row-fluid">
+    <div class="row-fluid" id="breadcrumbs">
         <div class="span12">
             {% block breadcrumbs %}{% endblock %}
         </div>

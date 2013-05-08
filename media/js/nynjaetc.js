@@ -1,7 +1,11 @@
 window.onload=function() {
-
-  // get tab container
-  var container = document.getElementById("historyContainer");
+    // not sure what this does, but presumably it's only supposed to run on certain pages. :)
+    // E.R.
+   if (document.getElementById("historyContainer") == null) {
+    return;
+   }
+    // get tab container
+   var container = document.getElementById("historyContainer");
     // set current tab
     var navitem = container.querySelector(".tabs ul li");
     //store which tab we are on

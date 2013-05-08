@@ -44,7 +44,7 @@
                             {%endcomment %}
                             {% if answer.explanation %}
                                    <p class ="the_answer">{{answer }}</p>
-                                   <p class ="the_explanation">{{answer.explanation }}</p>
+                                   <p class ="the_explanation">{{answer.explanation|safe}}</p>
                             {%endif %}
                     </div>
             {%endfor %}

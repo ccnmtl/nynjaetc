@@ -27,10 +27,7 @@ body, html {
   min-height: 100%;
   margin-bottom: -70px;
   position: relative;
-  background-color: #fff;
 }
-
-
 
 .pager {
   clear: both;
@@ -39,6 +36,10 @@ body, html {
   border-bottom: solid 1px #ccc;
   border-top: solid 1px #ccc;
   padding: 10px 0;
+  
+  a {
+    color: #ec1c23;
+  }
 }
 
 
@@ -74,6 +75,9 @@ body {
   }
 }
 
+#primarynav.navbar {
+  margin-bottom: 11px;
+}
 
 #header {
    background: url('/site_media/img/nynjaetcbg.png') repeat;
@@ -114,24 +118,27 @@ body {
 }
 
 /*Custom Breadcrumbs*/
-ul#breadcrumbs {
-  margin: -10px 0 0 4px;  
+.row-fluid#breadcrumbs {
   
-   li {
-   list-style-type: none;
-   display: inline;
-   font-size: 12px;
+  ul {
+    margin: 0 0 0 4px;
+  
+    li {
+      list-style-type: none;
+      display: inline;
+      font-size: 12px;
    
-   a {
-     color: #ccc;
-     text-decoration: none;
+    a {
+      color: #ccc;
+      text-decoration: none;
      
       &:hover {
         color: #333;
       }
    }
-   
-   .divider {
+     
+ }  
+  .divider {
      margin: 0 5px;
      color: #ccc;
    }  
@@ -144,32 +151,56 @@ ul#breadcrumbs {
 .navbar-inner {
   padding-left: 0px !important;
   padding-right: 0px !important;
+  
+   ul.mainnav li
+  {
+    &:first-child {
+      display: none;
+    }
+  }
 }
 
 /*Sidebar*/
 
 /*Content*/
-  
-  .pagetitle {
+
+.pagetitle {
     font-family: 'Asap', 'Helvetica Neue', 'Arial', sans-serif;
     margin: 0 0 20px 0;
     color: #444;
+    font-size: 22px;
   }
  
 #content { 
   h4 {
     font-weight: 200;
     font-size: 20px;
+    margin: 0 0 20px 0;
   }
 }
 
 /*RGT Patient Case*/
-.module-patient-case-rgt
+.module-patient-case, .module-patient-case-drug-interactions
 {
+  #sidebar {
+    display: none;
+  }
+  div#breadcrumbs {
+    display: none;
+  }
+  #right-content {
+    margin: 0;    
     
+    img {
+      border: solid 10px #f5f5f5;
+      border-radius: 6px;
+      margin: 0 10px 10px 0;
+    }
+  }
+  
   .pageblock.intro {
     float: left;
-    width: 400px;
+    width: 50%;
     margin: 0 20px 0 0;
     
       p {
@@ -177,6 +208,7 @@ ul#breadcrumbs {
       }
     
     @media (max-width: 979px){
+      width: 100%;
       clear: both;
     }
   }
@@ -184,7 +216,6 @@ ul#breadcrumbs {
   .pageblock.history {
     float: left;
     width: 400px;
-    margin: -55px 0 0 0;
     
     @media (max-width: 979px) {
       clear: both;
@@ -192,26 +223,28 @@ ul#breadcrumbs {
     }
   }
   
+  .container.main {
   .row-fluid .span9 {
     width: 100%;
   }
+ }
   
   #history {
     background: top no-repeat url('/site_media/img/clipboard.png');
     background-size: 100% 100%;
     width: 399px;
-    height: 536px;
+    height: 445px;
   }
   
   .tabscontent {
-  margin: 78px 0 0 16px;
-  width: 378px;
+  margin: -23px 0 0 5px;
+  width: 368px;
   height: 405px;
   font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
         
     .tabpage { 
       ul, p {
-        width: 295px;
+        width: 285px;
       }
     }
 
@@ -247,7 +280,7 @@ ul#breadcrumbs {
   #tabpage_1 {
     background: top no-repeat url('/site_media/img/tab1.png');
     background-size: 100% 100%;
-    width: 387px;
+    width: 368px;
     height: 426px;
     float: left;
     font-size: 13px;
@@ -257,7 +290,7 @@ ul#breadcrumbs {
   #tabpage_2 {
     background: top no-repeat url('/site_media/img/tab2.png');
     background-size: 100% 100%;
-    width: 387px;
+    width: 368px;
     height: 426px;
     float: left;
     font-size: 13px;
@@ -280,8 +313,8 @@ ul#breadcrumbs {
    
     &.rotate {
       position: relative;
-      top: 148px;
-      left: 199px;
+      top: 55px;
+      left: 171px;
     }
     
     #tabHeader_1 {
@@ -297,6 +330,8 @@ ul#breadcrumbs {
       position: relative;
       padding: 10px;
     } 
+
+
   }
   
   .rotate {
@@ -317,19 +352,45 @@ ul#breadcrumbs {
     filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
   }  
   
+  
+  
   /*Quiz*/
  
  .cases {
    .casetitle {
-     font-family: 'Asap', 'Helvetica Neue', 'Arial', sans-serif;
+     font-family: 'Helvetica Neue', 'Arial', sans-serif;
      font-size: 18px;
      color: #444;
+     margin: 0 0 10px 5px;
    }
- }
-  
+   
+   .casequestion {
+     p {
+       font-weight: bold;
+     }
+     
+     li {
+       margin: 0 0 15px 0;
+       
+       input {
+         margin: 0 5px 0 0;
+       }
+     }
+     
+   }
+   .casecontent {
+     background-color: #fff;
+     border-radius: 4px;
+     padding: 20px;
+   }
+   
+ } 
 }
   
-
+.highlight_correct {
+    color:green !important;
+}
+ 
 
 
 /*Footer*/
@@ -365,19 +426,6 @@ div.one_per_answer_explanation {
     color: gray;
 }
 
-/*RGT Activity*/
-
-body.module-patient-case-rgt {
-  #sidebar {
-    display: none;
-  }
-  ul#breadcrumbs {
-    display: none;
-  }
-  #right-content {
-    margin: 0;    
-  }
-}
 
 .debug_info {
     display: none;
