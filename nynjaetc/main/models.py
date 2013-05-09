@@ -12,8 +12,8 @@ from quizblock.models import Quiz
 from django.contrib.auth.hashers import UNUSABLE_PASSWORD
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.forms import PasswordResetForm
-
-
+from registration.forms import RegistrationForm
+from django import forms
 
 #"""Let's turn off the ability to change email from the admin tool.
 # (We can build a new version of this form later if it's needed.
@@ -25,6 +25,7 @@ new_personal_fields = tuple(x for x in old_personal_fields if x != 'email')
 UserAdmin.fieldsets[1][1]['fields'] = new_personal_fields
 admin.site.register(User, UserAdmin)
 
+
 class UserProfile(models.Model):
     class Meta:
         app_label = 'main'
@@ -35,8 +36,11 @@ class UserProfile(models.Model):
     
     @staticmethod
     def find_user_profiles_by_plaintext_email(plaintext_email):
-        return [ x for x in UserProfile.objects.all() if x.encrypted_email == plaintext_email ]
-
+        try:
+            return [ x for x in UserProfile.objects.all() if x.encrypted_email == plaintext_email ]
+        except DjangoUnicodeDecodeError:
+            
+            raise ImproperlyConfigured ("""Looks like the setting for encryption /decryption doesn't match one of the values in the database.""")
 class SectionTimestamp(models.Model):
     """Marks when this section was last visited by a particular user."""
     def __unicode__(self):
@@ -72,9 +76,6 @@ class Preference(models.Model):
     slug = models.SlugField(unique=True, null=False, blank=False)
     
     def sections(self):
-        #Preference.objects.get(slug='quiz_sequence').sectionpreference_set.all()
-        #[<Section: Telaprevir Path>, <Section: Boceprevir Path>]
-        
         return [s.section for s in self.sectionpreference_set.all()]
 
 
@@ -211,8 +212,6 @@ def my_password_reset_form_save (self, domain_override=None,
         user.email = "*****"
 PasswordResetForm.save = my_password_reset_form_save
 
-
-PasswordResetForm.original_clean_email = PasswordResetForm.clean_email
 def my_password_reset_form_clean_email (self):
     plaintext_email = self.cleaned_data["email"]
     user_profiles = UserProfile.find_user_profiles_by_plaintext_email(plaintext_email)
@@ -224,6 +223,16 @@ def my_password_reset_form_clean_email (self):
     return plaintext_email        
 PasswordResetForm.clean_email = my_password_reset_form_clean_email
 
+RegistrationForm.original_clean = RegistrationForm.clean
+def my_clean(self):
+    self.original_clean()
+    my_email = self.cleaned_data.get('email', None)
+    if my_email:
+        if UserProfile.find_user_profiles_by_plaintext_email(my_email):    
+            raise forms.ValidationError("That email address is already in use.")
+    return self.cleaned_data
+    
+RegistrationForm.clean = my_clean
 
 ####################################
 ####################################
