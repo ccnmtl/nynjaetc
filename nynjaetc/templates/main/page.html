@@ -101,19 +101,20 @@
 {% block content-nav %}
     <ul class="pager">
     {% if not section_preferences.hide_previous_button %}
-        {% if section.get_previous %}
-          <li class="previous">
-		        <a href="{{section.get_previous.get_absolute_url}}">&larr; {{section.get_previous.label}}</a>
+        {% if section.prev_with_content %}
+         <li class="previous">
+		        <a href="{{section.prev_with_content.get_absolute_url}}">&larr; {{section.prev_with_content.label}}  </a>
           </li>
         {% endif %}
     {% endif %}
 
     {% if not section_preferences.hide_next_button %}
-        {% if section.get_next %}
-        {% with section.get_next as next_section %}
-        <li class="next"><a href="{{section.get_next.get_absolute_url}}">{{section.get_next.label}} &rarr;</a></li>
+        {% if section.next_with_content %}
+        {% with section.next_with_content as next_section %}
+        <li class="next"><a href="{{section.next_with_content.get_absolute_url}}">{{section.next_with_content.label}}&rarr;</a></li>
         {% endwith %}
         {% endif %}
+        
     {% endif %}
     </ul>
 

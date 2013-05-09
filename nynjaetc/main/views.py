@@ -6,7 +6,7 @@ from pagetree.helpers import get_module, needs_submit, submitted
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from nynjaetc.main.models import Preference, SectionPreference
-from nynjaetc.main.views_helpers import whether_already_visited, already_visited_pages_except_most_forward_one, already_visited_pages, self_and_descendants, is_descendant_of,  set_timestamp_for_section, module_info, is_in_one_of
+from nynjaetc.main.views_helpers import whether_already_visited, already_visited_pages, self_and_descendants, is_descendant_of,  set_timestamp_for_section, module_info, is_in_one_of
 from nynjaetc.main.models import SectionTimestamp, SectionQuizAnsweredCorrectly
 
 
@@ -18,37 +18,24 @@ def page(request, path):
     module = get_module(section)
     tmp = SectionPreference.objects.filter(section=section)
     section_preferences = dict((sp.preference.slug, True) for sp in tmp)
-    
-    #figure out which questions the user has already answered:
-    try:
-        quiz_sequences = Preference.objects.get(slug='quiz_sequence').sections()
-    except Preference.DoesNotExist:
-        quiz_sequences = []
-    in_quiz_sequence = is_in_one_of (section, quiz_sequences)
     already_visited = whether_already_visited (section, request.user)
-    
     next_already_visited = whether_already_visited(section.get_next(), request.user)
-
-    #import pdb
-    #pdb.set_trace()
     already_answered = SectionQuizAnsweredCorrectly.objects.filter(section=section, user = request.user).exists()
-
-    #factoring this out:
-    #already_answered = False
-    #for q in quiz_sequences:
-    #    if section in already_visited_pages_except_most_forward_one(q, request.user):
-    #        already_answered = True
-            
-    # for future reference, log the fact that we have displayed this page.
-    
     set_timestamp_for_section (section, request.user)
+
+
     
-    
-    if section.id == root.id:
-        # trying to visit the root page
-        if section.get_next():
-            # just send them to the first child
-            return HttpResponseRedirect(section.get_next().get_absolute_url())
+    #We're leaving the top level pages as blank and navigating around them.    
+    send_to_first_child = False
+    is_root = (section.id == root.id)
+    is_child_of_root = (section.get_parent() and section.get_parent().id == root.id)
+    if len(section.get_children()) > 0 and section.get_next() : # don't send to first child if there is no first child.
+        if is_root or is_child_of_root:
+            send_to_first_child = True
+    if send_to_first_child:
+        return HttpResponseRedirect(section.get_next().get_absolute_url())
+
+
 
     if request.method == "POST":
         # user has submitted a form. deal with it
@@ -81,7 +68,7 @@ def page(request, path):
             section_preferences = section_preferences,
             module_info = module_info(section),            
             already_answered = already_answered,
-            in_quiz_sequence = in_quiz_sequence,
+            #in_quiz_sequence = in_quiz_sequence,
             already_visited = already_visited
             
         )
@@ -91,6 +78,8 @@ def page(request, path):
 def latest_page(request, path):
     """Returns the most recently viewed section BY TIMESTAMP in {the page itself or its descendants}."""
     """Used only for nav purposes."""
+    #import pdb
+    #pdb.set_trace()
     section = get_section_from_path(path)
     pool = self_and_descendants(section)
     if  request.user.is_anonymous():

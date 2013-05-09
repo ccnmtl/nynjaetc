@@ -11,17 +11,18 @@ def whether_already_visited (section, user):
     return SectionTimestamp.objects.filter(user=user, section = section).exists()
 
 
-
-def already_visited_pages_except_most_forward_one (section, user):
-    """Removes the most-forward page from already_visited_pages.
-    If we didn't remove this last page, it would be possible to find out the answer of the last page just by reloading it."""
-    result = already_visited_pages (section, user)
-    if len(result) == 0:
-        return result
-        
-    #print ("Visited descendents, EXCEPT FOR ONE, of  ", section)
-    #print (result [0:-1])
-    return result [0:-1]
+#FACTORED THIS OUT:
+if 1 == 0:
+    def already_visited_pages_except_most_forward_one (section, user):
+        """Removes the most-forward page from already_visited_pages.
+        If we didn't remove this last page, it would be possible to find out the answer of the last page just by reloading it."""
+        result = already_visited_pages (section, user)
+        if len(result) == 0:
+            return result
+            
+        #print ("Visited descendents, EXCEPT FOR ONE, of  ", section)
+        #print (result [0:-1])
+        return result [0:-1]
     
 
 def already_visited_pages (section, user):

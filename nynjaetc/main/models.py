@@ -15,6 +15,33 @@ from django.contrib.auth.forms import PasswordResetForm
 from registration.forms import RegistrationForm
 from django import forms
 
+from pagetree.models import Section
+
+def is_leaf_or_has_content(self):
+    is_leaf = (len(self.get_children()) == 0)
+    has_content = (self.pageblock_set.count())
+    return is_leaf or has_content
+Section.is_leaf_or_has_content = is_leaf_or_has_content
+
+def next_with_content(self):
+    s = self.get_next()
+    while s != None:
+        if s.is_leaf_or_has_content():
+            return s
+        s = s.get_next()
+    return None
+Section.next_with_content = next_with_content
+    
+def prev_with_content (self):
+    s = self.get_previous()
+    while s != None:
+        if s.is_leaf_or_has_content():
+            return s
+        s = s.get_previous()
+    return None
+Section.prev_with_content = prev_with_content
+
+
 #"""Let's turn off the ability to change email from the admin tool.
 # (We can build a new version of this form later if it's needed.
 # note -- if you need a new email address, just re-register.
