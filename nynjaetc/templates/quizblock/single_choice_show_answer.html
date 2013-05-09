@@ -3,31 +3,7 @@
 
 
 {% if block.rhetorical %}
-      <!--
-      <div class="casesanswerdisplay">
-        {%comment %}
-        <a href="#q{{question.id}}" class="moretoggle">Show answer &gt;&gt;</a>
-        {%endcomment %}
-        <div id="q{{question.id}}" class="toggleable">
-          <p class="the_correct_answer_is">
-            {% if question.correct_answer_letter %}
-              <i>The correct answer is {{question.correct_answer_letter}}.</i>
-            {{response}}
-            {% endif %} 
-            {{question.explanation|markdown}}
-            
-            {% for answer in question.answer_set.all %}
-                {% if answer.explanation %}
-                    <div class = "one_per_answer_explanation {{answer.id}}">
-                       <p class ="the_answer">{{answer }}</p>
-                       <p class ="the_explanation">{{answer.explanation }}</p>
-                    </div>
-                {%endif %}
-            {%endfor %}
-          </p>
-        </div>
-      </div>
-       -->
+
             {%comment %}
                 {% if question.correct_answer_letter %}
                       <i>Correct.</i>
@@ -43,8 +19,8 @@
                                 {% endif %}       
                             {%endcomment %}
                             {% if answer.explanation %}
-                                   <p class ="the_answer">{{answer }}</p>
-                                   <p class ="the_explanation">{{answer.explanation|safe}}</p>
+                                   <p class ="the_answer {% if answer.correct %}highlight_correct{% endif %}">{{answer }}</p>
+                                   <p class ="the_explanation {% if answer.correct %}highlight_correct{% endif %}">{{answer.explanation|safe}}</p>
                             {%endif %}
                     </div>
             {%endfor %}
