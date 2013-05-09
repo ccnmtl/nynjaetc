@@ -29,7 +29,7 @@ body, html {
   position: relative;
 }
 
-.pager {
+.pager.main {
   clear: both;
   float: left;
   width: 100%;
@@ -385,12 +385,26 @@ body {
    }
    
  } 
+ 
+ .the_answer_title {
+   font-weight: bold;
+   display: block;
+   margin: 0 0 10px 0;
+ }
+ 
+ .the_answer_text {
+   clear: both;
+   display: block;
+   
+   a {
+     
+   }
+   
+ }
+ 
+ 
 }
   
-.highlight_correct {
-    color:green !important;
-}
- 
 
 
 /*Footer*/
@@ -419,7 +433,7 @@ div.one_per_answer_explanation {
 }
 
 .one_per_answer_explanation .the_answer{
-    font-weight: bold;
+    font-weight: normal;
 }
 
 .one_per_answer_explanation .the_explanation{

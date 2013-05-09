@@ -19,8 +19,10 @@
                                 {% endif %}       
                             {%endcomment %}
                             {% if answer.explanation %}
-                                   <p class ="the_answer {% if answer.correct %}highlight_correct{% endif %}">{{answer }}</p>
-                                   <p class ="the_explanation {% if answer.correct %}highlight_correct{% endif %}">{{answer.explanation|safe}}</p>
+                                  <p class ="the_answer {% if answer.correct %}alert alert-success{% else %} alert alert-error{% endif %}">
+                                  <span class="the_answer_title">{{answer}}</span>
+                                  <span class="the_answer_text">{{answer.explanation|safe}}</span>
+                                  </p>
                             {%endif %}
                     </div>
             {%endfor %}
