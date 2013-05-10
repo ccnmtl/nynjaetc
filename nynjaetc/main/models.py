@@ -55,12 +55,17 @@ UserAdmin.fieldsets[1][1]['fields'] = new_personal_fields
 admin.site.register(User, UserAdmin)
 
 
+def get_sentinel_user():
+    return User.objects.get_or_create(username='deleted')[0]
+
 class UserProfile(models.Model):
 
     class Meta:
         app_label = 'main'
 
-    user = models.ForeignKey(User, unique=True)
+    def __unicode__(self):
+        return "Encrypted email and HRSA ID for user %d" % self.user.id
+    user = models.ForeignKey(User, unique=True, on_delete=models.CASCADE)
     encrypted_email = EncryptedEmailField()
     hrsa_id = EncryptedCharField()
 
