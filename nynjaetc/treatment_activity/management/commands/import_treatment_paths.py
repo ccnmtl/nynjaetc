@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand
 from xml.dom import minidom
 from optparse import make_option
 from nynjaetc.treatment_activity.models import TreatmentNode, NODE_CHOICES
+from nynjaetc.treatment_activity.models import TreatmentPath
 
 
 class Command(BaseCommand):
@@ -47,10 +48,10 @@ class Command(BaseCommand):
                 return key
         return ''
 
-    def get_treatment_nodes(self, parent):
+    def get_nodes_by_name(self, parent, name):
         a = []
         for node in parent.childNodes:
-            if node.nodeName == 'TreatmentNode':
+            if node.nodeName == name:
                 a.append(node)
         return a
 
@@ -63,12 +64,34 @@ class Command(BaseCommand):
 
         xmldoc = minidom.parse(options.get('file'))
 
-        paths = xmldoc.getElementsByTagName('TreatmentPath')
-        for p in paths:
-            node = self.get_treatment_nodes(p)[0]
-            label = node.attributes.getNamedItem('Label')
-            root = TreatmentNode.add_root(
-                name=label.nodeValue,
-                type=self.get_activity_type(node))
+        root_nodes = xmldoc.getElementsByTagName('TreatmentNodes')
+        for r in root_nodes:
+            node = self.get_nodes_by_name(r, 'TreatmentNode')[0]
+            label = node.attributes.getNamedItem('Label').nodeValue
+
+            try:
+                root = TreatmentNode.objects.get(name=label,
+                                                 type='RT')
+                root.get_descendants().delete()
+            except TreatmentNode.DoesNotExist:
+                root = TreatmentNode.add_root(
+                    name=label,
+                    type=self.get_activity_type(node))
 
             self.add_children(node.childNodes, root)
+
+        paths = xmldoc.getElementsByTagName('TreatmentPath')
+        if len(paths) > 0:
+            TreatmentPath.objects.all().delete()
+            for p in paths:
+                new_path = TreatmentPath()
+                fields = self.get_nodes_by_name(p, 'field')
+                for f in fields:
+                    name = f.attributes.getNamedItem('name').nodeValue
+                    value = f.childNodes[0].nodeValue
+                    if name == 'tree':
+                        value = TreatmentNode.objects.get(name=value)
+                    elif name == 'cirrhosis':
+                        value = value == 'True'
+                    new_path.__setattr__(name, value)
+                new_path.save()

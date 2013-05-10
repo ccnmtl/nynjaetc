@@ -15,31 +15,36 @@
     <h5>Select from the following patient factors:</h5>
 
     <div>
-        Does the patient have cirrhosis?
-        <input type="radio" name="cirrhosis" value="1" <% if (cirrhosis === "1") { %>checked="checked"<% } %>/>Yes
-        <input type="radio" name="cirrhosis" value="0" <% if (cirrhosis === "0") { %>checked="checked"<% } %>/>No
+        <div>Does the patient have cirrhosis?</div>
+        <div>
+        <div><input type="radio" name="cirrhosis" value="1" <% if (cirrhosis === "1") { %>checked="checked"<% } %>/>Yes</div>
+        <div><input type="radio" name="cirrhosis" value="0" <% if (cirrhosis === "0") { %>checked="checked"<% } %>/>No</div>
+        </div>
     </div>
-
+    <br />
     <div>
-        Is the patient treatment-naive?
-        <input type="radio" name="status" value="0" <% if (status === "0") { %>checked="checked"<% } %>/>Yes
-        <input type="radio" name="status" value="1" <% if (status === "1") { %>checked="checked"<% } %>/>Prior Null Responder
-        <input type="radio" name="status" value="2" <% if (status === "2") { %>checked="checked"<% } %>/>Prior Relapser
-        <input type="radio" name="status" value="3" <% if (status === "3") { %>checked="checked"<% } %>/>Prior Partial
+        <div>Is the patient treatment-naive?</div>
+        <div>
+        <div><input type="radio" name="status" value="0" <% if (status === "0") { %>checked="checked"<% } %>/>Yes</div>
+        <div><input type="radio" name="status" value="1" <% if (status === "1") { %>checked="checked"<% } %>/>Prior Null Responder</div>
+        <div><input type="radio" name="status" value="2" <% if (status === "2") { %>checked="checked"<% } %>/>Prior Relapser</div>
+        <div><input type="radio" name="status" value="3" <% if (status === "3") { %>checked="checked"<% } %>/>Prior Partial Responder</div>
+        </div>
     </div>
-
+    <br />
     <div>
-        Choose a drug to use:
-        <input type="radio" name="drug" value="boceprevir" <% if (drug === "boceprevir") { %>checked="checked"<% } %>/>Boceprevir
-        <input type="radio" name="drug" value="telaprevir" <% if (drug === "telaprevir") { %>checked="checked"<% } %>/>Telaprevir
+        <div>Choose a drug to use:</div>
+        <div>
+        <div><input type="radio" name="drug" value="boceprevir" <% if (drug === "boceprevir") { %>checked="checked"<% } %>/>Boceprevir</div>
+        <div><input type="radio" name="drug" value="telaprevir" <% if (drug === "telaprevir") { %>checked="checked"<% } %>/>Telaprevir</div>
+        </div>
     </div>
-
+    <br />
     <button id="select-patient-factors" class="btn btn-primary">Continue</button>
 </script>
 
 <script type="text/template" id="treatment-flow">
     <div class="patient-factors">
-        <b>debug: path_id</b>: <%= path %><br />
         <b><%= drug.capitalize() %></b> for a <b><%= status_description %></b> patient <b><%= cirrhosis_description %></b>
 
         <div>
@@ -65,12 +70,15 @@
                 <% } %>
             </div>
             <div class="medication <% if (!minimized && duration > 0) { %>height-<%=duration%><% } %>">
-                <i class="icon-question-sign"></i>
-                <p><%= name %></p>
+            <% if (help) { %><i class="icon-question-sign"></i><% } %>
+                <p><%= name %></p><br />
+                <p><%= duration %> weeks</p>
             </div>
+            <% if (help) { %>
             <div class="treatment-step-help" style="display: none">
                 Morbi bibendum odio in nibh convallis vel tincidunt nisl elementum. Etiam posuere orci sit amet mauris sagittis vel vestibulum leo commodo. In eleifend tellus tortor, sed facilisis neque. Donec sagittis tellus mauris. Nullam dignissim facilisis diam, sed dignissim leo dignissim at. Sed consectetur purus nisl, sed aliquam ante. Donec nec dolor dolor, in hendrerit nibh. Aliquam sit amet sapien vitae orci gravida adipiscing
             </div>
+            <% } %>
         <% } else if (type === 'DP') { /* Decision Point */ %>
             <div class="timeline">
                 <div class="duration"></div>
@@ -92,7 +100,7 @@
             <div class="timeline"></div>
             <div class="medication">
                 <p>
-                    <%= text %>
+                    <%= name %> &mdash; <%= text %>
                 </p>
                 <button type="button" class="btn choose-again"
                     data-id="<%=id%>" data-loading-text="Loading...">Choose again</button>

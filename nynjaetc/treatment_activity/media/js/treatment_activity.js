@@ -205,9 +205,18 @@
         },
         onContinue: function() {
             var self = this;
-            jQuery("div.treatment-activity-view").fadeOut("slow", function() {
-                self.next();
-            });            
+            
+            if (jQuery("input:radio[name=cirrhosis]:checked").length < 1) {
+                alert("Does the patient have cirrhosis?");
+            } else if (jQuery("input:radio[name=status]:checked").length < 1) {
+                alert("Is the patient treatment-naive?");
+            } else if (jQuery("input:radio[name=drug]:checked").length < 1) {
+                alert("Choose a drug to use.");
+            } else {
+                jQuery("div.treatment-activity-view").fadeOut("slow", function() {
+                    self.next();
+                });
+            }
         },
         onResetState: function(evt) {
             var self = this;
