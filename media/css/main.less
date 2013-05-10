@@ -1,8 +1,15 @@
+/* Learn.nynjaetc.org Styles
+ * by Rachelle White
+ * rwhite@columbia.edu
+ * ccnmtl.columbia.edu
+ */
+
 /*Color Scheme
  Learn.nynjaetc.org
  */
 
 @learnblue: #0079c4;
+@learnlightblue: #2b99df;
 
 .pull-left {
   float: left;
@@ -13,6 +20,7 @@
 
 body, html {
   height: 100%;
+  background: url('/site_media/img/nynjaetcbg.png') repeat;
 }
 
 #outer-container {
@@ -21,9 +29,30 @@ body, html {
   position: relative;
 }
 
+.pager.main {
+  clear: both;
+  float: left;
+  width: 100%;
+  border-bottom: solid 1px #ccc;
+  border-top: solid 1px #ccc;
+  padding: 10px 0;
+  
+  a {
+    color: #ec1c23;
+  }
+}
+
+
 /*Base Typography*/
+body {
+  font-familiy: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  font-weight: 200;
+}
 
 #content {
+  float: left;
+  clear:both;
+  
   a   {
    color: @learnblue;
   }
@@ -31,13 +60,35 @@ body, html {
 
 
 /*Top Navigation*/
+#login {
+  padding-right: 20px;
+  padding-left: 20px;
+  background-color: #035b9b;
+  height: 40px;
+
+ .nav {
+    margin: 0;
+  }
+  
+  .navbar-text {
+    color: #fff;
+  }
+}
+
+#primarynav.navbar {
+  margin-bottom: 11px;
+}
+
 #header {
+   background: url('/site_media/img/nynjaetcbg.png') repeat;
+  
   .subbrand {
     font-size: 20px;
     color: #555;
     font-weight: 200;
-    font-family: 'Asap', 'Arial';
+    font-family: 'Asap', 'Helvetica Neue', 'Arial', sans-serif;
     margin: 27px 0 0 0;
+
 
     @media (max-width: 979px) and (min-width: 768px) {
       font-size: 14px;
@@ -54,17 +105,7 @@ body, html {
 
 #nav {
    .btn {
-     margin: 3px 0 0 7px;
-     
-     @media (max-width: 979px) and (min-width: 768px) {
-       margin: -8px 0 0 7px;
-     }
-     
-     @media (max-width: 767px) {
-       margin: -15px 7px 10px 0;       
-       .pull-left
-     }
-     
+     margin: 3px 0 0 7px;     
     }
 }
 
@@ -77,24 +118,27 @@ body, html {
 }
 
 /*Custom Breadcrumbs*/
-ul#breadcrumbs {
-  margin: -10px 0 0 4px;  
+.row-fluid#breadcrumbs {
   
-   li {
-   list-style-type: none;
-   display: inline;
-   font-size: 12px;
+  ul {
+    margin: 0 0 0 4px;
+  
+    li {
+      list-style-type: none;
+      display: inline;
+      font-size: 12px;
    
-   a {
-     color: #ccc;
-     text-decoration: none;
+    a {
+      color: #ccc;
+      text-decoration: none;
      
       &:hover {
         color: #333;
       }
    }
-   
-   .divider {
+     
+ }  
+  .divider {
      margin: 0 5px;
      color: #ccc;
    }  
@@ -102,72 +146,291 @@ ul#breadcrumbs {
 
 }
 
-
-
-
 /*Main Menu*/
 
 .navbar-inner {
   padding-left: 0px !important;
   padding-right: 0px !important;
+  
+   ul.mainnav li
+  {
+    &:first-child {
+      display: none;
+    }
+  }
 }
 
 /*Sidebar*/
-#sidebar {
-    margin: 10px 0 0 0;
-   
-  ul {
-    margin: 0;
-    list-style-type: none;
-    
-    &>li {
-      line-height: 20px;
-      padding: 5px 0;
-        
-        &.menu-3>b
-        {
-          font-weight: bold;
-        }
-        
-        
-        a {
-          color: @learnblue;
-            &:hover {
-              text-decoration: underline;
-            }
-        }
-      
-        &.menu-4 {
-          margin-left: 7px;
-        } 
-      
-        &>ul>li:last-child{
-          border-bottom: none;
-        }
-      
-    }
-   
-   &>li:last-child {
-     border-bottom: none;
-   }
-   
-  }
-  
-  b {
-    font-weight: normal;
-    color: @learnblue;
-  }
-  
-}
 
 /*Content*/
 
 .pagetitle {
-  font-family: 'Asap', 'HelveticaNeue', 'Arial', sans-serif;
-  margin: 0 0 20px 0;
-  color: #444;
-  border-bottom: solid 1px #ccc;
+    font-family: 'Asap', 'Helvetica Neue', 'Arial', sans-serif;
+    margin: 0 0 20px 0;
+    color: #444;
+    font-size: 22px;
+  }
+ 
+#content { 
+  h4 {
+    font-weight: 200;
+    font-size: 20px;
+    margin: 0 0 20px 0;
+  }
 }
+
+
+/*Disclaimer*/
+
+.module-enduring-materials {
+  
+  #sidebar {
+    display: none;
+  }
+  
+  .span9 {
+    margin: 0;
+    width: 100%;
+  }
+  
+  a.btn {
+    color: #fff !important;
+    margin: 0 0 20px 0;  
+  }
+  
+  ul.pager {
+    display: none;
+  }
+  
+}
+
+/*RGT Patient Case*/
+.module-patient-case, .module-patient-case-drug-interactions
+{
+  #sidebar {
+    display: none;
+  }
+  div#breadcrumbs {
+    display: none;
+  }
+  #right-content {
+    margin: 0;    
+    
+    img {
+      border: solid 10px #f5f5f5;
+      border-radius: 6px;
+      margin: 0 10px 10px 0;
+    }
+  }
+  
+  .pageblock.intro {
+    float: left;
+    width: 50%;
+    margin: 0 20px 0 0;
+    
+      p {
+        line-height: 20px;
+      }
+    
+    @media (max-width: 979px){
+      width: 100%;
+      clear: both;
+    }
+  }
+  
+  .pageblock.history {
+    float: left;
+    width: 400px;
+    
+    @media (max-width: 979px) {
+      clear: both;
+      margin: 10px 0 0 0;
+    }
+  }
+  
+  .container.main {
+  .row-fluid .span9 {
+    width: 100%;
+  }
+ }
+  
+  #history {
+    background: top no-repeat url('/site_media/img/clipboard.png');
+    background-size: 100% 100%;
+    width: 399px;
+    height: 445px;
+  }
+  
+  .tabscontent {
+  margin: -23px 0 0 5px;
+  width: 368px;
+  height: 405px;
+  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+        
+    .tabpage { 
+      ul, p {
+        width: 285px;
+      }
+    }
+
+    h2 {
+      margin: 10px 0;
+      font-size: 18px;
+      text-transform: uppercase;
+      line-height: 32px;
+    }
+    
+    h3 {
+      font-size: 16px;
+      line-height: 26px;
+      margin: 0;
+    }
+       
+    ul li {
+      list-style-type: none;
+      margin: 7px 0 0 -25px;      
+      border-bottom: solid 1px #ccc;
+         
+         &:last-child {
+           border-bottom: none;
+         }   
+       }
+    
+    img.headshot {
+      float: left;
+      margin: 0 10px 10px 0;
+    } 
+  }
+  
+  #tabpage_1 {
+    background: top no-repeat url('/site_media/img/tab1.png');
+    background-size: 100% 100%;
+    width: 368px;
+    height: 426px;
+    float: left;
+    font-size: 13px;
+    padding: 10px 0 0 30px;
+  }
+     
+  #tabpage_2 {
+    background: top no-repeat url('/site_media/img/tab2.png');
+    background-size: 100% 100%;
+    width: 368px;
+    height: 426px;
+    float: left;
+    font-size: 13px;
+    padding: 10px 0 0 30px;
+  }
+
+  .tabs {
+     
+    ul li {
+     list-style-type: none;
+     cursor: pointer;
+     font-weight: bold;
+     color: @learnblue;
+     font-family: "Asap", "Arial", sans-serif;
+     
+     &:hover {
+       color:@learnlightblue;
+     }
+    }
+   
+    &.rotate {
+      position: relative;
+      top: 55px;
+      left: 171px;
+    }
+    
+    #tabHeader_1 {
+      display: inline;
+      left: 115px;
+      position: relative;
+      padding: 10px;
+    }
+    
+    #tabHeader_2 {
+      display: inline;
+      right: 112px;
+      position: relative;
+      padding: 10px;
+    } 
+
+
+  }
+  
+  .rotate {
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+
+    /* also accepts left, right, top, bottom coordinates; not required, but a good idea for styling */
+    -webkit-transform-origin: 50% 50%;
+    -moz-transform-origin: 50% 50%;
+    -ms-transform-origin: 50% 50%;
+    -o-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
+
+    /* Should be unset in IE9+ I think. */
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+  }  
+  
+  
+  
+  /*Quiz*/
+ 
+ .cases {
+   .casetitle {
+     font-family: 'Helvetica Neue', 'Arial', sans-serif;
+     font-size: 18px;
+     color: #444;
+     margin: 0 0 10px 5px;
+   }
+   
+   .casequestion {
+     p {
+       font-weight: bold;
+     }
+     
+     li {
+       margin: 0 0 15px 0;
+       
+       input {
+         margin: 0 5px 0 0;
+       }
+     }
+     
+   }
+   .casecontent {
+     background-color: #fff;
+     border-radius: 4px;
+     padding: 20px;
+   }
+   
+ } 
+ 
+ .the_answer_title {
+   font-weight: bold;
+   display: block;
+   margin: 0 0 10px 0;
+ }
+ 
+ .the_answer_text {
+   clear: both;
+   display: block;
+   
+   a {
+     
+   }
+   
+ }
+ 
+ 
+}
+  
+
 
 /*Footer*/
 
@@ -181,6 +444,10 @@ ul#breadcrumbs {
   position: relative;
 }
 
+
+
+
+
 /*
 .one_per_answer_explanation {
     display: none;
@@ -191,23 +458,15 @@ div.one_per_answer_explanation {
 }
 
 .one_per_answer_explanation .the_answer{
-    font-weight: bold;
+    font-weight: normal;
 }
 
 .one_per_answer_explanation .the_explanation{
     color: gray;
 }
 
-/*RGT Activity*/
 
-body.module-patient-case-rgt {
-  #sidebar {
+.debug_info {
     display: none;
-  }
-  ul#breadcrumbs {
-    display: none;
-  }
-  #right-content {
-    margin: 0;    
-  }
 }
+

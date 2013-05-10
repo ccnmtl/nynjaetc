@@ -27,7 +27,7 @@
 {% endblock %}
 
 {% block navrightextra %}
-    <ul class="nav pull-right">
+    <ul class="nav">
         {% if user.is_staff %}
         <li><a href="/edit{{section.get_absolute_url}}">edit page</a></li>
         {% endif %}
@@ -37,7 +37,7 @@
 
 
 {% block breadcrumbs %}
-  <ul id="breadcrumbs">
+  <ul>
  <!--
         <p>Section is <strong>{{section}}</strong></p>
         <p>Path is  <strong>{{path}}</strong></p>
@@ -99,21 +99,33 @@
 {% endblock %}
 
 {% block content-nav %}
-<ul class="pager">
-{% if not section_preferences.hide_previous_button %}
-    {% if section.get_previous %}
-      <li class="previous">
-		    <a href="{{section.get_previous.get_absolute_url}}">&larr; {{section.get_previous.label}}</a>
-      </li>
+    <ul class="pager main">
+    {% if not section_preferences.hide_previous_button %}
+        {% if section.prev_with_content %}
+         <li class="previous">
+		        <a href="{{section.prev_with_content.get_absolute_url}}">&larr; {{section.prev_with_content.label}}  </a>
+          </li>
+        {% endif %}
     {% endif %}
-{% endif %}
 
-{% if not section_preferences.hide_next_button %}
-    {% if section.get_next %}
-    {% with section.get_next as next_section %}
-    <li class="next"><a href="{{section.get_next.get_absolute_url}}">{{section.get_next.label}} &rarr;</a></li>
-    {% endwith %}
+    {% if not section_preferences.hide_next_button %}
+        {% if section.next_with_content %}
+        {% with section.next_with_content as next_section %}
+        <li class="next"><a href="{{section.next_with_content.get_absolute_url}}">{{section.next_with_content.label}}&rarr;</a></li>
+        {% endwith %}
+        {% endif %}
+        
     {% endif %}
-{% endif %}
-</ul>
+    </ul>
+
+    <p class ="debug_info">Section is <strong>{{section}}</strong></p>
+    <p class ="debug_info">Path is  <strong>{{path}}</strong></p>
+    <p class ="debug_info">Module is <strong>{{module}}</strong></p>
+    <p class ="debug_info">Top level is:  <strong>{{path.0}}</strong></p>
+    <p class ="debug_info">Middle level is:  <strong>{{path.1}}</strong></p>
+    <p class ="debug_info">Bottom level is:  <strong>{{path.2}}</strong></p>
+    <p class ="debug_info">Depth is  <strong>{{depth}}</strong></p>
+    <p class ="debug_info">in_quiz_sequence is  <strong>{{in_quiz_sequence}}</strong></p>
+    <p class ="debug_info">already_visited is  <strong>{{already_visited}}</strong></p>
+    <p class ="debug_info">already_answered is  <strong>{{already_answered}}</strong></p>
 {% endblock %}

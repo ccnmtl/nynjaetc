@@ -6,17 +6,15 @@
   <p class="warning">You must be logged in to view this content</p>
 {% else %}
 
-{% for question in block.question_set.all %}
-  {% include 'quizblock/question.html' %}
-{% endfor %}
+    {% for question in block.question_set.all %}
+      {% include 'quizblock/question.html' %}
+    {% endfor %}
 
-{% if block.rhetorical %}
-  <script src="http://mt.ccnmtl.columbia.edu/pedialabs/js/quizshow.js" type="text/javascript" language="javascript"></script>
-  
-  
-  <script src="/site_media/js/quiz/answer_feedback.js" type="text/javascript" language="javascript"></script>
+    {% if block.rhetorical %}
+      <script src="http://mt.ccnmtl.columbia.edu/pedialabs/js/quizshow.js" type="text/javascript" language="javascript"></script>
+      
+      
+      <script src="/site_media/js/quiz/answer_feedback.js" type="text/javascript" language="javascript"></script>
 
-{% endif %}	
-
-
+    {% endif %}	
 {% endif %}
