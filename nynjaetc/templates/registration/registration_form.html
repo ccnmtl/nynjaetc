@@ -7,4 +7,12 @@
 
   <input type="submit" value="{% trans 'Submit' %}" />
 </form>
+
+<p>
+    If you already have a username or password,<br/>
+    but have forgotten either,
+    <a href="{% url auth_password_reset %}">reset them here</a>.
+</p>
 {% endblock %}
+
+

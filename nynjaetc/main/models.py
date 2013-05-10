@@ -63,11 +63,13 @@ class UserProfile(models.Model):
     
     @staticmethod
     def find_user_profiles_by_plaintext_email(plaintext_email):
+        """ this isn't scaleable but should be fine in the short term."""
         try:
             return [ x for x in UserProfile.objects.all() if x.encrypted_email == plaintext_email ]
         except DjangoUnicodeDecodeError:
-            
             raise ImproperlyConfigured ("""Looks like the setting for encryption /decryption doesn't match one of the values in the database.""")
+            
+            
 class SectionTimestamp(models.Model):
     """Marks when this section was last visited by a particular user."""
     def __unicode__(self):
@@ -256,10 +258,20 @@ def my_clean(self):
     my_email = self.cleaned_data.get('email', None)
     if my_email:
         if UserProfile.find_user_profiles_by_plaintext_email(my_email):    
-            raise forms.ValidationError("That email address is already in use.")
+            raise forms.ValidationError("""That email address is already taken. You can reset your password at the link below.""")
     return self.cleaned_data
     
 RegistrationForm.clean = my_clean
+
+
+def my_clean_username(self):
+    existing = User.objects.filter(username__iexact=self.cleaned_data['username'])
+    if existing.exists():
+        raise forms.ValidationError("That username is already taken.  You can reset your password at the link below.")
+    else:
+        return self.cleaned_data['username']
+            
+RegistrationForm.clean_username = my_clean_username
 
 ####################################
 ####################################
