@@ -6,16 +6,61 @@
 {% block js %}
 {%endblock %}
 
+{%block css %}
+<style>
+    #sidebar  {
+        display:none;
+    }
+    #right-content {
+        width : 4000px;
+    }
+</style>
+{%endblock %}
+
+
 {% block content %}
     <h1>Analytics</h1>
-    <table class="analytics_table">
-        {% for line in the_table %}
+    <table class="table table-bordered">
         <tr>
+            <th>
+                user ID
+            </th>
+            <th>
+                username
+            </th>
+            <th>
+                encrypted email
+            </th>
+            <th>
+                plaintext email (there should be none of these)
+            </th>
+            <th>
+                date joined
+            </th>
+            <th>
+                last login
+            </th>
+            <th>
+                is staff -- can see this page
+            </th>
+            <th>
+                hrsa id
+            </th>
+            <th>
+                all quiz answers
+            </th>
+            <th>
+                sections visited
+            </th>
+        </tr>
+    
+        {% for line in the_table %}
+        <tr class = "" >
             <td>
-                {{line.the_user}}
+                {{line.the_user.id}}
             </td>
             <td>
-                {{line.the_user.get_profile}}
+                {{line.the_user}}{% if user == line.the_user %}<i class="icon-user"></i>{%endif %}
             </td>
             <td>
                 {{line.the_user.get_profile.encrypted_email}}
@@ -24,8 +69,25 @@
                 {{line.the_user.email}}
             </td>
             <td>
+                {{line.the_user.date_joined}}
+            </td>
+            <td>
+                {{line.the_user.last_login}}
+            </td>
+            <td>
+                {{line.the_user.is_staff}}
+            </td>
+            <td>
                 {{line.the_user.get_profile.hrsa_id}}
             </td>
+            <td>
+                {{line.quizzes}}
+            </td>
+            <td>
+                {{line.pages}}
+            </td>
+        
+        
         </tr>
         {%endfor %}
     </table>
