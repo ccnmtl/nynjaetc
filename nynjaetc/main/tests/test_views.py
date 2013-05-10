@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 
 
 class BasicTest(TestCase):
+
     def setUp(self):
         self.c = Client()
         self.u = User.objects.create(username="testuser")
