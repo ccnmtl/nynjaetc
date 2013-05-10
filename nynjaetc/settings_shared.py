@@ -96,6 +96,7 @@ ROOT_URLCONF = 'nynjaetc.urls'
 TEMPLATE_DIRS = (
     "/var/www/nynjaetc/templates/",
     os.path.join(os.path.dirname(__file__), "templates"),
+    "/Users/sdreher/workspace/nynjaetc/ve/lib/python2.7/site-packages/treebeard/templates"
 )
 
 INSTALLED_APPS = [
@@ -129,6 +130,8 @@ INSTALLED_APPS = [
     'quizblock',
     'impersonate',
     'registration',
+    'nynjaetc.treatment_activity',
+    'treebeard'
 ]
 
 AUTH_PROFILE_MODULE = "main.UserProfile"
@@ -140,6 +143,7 @@ PAGEBLOCKS = [
     'pageblocks.ImageBlock',
     'pageblocks.ImagePullQuoteBlock',
     'quizblock.Quiz',
+    'treatment_activity.TreatmentActivityBlock'
 ]
 
 

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TreatmentNodes>
+    <TreatmentNode Type="Root" Label="A3. Telaprevir for treatment-naive patients and prior relapsers without known cirrhosis">
+        <TreatmentNode Type="TreatmentStep" Label="PEG-IFN/RBV + Telaprevir" Duration="4"></TreatmentNode>
+        <TreatmentNode Type="DecisionPoint" Label="Week 4: HCV RNA detected">
+            <TreatmentNode Type="Parent" Value="0" Label="No" Text="HCV RNA not detected">
+                <TreatmentNode Type="TreatmentStep" Label="PEG-IFN/RBV + Telaprevir" Duration="8"></TreatmentNode>
+                <TreatmentNode Type="DecisionPoint" Label="Week 12: HCV RNA Detected">
+                    <TreatmentNode Type="Parent" Value="0" Label="No" Text="HCV RNA not detected">
+                        <TreatmentNode Type="TreatmentStep" Label="PEG-IFN/RBV" Duration="12"></TreatmentNode>
+                        <TreatmentNode Type="Stop" Label="Treatment Complete"></TreatmentNode>
+                    </TreatmentNode>
+                    <TreatmentNode Type="Parent" Value="1" Label="Yes" Text="HCV RNA detected">
+                        <TreatmentNode Type="DecisionPoint" Label="Week 12: HCV RNA &gt; 1,000 IU/ml">
+                            <TreatmentNode Type="Parent" Value="0" Label="No" Text="HCV RNA &lt;= 1,000 IU/ml">
+                                <TreatmentNode Type="TreatmentStep" Label="PEG-IFN/RBV" Duration="12"></TreatmentNode>
+                                <TreatmentNode Type="DecisionPoint" Label="Week 24: HCV RNA detected">
+                                    <TreatmentNode Type="Parent" Value="0" Label="No" Text="HCV RNA not detected">
+                                        <TreatmentNode Type="TreatmentStep" Label="PEG-IFN/RBV" Duration="24"></TreatmentNode>
+                                        <TreatmentNode Type="Stop" Label="Treatment Complete"></TreatmentNode>
+                                    </TreatmentNode>
+                                    <TreatmentNode Type="Parent" Value="1" Label="Yes" Text="HCV RNA detected">
+                                        <TreatmentNode Type="Stop" Label="Treatment Complete"></TreatmentNode>
+                                    </TreatmentNode></TreatmentNode>
+                            </TreatmentNode>
+                            <TreatmentNode Type="Parent" Value="1" Label="Yes" Text="HCV RNA &gt; 1,000 IU/ml">
+                                <TreatmentNode Type="Stop" Label="Treatment Complete"></TreatmentNode>
+                            </TreatmentNode></TreatmentNode>
+                    </TreatmentNode>
+                </TreatmentNode>
+            </TreatmentNode>
+            <TreatmentNode Type="Parent" Value="0" Label="Yes" Text="HCV RNA Detected">
+                <TreatmentNode Type="DecisionPoint" Label="Week 4: &gt; 1,000 IU/ml">
+                    <TreatmentNode Type="Parent" Value="0" Label="No" Text="&lt;= 1,000 IU/ml">
+                        <TreatmentNode Type="TreatmentStep" Label="PEG-IFN/RBV + Telaprevir" Duration="8"></TreatmentNode>
+                        <TreatmentNode Type="DecisionPoint" Label="Week 12: HCV RNA &gt; 1,000 IU/ml">
+                            <TreatmentNode Type="Parent" Label="No" Value="0" Text="HCV RNA &lt;= 1,000 IU/ml">
+                                <TreatmentNode Type="TreatmentStep" Label="PEG-IFN/RBV" Duration="12"></TreatmentNode>
+                                <TreatmentNode Type="DecisionPoint" Label="Week 24: HCV RNA Detected">
+                                    <TreatmentNode Type="Parent" Value="0" Label="No" Text="HCV RNA not detected">
+                                        <TreatmentNode Type="TreatmentStep" Label="PEG-IFN/RBV" Duration="24"></TreatmentNode>
+                                        <TreatmentNode Type="Stop" Label="Treatment Complete"></TreatmentNode>
+                                    </TreatmentNode>
+                                    <TreatmentNode Type="Parent" Value="1" Label="Yes" Text="HCV RNA detected">
+                                        <TreatmentNode Type="Stop" Label="Treatment Complete"></TreatmentNode>
+                                    </TreatmentNode>
+                                </TreatmentNode>
+                            </TreatmentNode>
+                            <TreatmentNode Type="Parent" Label="Yes" Value="1" Text="HCV RNA &gt; 1,000 IU/ml">
+                                <TreatmentNode Type="Stop" Label="Treatment Complete"></TreatmentNode>
+                            </TreatmentNode>
+                        </TreatmentNode>
+                    </TreatmentNode>
+                    <TreatmentNode Type="Parent" Value="1" Label="Yes" Text="&gt; 1,000 IU/ml">
+                        <TreatmentNode Type="Stop" Label="Treatment Complete"></TreatmentNode>
+                    </TreatmentNode>
+                </TreatmentNode>
+            </TreatmentNode>
+        </TreatmentNode>
+    </TreatmentNode>
+</TreatmentNodes>

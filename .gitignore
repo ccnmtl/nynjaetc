@@ -7,3 +7,6 @@ reports
 media/CACHE
 local_settings.py
 x
+.project
+.pydevproject
+.settings/

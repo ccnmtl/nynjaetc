@@ -28,6 +28,7 @@ urlpatterns = patterns(
     url(r'^_impersonate/', include('impersonate.urls')),
     (r'^_pagetree/', include('pagetree.urls')),
     (r'^_quiz/', include('quizblock.urls')),
+    (r'^_rgt/', include('nynjaetc.treatment_activity.urls')),
     (r'^admin/', include(admin.site.urls)),
     (r'^accounts/', include('registration.backends.default.urls')),
     (r'^munin/', include('munin.urls')),

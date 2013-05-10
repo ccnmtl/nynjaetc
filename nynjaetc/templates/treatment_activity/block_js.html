@@ -1,0 +1,127 @@
+<script src="/site_media/js/underscore-min.js" type="text/javascript" ></script>
+<script src="/site_media/js/backbone-min.js" type="text/javascript" ></script>
+
+<script src="/_rgt/media/js/treatment_activity.js?version=1" type="text/javascript" ></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        var view = new TreatmentActivityView({
+            el: 'div.treatment-activity-container'
+        });
+    });
+</script>
+
+<script type="text/template" id="patient-factors">    
+    <h5>Select from the following patient factors:</h5>
+
+    <div>
+        <div>Does the patient have cirrhosis?</div>
+        <div>
+        <div><input type="radio" name="cirrhosis" value="1" <% if (cirrhosis === "1") { %>checked="checked"<% } %>/>Yes</div>
+        <div><input type="radio" name="cirrhosis" value="0" <% if (cirrhosis === "0") { %>checked="checked"<% } %>/>No</div>
+        </div>
+    </div>
+    <br />
+    <div>
+        <div>Is the patient treatment-naive?</div>
+        <div>
+        <div><input type="radio" name="status" value="0" <% if (status === "0") { %>checked="checked"<% } %>/>Yes</div>
+        <div><input type="radio" name="status" value="1" <% if (status === "1") { %>checked="checked"<% } %>/>Prior Null Responder</div>
+        <div><input type="radio" name="status" value="2" <% if (status === "2") { %>checked="checked"<% } %>/>Prior Relapser</div>
+        <div><input type="radio" name="status" value="3" <% if (status === "3") { %>checked="checked"<% } %>/>Prior Partial Responder</div>
+        </div>
+    </div>
+    <br />
+    <div>
+        <div>Choose a drug to use:</div>
+        <div>
+        <div><input type="radio" name="drug" value="boceprevir" <% if (drug === "boceprevir") { %>checked="checked"<% } %>/>Boceprevir</div>
+        <div><input type="radio" name="drug" value="telaprevir" <% if (drug === "telaprevir") { %>checked="checked"<% } %>/>Telaprevir</div>
+        </div>
+    </div>
+    <br />
+    <button id="select-patient-factors" class="btn btn-primary">Continue</button>
+</script>
+
+<script type="text/template" id="treatment-flow">
+    <div class="patient-factors">
+        <b><%= drug.capitalize() %></b> for a <b><%= status_description %></b> patient <b><%= cirrhosis_description %></b>
+
+        <div>
+            <button type="button" class="btn reset-state"
+                data-loading-text="Resetting...">Reset Patient Factors</button>
+        </div>
+    </div>
+</script>
+
+<script type="text/template" id="treatment-step">
+    <div id="treatment-step-<%=id%>" 
+        class="treatment-step <%=type%>
+            <% if (minimized) { %>minimized<% } %>"
+            <% if (initial) { %> style="display: none" <% } %>>
+        
+        <% if (type === 'IF') { /* Generic Treatment Step */ %>                    
+            <div class="timeline">
+                <div class="week">WEEK <%=week%></div>
+                
+                <div class="duration height-<%=duration %>"></div>
+                <% if (duration > 0) { %>
+                    <div class="week">WEEK <%=week + duration%></div>
+                <% } %>
+            </div>
+            <div class="medication <% if (!minimized && duration > 0) { %>height-<%=duration%><% } %>">
+            <% if (help) { %><i class="icon-question-sign"></i><% } %>
+                <p><%= name %></p><br />
+                <p><%= duration %> weeks</p>
+            </div>
+            <% if (help) { %>
+            <div class="treatment-step-help" style="display: none">
+                Morbi bibendum odio in nibh convallis vel tincidunt nisl elementum. Etiam posuere orci sit amet mauris sagittis vel vestibulum leo commodo. In eleifend tellus tortor, sed facilisis neque. Donec sagittis tellus mauris. Nullam dignissim facilisis diam, sed dignissim leo dignissim at. Sed consectetur purus nisl, sed aliquam ante. Donec nec dolor dolor, in hendrerit nibh. Aliquam sit amet sapien vitae orci gravida adipiscing
+            </div>
+            <% } %>
+        <% } else if (type === 'DP') { /* Decision Point */ %>
+            <div class="timeline">
+                <div class="duration"></div>
+            </div>
+            <div class="medication">
+                <p>
+                    <%= name %>?
+                    <% if (decision === undefined) { %>
+                        <div class="decision_buttons">
+                            <button type="button" class="btn btn-primary decision-point-button"
+                                data-id="<%=id%> data-loading-text="Loading..." value="1">Yes</button>
+                            <button type="button" class="btn btn-primary decision-point-button"
+                                data-id="<%=id%> data-loading-text="Loading..." value="0">No</button>
+                        </div>
+                    <% } %>
+                </p>
+            </div>
+        <% } else if (type === 'PR') { /* Decision Point Branch -- Yes/No */ %>
+            <div class="timeline"></div>
+            <div class="medication">
+                <p>
+                    <%= name %> &mdash; <%= text %>
+                </p>
+                <button type="button" class="btn choose-again"
+                    data-id="<%=id%>" data-loading-text="Loading...">Choose again</button>
+            </div>
+        <% } else if (type === 'ST') { /* Stop */ %>
+            <div class="timeline">
+                <div class="duration"></div>
+            </div>
+            <div class="medication">
+                <p>
+                    <%= name %>
+                    <div>
+                        To view other treatment paths, reset patient factors.
+                        <div>
+                        <button type="button" class="btn reset-state"
+                            data-loading-text="Resetting...">Reset Patient Factors</button>
+                        </div>
+                    </div>
+                </p>
+            </div>
+        <% } %>
+    </div>
+    <div style="clear: both"></div>
+</script>
