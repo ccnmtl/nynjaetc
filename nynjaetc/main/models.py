@@ -58,6 +58,7 @@ admin.site.register(User, UserAdmin)
 def get_sentinel_user():
     return User.objects.get_or_create(username='deleted')[0]
 
+
 class UserProfile(models.Model):
 
     class Meta:

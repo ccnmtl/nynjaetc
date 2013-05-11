@@ -49,8 +49,9 @@ JENKINS_TASKS = (
     'django_jenkins.tasks.run_pyflakes',
 )
 
-# BY CONTRAST, anything in this list will be tested by Jenkins, otherwise the build will fail.
-PROJECT_APPS = [ 
+# BY CONTRAST, anything in this list will be tested by Jenkins,
+# otherwise the build will fail.
+PROJECT_APPS = [
     'nynjaetc.main',
 ]
 
@@ -96,7 +97,8 @@ ROOT_URLCONF = 'nynjaetc.urls'
 TEMPLATE_DIRS = (
     "/var/www/nynjaetc/templates/",
     os.path.join(os.path.dirname(__file__), "templates"),
-    "/Users/sdreher/workspace/nynjaetc/ve/lib/python2.7/site-packages/treebeard/templates"
+    os.path.join(os.path.dirname(__file__),
+                 "../ve/lib/python2.7/site-packages/treebeard/templates")
 )
 
 INSTALLED_APPS = [
@@ -123,7 +125,7 @@ INSTALLED_APPS = [
     'django_jenkins',
     'smoketest',
     'django_extensions',
-    'django_fields', ## this needs to be defined before nynjaetc.main
+    'django_fields',  # this needs to be defined before nynjaetc.main
     'nynjaetc.main',
     'pagetree',
     'pageblocks',
@@ -213,10 +215,6 @@ LOGIN_REDIRECT_URL = "/"
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
 
-
-
-
 ENCRYPT_EMAIL_ADDRESSES = True
 ENCRYPT_HRSA_IDS = True
-ENCRYPT_KEY = 'DUMMY DUMMY DUMMY DUMMY.' #overridden by local_settings.py
-
+ENCRYPT_KEY = 'DUMMY DUMMY DUMMY DUMMY.'  # overridden by local_settings.py
