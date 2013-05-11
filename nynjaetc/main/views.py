@@ -66,12 +66,11 @@ def page(request, path):
             is_submitted=submitted(section, request.user),
             modules=root.get_children(),
             root=section.hierarchy.get_root(),
-            section_preferences = section_preferences,
-            module_info = module_info(section),
-            already_answered = already_answered,
+            section_preferences=section_preferences,
+            module_info=module_info(section),
+            already_answered=already_answered,
             # in_quiz_sequence = in_quiz_sequence,
-            already_visited = already_visited
-
+            already_visited=already_visited
         )
 
 

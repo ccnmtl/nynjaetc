@@ -34,7 +34,8 @@ def get_next_steps(request, path_id, node_id):
 
     data = {'steps': next_steps,
             'node': prev.id,
-            'path': path_id}
+            'path': path_id,
+            'can_edit': request.user.is_superuser}
 
     return HttpResponse(simplejson.dumps(data, indent=2),
                         mimetype="application/json")
@@ -52,7 +53,7 @@ def choose_treatment_path(request):
 
     data = {}
 
-    if cirrhosis == None or status == None or drug == None:
+    if cirrhosis is None or status is None or drug is None:
         data = {"error": "Missing required parameters"}
 
         return HttpResponse(simplejson.dumps(data, indent=2),

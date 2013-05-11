@@ -5,7 +5,7 @@
     
     String.prototype.capitalize = function() {
         return this.charAt(0).toUpperCase() + this.slice(1);
-    }
+    };
     
     var TreatmentStep = Backbone.Model.extend({
         defaults: {
@@ -26,6 +26,7 @@
             _.bindAll(this, "render", "unrender");
             this.model.bind("destroy", this.unrender);
             this.model.bind("change:minimized", this.render);
+            this.template = _.template(jQuery("#treatment-step").html());
             
             this.render();
             this.model.set('initial', false);
@@ -34,10 +35,9 @@
             jQuery(eltStep).fadeIn("slow");
         },
         render: function () {
-            var eltStep = jQuery(this.el).find("div.treatment-step");
-            
-            this.template = _.template(jQuery("#treatment-step").html());
-            this.el.innerHTML = this.template(this.model.toJSON());
+            var eltStep = jQuery(this.el).find("div.treatment-step");            
+            var ctx = this.model.toJSON();
+            this.el.innerHTML = this.template(ctx);
         },
         unrender: function () {
             jQuery(this.el).fadeOut('slow', function() {
@@ -125,7 +125,6 @@
                 "onHelp"
             );
             
-            jQuery('li.previous').hide();
             jQuery('li.next').hide();
             
             this.activityState = new ActivityState();
@@ -181,7 +180,10 @@
                     
                     // Appear the new treatment steps
                     for (var i = 0; i < json.steps.length; i++) {
-                        var ts = new TreatmentStep(json.steps[i]);
+                        var opts = json.steps[i];
+                        opts.can_edit = json.can_edit;
+                        
+                        var ts = new TreatmentStep(opts);
                         ts.set('week', week);
                         self.treatmentSteps.add(ts);
                         week += ts.get('duration');
@@ -190,7 +192,10 @@
             });
         },
         onAddStep: function(step) {
-            var view = new TreatmentStepView({model: step, parentView: this});
+            var view = new TreatmentStepView({
+                model: step,
+                parentView: this
+            });
             jQuery("div.treatment-steps").append(view.el);    
         },
         onRemoveStep: function(step) {

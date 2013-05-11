@@ -48,7 +48,7 @@ class TreatmentNode(MP_Node):
             'name': self.name,
             'type': self.type,
             'text': self.text,
-            'help':  self.help,
+            'help': self.help,
             'duration': self.duration,
             'value': self.value
         }
@@ -95,8 +95,8 @@ class TreatmentActivityBlock(models.Model):
 
     def edit(self, vals, files):
         form = TreatmentActivityBlockForm(data=vals,
-                                     files=files,
-                                     instance=self)
+                                          files=files,
+                                          instance=self)
         if form.is_valid():
             form.save()
 

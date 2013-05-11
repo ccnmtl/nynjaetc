@@ -59,7 +59,7 @@
         class="treatment-step <%=type%>
             <% if (minimized) { %>minimized<% } %>"
             <% if (initial) { %> style="display: none" <% } %>>
-        
+            
         <% if (type === 'IF') { /* Generic Treatment Step */ %>                    
             <div class="timeline">
                 <div class="week">WEEK <%=week%></div>
@@ -70,20 +70,31 @@
                 <% } %>
             </div>
             <div class="medication <% if (!minimized && duration > 0) { %>height-<%=duration%><% } %>">
-            <% if (help) { %><i class="icon-question-sign"></i><% } %>
+                <% if (help) { %><i class="icon-question-sign"></i><% } %>
+                <% if (can_edit) { %>
+                    <a href="/admin/treatment_activity/treatmentnode/<%=id%>/"
+                       target="_blank"
+                       title="edit this step">
+                        <i class="icon-edit"></i>
+                    </a>
+                <% } %>
                 <p><%= name %></p><br />
                 <p><%= duration %> weeks</p>
             </div>
-            <% if (help) { %>
-            <div class="treatment-step-help" style="display: none">
-                Morbi bibendum odio in nibh convallis vel tincidunt nisl elementum. Etiam posuere orci sit amet mauris sagittis vel vestibulum leo commodo. In eleifend tellus tortor, sed facilisis neque. Donec sagittis tellus mauris. Nullam dignissim facilisis diam, sed dignissim leo dignissim at. Sed consectetur purus nisl, sed aliquam ante. Donec nec dolor dolor, in hendrerit nibh. Aliquam sit amet sapien vitae orci gravida adipiscing
-            </div>
-            <% } %>
         <% } else if (type === 'DP') { /* Decision Point */ %>
             <div class="timeline">
                 <div class="duration"></div>
             </div>
             <div class="medication">
+                <% if (help) { %><i class="icon-question-sign"></i><% } %>
+                <% if (can_edit) { %>
+                    <a href="/admin/treatment_activity/treatmentnode/<%=id%>/"
+                       target="_blank"
+                       title="edit this step">
+                        <i class="icon-edit"></i>
+                    </a>
+                <% } %>
+                
                 <p>
                     <%= name %>?
                     <% if (decision === undefined) { %>
@@ -99,6 +110,13 @@
         <% } else if (type === 'PR') { /* Decision Point Branch -- Yes/No */ %>
             <div class="timeline"></div>
             <div class="medication">
+                <% if (can_edit) { %>
+                    <a href="/admin/treatment_activity/treatmentnode/<%=id%>/"
+                       target="_blank"
+                       title="edit this step">
+                        <i class="icon-edit"></i>
+                    </a>
+                <% } %>            
                 <p>
                     <%= name %> &mdash; <%= text %>
                 </p>
@@ -110,6 +128,14 @@
                 <div class="duration"></div>
             </div>
             <div class="medication">
+                <% if (help) { %><i class="icon-question-sign"></i><% } %>
+                <% if (can_edit) { %>
+                    <a href="/admin/treatment_activity/treatmentnode/<%=id%>/"
+                       target="_blank"
+                       title="edit this step">
+                        <i class="icon-edit"></i>
+                    </a>
+                <% } %>                
                 <p>
                     <%= name %>
                     <div>
@@ -120,6 +146,12 @@
                         </div>
                     </div>
                 </p>
+            </div>
+        <% } %>
+        
+        <% if (help) { %>
+            <div class="treatment-step-help" style="display: none">
+                <%= help %>
             </div>
         <% } %>
     </div>

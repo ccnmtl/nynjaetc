@@ -51,26 +51,37 @@ div.medication {
     padding: 5px;
     width: 350px;
     text-align: center;
+    background-color: white;
 }
 
 div.medication p {
     display: inline;
 }
 
-div.medication .icon-question-sign {
-    float: right;
-    cursor: pointer;
+div.edit-step {
+    float: left;
+    width: 16px;
+    margin-top: 15px;
+    margin-left: 10px;
 }
 
+div.medication .icon-question-sign,
+div.medication .icon-edit {
+    float: right;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+
 div.treatment-step-help {
-    height: 200px;
+    max-height: 200px;
     position: absolute;
     right: 110px;
     width: 250px;
     border: 1px solid #eee;
     padding: 5px;
     margin-top: 20px;
-    overflow-y: scroll;
+    overflow-y: auto;
     background-color: #eee;
 }
 
@@ -119,7 +130,7 @@ div.treatment-step.DP .duration {
     border: 10px solid transparent;
     border-bottom-color: gray;
     position: relative;
-    background-color: white;
+    background-color: #fafafa;
     margin-top: 10px;
 }
 

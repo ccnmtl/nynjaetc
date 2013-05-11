@@ -36,6 +36,10 @@ class Command(BaseCommand):
             if text:
                 child.text = text.nodeValue
 
+            help_text = node.attributes.getNamedItem('Help')
+            if help_text:
+                child.help = help_text.nodeValue
+
             child.save()
 
             if node.hasChildNodes():
@@ -72,7 +76,6 @@ class Command(BaseCommand):
             try:
                 root = TreatmentNode.objects.get(name=label,
                                                  type='RT')
-                root.get_descendants().delete()
             except TreatmentNode.DoesNotExist:
                 root = TreatmentNode.add_root(
                     name=label,
