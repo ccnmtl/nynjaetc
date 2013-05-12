@@ -12,7 +12,7 @@
         display:none;
     }
     #right-content {
-        width : 4000px;
+        width : 10000px;
     }
 </style>
 {%endblock %}
@@ -46,12 +46,17 @@
             <th>
                 hrsa id
             </th>
-            <th>
-                all quiz answers
-            </th>
-            <th>
-                sections visited
-            </th>
+            {%for section in all_sections %}
+                <th>
+                    {{section.id}}: {{section}}
+                </th>
+            {%endfor%}
+            {%for question in all_questions %}
+                <th>
+                    {{question.id}}: {{question|truncatechars:64 }}
+                </th>
+            {%endfor%}
+            
         </tr>
     
         {% for line in the_table %}
@@ -80,14 +85,24 @@
             <td>
                 {{line.the_user.get_profile.hrsa_id}}
             </td>
-            <td>
-                {{line.quizzes}}
-            </td>
-            <td>
-                {{line.pages}}
-            </td>
-        
-        
+            {%for timestamp in line.user_sections %}
+                <td>
+                    {%if timestamp %}
+                        {{timestamp}}
+                    {%else %}
+                        <i class="icon-remove"></i>
+                    {%endif %}
+                </td>
+            {%endfor%}
+            {%for answer in line.user_questions %}
+                <td>
+                    {% if answer %}
+                        {{answer}}
+                    {%else %}
+                        <i class="icon-remove"></i>
+                    {%endif %}
+                </td>
+            {%endfor%}
         </tr>
         {%endfor %}
     </table>

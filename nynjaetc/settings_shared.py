@@ -35,7 +35,7 @@ if 'test' in sys.argv or 'jenkins' in sys.argv:
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 SOUTH_TESTS_MIGRATE = False
 
-# anything under nynjaetc will be tested by ./manage py test.
+# Anything under package nynjaetc will be tested by ./manage py test.
 NOSE_ARGS = [
     '--with-coverage',
     '--cover-package=nynjaetc',
@@ -133,7 +133,8 @@ INSTALLED_APPS = [
     'impersonate',
     'registration',
     'nynjaetc.treatment_activity',
-    'treebeard'
+    'treebeard',
+    'nynjaetc.analytics'
 ]
 
 AUTH_PROFILE_MODULE = "main.UserProfile"
