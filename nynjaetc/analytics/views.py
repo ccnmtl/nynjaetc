@@ -4,6 +4,7 @@ from annoying.decorators import render_to
 from django.contrib.auth.models import User
 from nynjaetc.main.models import Section, UserProfile
 from quizblock.models import Question
+from django.http import HttpResponse
 import csv
 
 @login_required
