@@ -21,9 +21,9 @@ def already_visited_pages(section, user):
 
 
 def is_in_one_of(section, set_of_parents):
-    """Whether a section is identical to,
-    or the descendant of,
-    one of a set of possible parent sections."""
+    """Whether a section is either one of,
+    or the descendant of one of,
+    a set of possible parent sections."""
     result = False
     if section in set_of_parents:
         result = True

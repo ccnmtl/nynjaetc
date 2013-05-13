@@ -20,7 +20,7 @@ from django import forms
 def is_leaf_or_has_content(self):
     is_leaf = (len(self.get_children()) == 0)
     has_content = (self.pageblock_set.count())
-    return is_leaf or has_content
+    return is_leaf or has_content # Get it?
 Section.is_leaf_or_has_content = is_leaf_or_has_content
 
 
@@ -44,19 +44,15 @@ def prev_with_content(self):
 Section.prev_with_content = prev_with_content
 
 
-#"""Let's turn off the ability to change email from the admin tool.
+#"""Let's turn off the ability to *change* email from the admin tool.
 # (We can build a new version of this form later if it's needed.
-# note -- if you need a new email address, just re-register.
+# note -- if you need a *new* email address, just re-register.
 
 admin.site.unregister(User)
 old_personal_fields = UserAdmin.fieldsets[1][1]['fields']
 new_personal_fields = tuple(x for x in old_personal_fields if x != 'email')
 UserAdmin.fieldsets[1][1]['fields'] = new_personal_fields
 admin.site.register(User, UserAdmin)
-
-
-def get_sentinel_user():
-    return User.objects.get_or_create(username='deleted')[0]
 
 
 class UserProfile(models.Model):
@@ -150,11 +146,11 @@ def store_encrypted_email(user):
     """
     Saves the email to the profile.
     Then replaces it with an arbitrary value.
-    Note -- since this triggers a second save, don't call
-    it from signals.post_save.connect
+    Note -- since this triggers a second save,
+    don't call it from signals.post_save.connect
     on an updated object.
     We're NOT allowing people to change their
-    email, but they can
+    email, but they CAN
     reset their passwords at:
         /accounts/password_change/
     """
@@ -184,6 +180,7 @@ signals.post_save.connect(steal_email, sender=User)
 Quiz.original_submit = Quiz.submit
 
 
+
 def my_quiz_submit(self, user, data):
     hrsa_question_id = 17  # get_from_settings ?
     hrsa_question_key = 'question%d' % hrsa_question_id
@@ -197,7 +194,7 @@ def my_quiz_submit(self, user, data):
         hrsa_id = data[hrsa_question_key]
         the_profile, created = UserProfile.objects.get_or_create(user=user)
         the_profile.hrsa_id = hrsa_id
-        user.get_profile().save()
+        the_profile.save()
         data[hrsa_question_key] = "*****"
     self.original_submit(user, data)
 Quiz.submit = my_quiz_submit
