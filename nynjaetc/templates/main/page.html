@@ -38,17 +38,6 @@
 
 {% block breadcrumbs %}
   <ul>
- <!--
-        <p>Section is <strong>{{section}}</strong></p>
-        <p>Path is  <strong>{{path}}</strong></p>
-        <p>Module is <strong>{{module}}</strong></p>
-        <p>Top level is:  <strong>{{path.0}}</strong></p>
-        <p>Middle level is:  <strong>{{path.1}}</strong></p>
-        <p>Bottom level is:  <strong>{{path.2}}</strong></p>
-        <p>Depth is  <strong>{{depth}}</strong></p>
-        </div>
--->
-
        {% for breadcrumb in path %}
                 <li><a href ="{{breadcrumb.get_absolute_url}}">{{breadcrumb}}</a><span class="divider">/</span></li>
        {% endfor %}        

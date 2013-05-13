@@ -49,10 +49,8 @@
        <a href="/accounts/password_change/" class="btn pull-right">Change Password</a>
        <a href="/accounts/logout/" class="btn pull-right">Log Out</a>
         {% if can_download_stats %}
-                <a href="javascript:alert ('Coming soon.');" class="btn btn-inverse pull-right">stats</a>
+            <a href="/analytics/csv/" class="btn btn-inverse pull-right">stats</a>
         {%endif %}
-
-
         <p class="navbar-text pull-right">
           Logged in as
           <strong>{% if  request.user.first_name or  request.user.first_name %}
