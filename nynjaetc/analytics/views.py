@@ -21,6 +21,16 @@ def analytics_table(request):
         'the_table': generate_the_table()
     }
     
+@login_required
+@staff_member_required
+@render_to('analytics/analytics_table.html')
+def analytics_table_testing(request):
+    """keep the code in here to a minimum"""
+    return {
+        'the_table': generate_the_table(True)
+    }
+    
+
 def table_to_csv(request, table):
     response = HttpResponse(mimetype='text/csv')
     response['Content-Disposition'] = 'attachment; filename=nynjaetc.csv'
@@ -29,20 +39,25 @@ def table_to_csv(request, table):
         writer.writerow(row)
     return response
 
-def generate_the_table():
-    testing = False
+def generate_the_table(testing=False):
+    
     all_sections = Section.objects.get(pk=1).get_tree()
     all_questions = find_the_questions(all_sections)
     all_users = []    
     if testing:
-        all_users = [User.objects.get (id=5)]
-    else:
         all_users = User.objects.all()
+    else:
+        all_users = User.objects.filter(is_staff=False)
     
     the_table = []
-    the_table.append (generate_heading(all_sections, all_questions))
+    heading = generate_heading(all_sections, all_questions)
+    
+    the_table.append ([("column %d" % (a+1)) for a in range(len(heading))])
+    the_table.append (heading)
+    
     for the_user in all_users:
         the_table.append (generate_row(the_user, all_sections, all_questions))
+    
     return the_table
 
 
