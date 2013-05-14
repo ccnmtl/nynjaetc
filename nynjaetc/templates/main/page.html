@@ -4,17 +4,38 @@
 {% block js %}
 {% for block in section.pageblock_set.all %}
 {% renderjs block %}
-
-  <script type="text/javascript" src="/site_media/js/chapter_marker_player.js"></script>
-
+<script type="text/javascript" src="/site_media/js/chapter_marker_player.js"></script>
 {% endfor %}
 {% endblock %}
 
 {% block css %}
 {% for block in section.pageblock_set.all %}
 {% rendercss block %}
-
 <link rel="stylesheet" href="/site_media/css/chapter_marker_player.css">
+<style>
+    body.module-enduring-materials div.cases div.casetitle{
+        color:red !important;
+    }
+    
+    body.module-enduring-materials div.cases div.casetitle{
+        display:none;
+    }
+    
+    body.module-enduring-materials div.cases span.the_answer_title{
+        display:none;
+    }
+    
+    body.module-enduring-materials div.cases ol {
+        list-style-type: none;
+    }
+    
+    body.module-enduring-materials div.cases .alert-success {
+        color: white;
+        background-color: white;
+        border-color: white;
+    }
+    
+</style>
 
 {% endfor %}
 {% endblock %}
