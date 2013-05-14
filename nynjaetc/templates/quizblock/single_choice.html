@@ -1,9 +1,8 @@
 {% load markup %}
-
 <ol type="A">
   {% for answer in question.answer_set.all %}
     {% if block.rhetorical %}
-      <li><input name="question{{question.id}}" value="{{answer.label}}" id= "{{answer.id}}" type="radio" />{{answer.label}}</li>
+      <li><input name="question{{question.id}}" value="{{answer.label}}" id= "{{answer.id}}" type="radio" class = "{% if response.is_correct %}is_correct{% endif %}" />{{answer.label}}</li>
     {% else %}
       <li>
         {% if response %}

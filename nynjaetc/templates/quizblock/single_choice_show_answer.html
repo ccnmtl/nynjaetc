@@ -1,33 +1,16 @@
 {% load markup %}
-
-
-
 {% if block.rhetorical %}
-
-            {%comment %}
-                {% if question.correct_answer_letter %}
-                      <i>Correct.</i>
-                {% endif %} 
-            {%endcomment %}
-            {{question.explanation|markdown}}
-            {% for answer in question.answer_set.all %}
-                    <div class = "one_per_answer_explanation {{answer.id}}">
-                    
-                            {%comment %}
-                                {% if answer.correct %}
-                                      <i>Correct.</i>
-                                {% endif %}       
-                            {%endcomment %}
-                            {% if answer.explanation %}
-                                  <p class ="the_answer {% if answer.correct %}alert alert-success{% else %} alert alert-error{% endif %}">
-                                  <span class="the_answer_title">{{answer}}</span>
-                                  <span class="the_answer_text">{{answer.explanation|safe}}</span>
-                                  </p>
-                            {%endif %}
-                    </div>
-            {%endfor %}
-      
-      
+    {{question.explanation|markdown}}
+    {% for answer in question.answer_set.all %}
+        <div class = "one_per_answer_explanation {{answer.id}}">
+            {% if answer.explanation %}
+              <p class ="the_answer {% if answer.correct %}alert alert-success is_correct{% else %} alert alert-error{% endif %}">
+              <span class="the_answer_title">{{answer}}</span>
+              <span class="the_answer_text">{{answer.explanation|safe}}</span>
+              </p>
+            {%endif %}
+        </div>
+    {%endfor %}
 {% else %}
 <p>{{question.explanation|markdown}}</p>
 {% endif %}
