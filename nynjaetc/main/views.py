@@ -26,6 +26,12 @@ def page(request, path):
         section=section, user=request.user).exists()
     set_timestamp_for_section(section, request.user)
 
+    if 1 == 0:
+
+        print section.sectionalternatenavigation_set.get().alternate_back
+
+        print section.sectionalternatenavigation_set.get().alternate_next
+
     # We're leaving the top level pages as blank and navigating around them.
     send_to_first_child = False
     is_root = (section.id == root.id)

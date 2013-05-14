@@ -95,6 +95,30 @@ class SectionTimestamp(models.Model):
         self.save()
 
 
+class SectionAlternateNavigation(models.Model):
+
+    """Allows extra back and next buttons on certain special sections."""
+    
+    class Meta:
+        verbose_name = 'Alt. nav setting'
+        verbose_name_plural = 'Alt. nav settings'
+    
+    def __unicode__(self):
+        return "Alternate nav for %s" % self.section.get_path()
+
+    section        = models.ForeignKey(Section, null=False, blank=False, unique=True)
+
+    alternate_back = models.CharField(max_length= 64, null=True,  blank=True, help_text = "An alternate back button on this section will point to this path.")
+
+    alternate_back_label = models.CharField(max_length= 64, null=True,  blank=True, help_text = "A label for this alternate back button, if necessary.")
+    
+    alternate_next = models.CharField(max_length= 64, null=True, blank=True, help_text = "An alternate next button on this section will point to this path.")
+
+    alternate_next_label = models.CharField(max_length= 64, null=True,  blank=True, help_text = "A label for this alternate next button, if necessary.")
+
+
+
+
 class SectionQuizAnsweredCorrectly(models.Model):
 
     """Marks, for nav purposes, when a section has been correctly answered."""
