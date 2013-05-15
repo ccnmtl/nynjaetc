@@ -11,32 +11,6 @@
 {% block css %}
 {% for block in section.pageblock_set.all %}
 {% rendercss block %}
-<link rel="stylesheet" href="/site_media/css/chapter_marker_player.css">
-<style>
-    body.module-enduring-materials div.cases div.casetitle{
-        color:red !important;
-    }
-    
-    body.module-enduring-materials div.cases div.casetitle{
-        display:none;
-    }
-    
-    body.module-enduring-materials div.cases span.the_answer_title{
-        display:none;
-    }
-    
-    body.module-enduring-materials div.cases ol {
-        list-style-type: none;
-    }
-    
-    body.module-enduring-materials div.cases .alert-success {
-        color: white;
-        background-color: white;
-        border-color: white;
-    }
-    
-</style>
-
 {% endfor %}
 {% endblock %}
 
@@ -140,9 +114,7 @@
     {% with alternate_nav=section.sectionalternatenavigation_set.get %}
         {% if alternate_nav.alternate_next %}
              <!-- Alternate "next" button -->
-             <li class="next">
 	            <a href="{{alternate_nav.alternate_next}}">{{alternate_nav.alternate_next_label}} &rarr;</a>
-          </li>
         {%endif %}
     {%endwith %}
     {% if not section_preferences.hide_next_button %}

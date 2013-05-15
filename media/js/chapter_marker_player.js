@@ -28,13 +28,21 @@ function video_init () {
           videoId: video_1_id,
           width: 600,
           chapters: {
-            0: 'Start',
-            5: 'Introductions',
-            26: 'Agenda',
-            252: '<iframe> Tech Details',
-            1040: 'Comparing the Two APIs',
-            1670: 'Example Application',
-            2662: 'Questions & Answers'
+                13	:'Part 1: Title Slide',
+                27	:'Clinical Features Associated with SVR to PegIFN+RBV treatment',
+                71	:'New Strategy for HCV Therapy',
+                154	:'PegIFN+RBV+PI phase 3 results: HCV G1 treatment-naive',
+                193	:'PegIFN+RBV+PI vs PegIFN+RBV "traditional" predictors',
+                213	:'Response-guided therapy',
+                247	:'Prior response to IFN-based treatment predicts future response',
+                292	:'PegIFN+RBV+TEL: SVR rates in treatment-experienced HCV G1',
+                307	:'PegIFN+RBV+BOC: SVR rates in treatment-experienced HCV G1',
+                334	:'PegIFN+RBV+PI vs. PegIFN+RBV: Side effects more common w/ triple therapy',
+                381	:'PegIFN+RBV+PI: Wk 16 safety in cirrhotic patients with prior NR to PegIFN+RBV',
+                417	:'Predictors of severe complications and severe anemia',
+                434	:'Increased potential for significant drug-drug interactions',
+                460	:'Drug Interactions Self-Study Module Text (NY & NJ AETC)',
+                468	:'Lessons learned with BOC and TEL'
           }
         });
     }
@@ -45,17 +53,21 @@ function video_init () {
           videoId: video_2_id,
           width: 600,
           chapters: {
-            0: 'Start',
-            5: 'Introductions',
-            26: 'Agenda',
-            252: '<iframe> Tech Details',
-            1040: 'Comparing the Two APIs',
-            1670: 'Example Application',
-            2662: 'Questions & Answers'
+                4	:'Part 2: Title Slide',
+                22	:'Of People Living with HIV in the US (Co-Infections)',
+                37	:'Causes of Death: D:A:D Study Liver #1 Non-AIDS',
+                58	:'TEL improves SVR in HIV/HCV G1 co-infected subjects',
+                103	:'BOC improves SVR in HIV/HCV G1 co-infected subjects',
+                158	:'Tolerability of PIs in HIV/HVC',
+                175	:'HCV PIs and ARV Interactions',
+                218	:'NY & NJ AETC Quick Guide for Clinicians (Medications)',
+                229	:'HIV/HCVg1 Recommendations: Peg/R + BOC or TEL',
+                257	:'Know what you don\'t know',
+                289	:'HIV/HCV: Treat now or later?',
+                349	:'Consider a well designed trial'
           }
         });
     }
-
 }
  
 
