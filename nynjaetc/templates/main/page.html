@@ -114,7 +114,9 @@
     {% with alternate_nav=section.sectionalternatenavigation_set.get %}
         {% if alternate_nav.alternate_next %}
              <!-- Alternate "next" button -->
+             <li class="next">
 	            <a href="{{alternate_nav.alternate_next}}">{{alternate_nav.alternate_next_label}} &rarr;</a>
+            </li>
         {%endif %}
     {%endwith %}
     {% if not section_preferences.hide_next_button %}
