@@ -1,10 +1,9 @@
 {% extends 'base.html' %}
 {% load render %}
-
 {% block js %}
+<script type="text/javascript" src="/site_media/js/chapter_marker_player.js"></script>
 {% for block in section.pageblock_set.all %}
 {% renderjs block %}
-<script type="text/javascript" src="/site_media/js/chapter_marker_player.js"></script>
 {% endfor %}
 {% endblock %}
 
