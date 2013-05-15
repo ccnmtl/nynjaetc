@@ -125,7 +125,8 @@
                 "onHelp"
             );
             
-            jQuery('li.next').hide();
+            // Eddie -- removing this line for now...
+            //jQuery('li.next').hide();
             
             this.activityState = new ActivityState();
             this.activityState.reset();
