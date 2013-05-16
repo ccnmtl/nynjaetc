@@ -10,6 +10,6 @@
 <input type="hidden" name="next" value="{{ next }}" />
 </form>
 
-<p>{% trans "Forgot your username or password" %}? <a href="{% url auth_password_reset %}">{% trans "Reset it" %}</a>!</p>
+<p>{% trans "Forgot your username or password" %}? <br /><a href="{% url auth_password_reset %}">{% trans "Click here" %}</a> to email yourself your username and reset your password.</p>
 <p>{% trans "Not a member" %}? <a href="{% url registration_register %}">{% trans "Register" %}</a>!</p>
 {% endblock %}
