@@ -45,7 +45,6 @@ body, html {
 
 /*Base Typography*/
 body {
-  font-familiy: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   font-weight: 200;
 }
 
@@ -211,14 +210,24 @@ form.register {
 /*Disclaimer*/
 
 .module-enduring-materials {
-  
+  #breadcrumbs {
+    display: none;
+  }
   #sidebar {
     display: none;
   }
   
-  .span9 {
-    margin: 0;
-    width: 100%;
+  .container.main {
+    .span9 {
+      margin: 0;
+      width: 100%;
+    }
+    .pageblock {
+      margin: 0 0 20px 0;
+    }
+    .created {
+      text-align: center;
+    }
   }
   
   #content {
