@@ -228,6 +228,25 @@ form.register {
     .created {
       text-align: center;
     }
+    .cases {
+      .alert-success {
+        color: white;
+        background-color: transparent;
+        border: none;
+      }
+      ol {
+        margin: 0;
+       }
+      .casequestion {
+        text-align: center;
+        .highlight_correct {
+          color: red;
+          input {
+            margin: 0 8px 2px 0;
+          }
+        }
+      }
+    }
   }
   
   #content {
@@ -245,16 +264,12 @@ form.register {
       color: #fff !important;
       margin: 20px 0 20px 0;  
     }
-  
-  }
-  
 
   ul.pager {
     display: none;
   }
-  
 }
-
+}
 /*RGT Patient Case*/
 .module-patient-case, .module-patient-case-drug-interactions
 {
@@ -541,11 +556,6 @@ body.module-enduring-materials div.cases ol {
     list-style-type: none;
 }
 
-body.module-enduring-materials div.cases .alert-success {
-    color: white;
-    background-color: white;
-    border-color: white;
-}
 
 
 /* video chapters */
