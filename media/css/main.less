@@ -160,6 +160,20 @@ body {
 }
 
 /*Sidebar*/
+#sidebar {
+  ul {
+    margin: 0;
+    li {
+      list-style-type: none;
+      background: white;
+      padding: 5px 5px 5px 8px;
+      color: #333;
+      border-bottom: solid 2px #ececec;
+      margin: 0 0 5px 0;
+      
+    }
+  }
+}
 
 /*Content*/
 
@@ -270,7 +284,7 @@ form.register {
   }
 }
 /*RGT Patient Case*/
-.module-patient-case, .module-patient-case-drug-interactions
+.module-patient-case, .module-patient-case-drug-interactions, .module-intro, .module-conclusion
 {
   #sidebar {
     display: none;
@@ -472,8 +486,11 @@ form.register {
      background-color: #fff;
      border-radius: 4px;
      padding: 20px;
+     margin: 0 0 20px 0;
    }
-   
+   textarea {
+     width: 400px;
+   }
  } 
  
  .the_answer_title {
@@ -491,7 +508,6 @@ form.register {
    }
    
  }
- 
  
 }
   
