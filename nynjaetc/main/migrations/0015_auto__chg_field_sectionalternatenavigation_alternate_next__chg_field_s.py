@@ -8,13 +8,14 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-
+        from south.db import engine
         # Renaming column for 'SectionAlternateNavigation.alternate_next' to match new field type.
         db.rename_column('main_sectionalternatenavigation', 'alternate_next_id', 'alternate_next')
         # Changing field 'SectionAlternateNavigation.alternate_next'
         db.alter_column('main_sectionalternatenavigation', 'alternate_next', self.gf('django.db.models.fields.CharField')(max_length=512, null=True))
         # Removing index on 'SectionAlternateNavigation', fields ['alternate_next']
-        db.delete_index('main_sectionalternatenavigation', ['alternate_next_id'])
+        if 'sqlite' not in engine:
+            db.delete_index('main_sectionalternatenavigation', ['alternate_next_id'])
 
 
         # Renaming column for 'SectionAlternateNavigation.alternate_back' to match new field type.
@@ -22,7 +23,8 @@ class Migration(SchemaMigration):
         # Changing field 'SectionAlternateNavigation.alternate_back'
         db.alter_column('main_sectionalternatenavigation', 'alternate_back', self.gf('django.db.models.fields.CharField')(max_length=512, null=True))
         # Removing index on 'SectionAlternateNavigation', fields ['alternate_back']
-        db.delete_index('main_sectionalternatenavigation', ['alternate_back_id'])
+        if 'sqlite' not in engine:
+            db.delete_index('main_sectionalternatenavigation', ['alternate_back_id'])
 
 
     def backwards(self, orm):
