@@ -64,7 +64,7 @@
                 case '0': return 'treatment-naive patient';
                 case '1': return 'prior null responder';
                 case '2': return 'prior relapser';
-                case '3': return 'prior partial';
+                case '3': return 'prior partial responder';
                 default: return '';
             }
         },
