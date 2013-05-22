@@ -28,6 +28,7 @@ TEMPLATE_DEBUG = DEBUG
 
 SENTRY_SITE = 'nynjaetc'
 SENTRY_SERVERS = ['http://sentry.ccnmtl.columbia.edu/sentry/store/']
+ALLOWED_HOSTS = ['learn.nynjaetc.org']
 
 if 'migrate' not in sys.argv:
     INSTALLED_APPS.append('raven.contrib.django')
