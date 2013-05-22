@@ -14,7 +14,7 @@
                     <TreatmentNode Type="Parent" Label="No" Value="0"
                         Text="HCV RNA &lt; 1,000 IU/ml">
                         <TreatmentNode Type="TreatmentStep"
-                            Label="PEG-IFN/RBV" Duration="12" Help="Since the week 12 HCV RNA is &lt;=1000 IU/ml, the patient continues treatment with peginterferon and ribavirin. Telaprevir is never to be continued past 12 weeks of treatment. In the unusual circumstance that the patient’s HCV RNA level is higher at week 12 then at week 4 (but still &lt;=1000 IU/ml), it should be repeated to determine if the patient is breaking through treatment.">
+                            Label="PEG-IFN/RBV" Duration="12" Help="Since the week 12 HCV RNA is &lt;=1000 IU/ml, the patient continues treatment with peginterferon and ribavirin. Telaprevir is never to be continued past 12 weeks of treatment. In the unusual circumstance that the patient's HCV RNA level is higher at week 12 then at week 4 (but still &lt;=1000 IU/ml), HCV RNA levels should be repeated to determine if the patient is breaking through treatment.">
                         </TreatmentNode>
                         <TreatmentNode Type="DecisionPoint"
                             Label="Week 24: HCV RNA Detected" Help="At the end of Week 24, the HCV RNA is measured again.">
@@ -25,7 +25,7 @@
                                     Label="PEG-IFN/RBV" Duration="24" Help="Since the HCV RNA is not detected, the patient continues treatment with peginterferon and ribavirin to complete a total treatment duration of 48 weeks. The patient then stops all treatment. ">
                                 </TreatmentNode>
                                 <TreatmentNode Type="Stop"
-                                    Label="Treatment Complete" Help="HCV RNA is measured after treatment is complete and again 24 weeks later. If the patient’s HCV RNA remains not detected at the 24-week SVR assessment, he has a sustained virologic response. If it becomes detectable again, the patient has experienced relapse.">
+                                    Label="Treatment Complete" Help="HCV RNA is measured after treatment is complete and again 24 weeks later. If the patient's HCV RNA remains not detected at the 24-week SVR assessment, he has a sustained virologic response. If it becomes detectable again, the patient has experienced relapse.">
                                 </TreatmentNode>
                             </TreatmentNode>
                             <TreatmentNode Type="Parent" Value="1"
