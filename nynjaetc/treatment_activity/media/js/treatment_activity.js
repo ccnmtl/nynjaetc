@@ -61,7 +61,7 @@
         },
         statusDescription: function() {
             switch(this.get('status')) {
-                case '0': return 'treatment-naive';
+                case '0': return 'treatment-naive patient';
                 case '1': return 'prior null responder';
                 case '2': return 'prior relapser';
                 case '3': return 'prior partial';
@@ -124,9 +124,6 @@
                 "onRemoveStep",
                 "onHelp"
             );
-            
-            // Eddie -- removing this line for now...
-            //jQuery('li.next').hide();
             
             this.activityState = new ActivityState();
             this.activityState.reset();
