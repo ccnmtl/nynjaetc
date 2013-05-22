@@ -11,19 +11,19 @@
     });
 </script>
 
-<script type="text/template" id="patient-factors">    
+<script type="text/template" id="patient-factors">
+
     <h5>Select from the following patient factors:</h5>
 
-    <div>
-        <div>Does the patient have cirrhosis?</div>
+  <div id="factors-choice">    
+        <div><strong>Does the patient have cirrhosis?</strong></div>
         <div>
         <div><input type="radio" name="cirrhosis" value="1" <% if (cirrhosis === "1") { %>checked="checked"<% } %>/>Yes</div>
         <div><input type="radio" name="cirrhosis" value="0" <% if (cirrhosis === "0") { %>checked="checked"<% } %>/>No</div>
         </div>
     </div>
-    <br />
-    <div>
-        <div>Is the patient treatment-naive?</div>
+  <div id="factors-choice">    
+        <div><strong>Is the patient treatment-naive?</strong></div>
         <div>
         <div><input type="radio" name="status" value="0" <% if (status === "0") { %>checked="checked"<% } %>/>Yes</div>
         <div><input type="radio" name="status" value="1" <% if (status === "1") { %>checked="checked"<% } %>/>Prior Null Responder</div>
@@ -31,26 +31,23 @@
         <div><input type="radio" name="status" value="3" <% if (status === "3") { %>checked="checked"<% } %>/>Prior Partial Responder</div>
         </div>
     </div>
-    <br />
-    <div>
-        <div>Choose a drug to use:</div>
+  <div id="factors-choice">    
+        <div><strong>Choose a drug to use:</strong></div>
         <div>
         <div><input type="radio" name="drug" value="boceprevir" <% if (drug === "boceprevir") { %>checked="checked"<% } %>/>Boceprevir</div>
         <div><input type="radio" name="drug" value="telaprevir" <% if (drug === "telaprevir") { %>checked="checked"<% } %>/>Telaprevir</div>
         </div>
     </div>
-    <br />
-    <button id="select-patient-factors" class="btn btn-primary">Continue</button>
+    <button id="select-patient-factors" class="btn btn-primary pull-right">Continue</button>
 </script>
+
 
 <script type="text/template" id="treatment-flow">
     <div class="patient-factors">
         <b><%= drug.capitalize() %></b> for a <b><%= status_description %></b> patient <b><%= cirrhosis_description %></b>
 
-        <div>
             <button type="button" class="btn reset-state"
-                data-loading-text="Resetting...">Reset Patient Factors</button>
-        </div>
+                data-loading-text="Resetting..."><i class="icon-repeat"></i> Reset Patient Factors</button>
     </div>
 </script>
 
@@ -78,8 +75,8 @@
                         <i class="icon-edit"></i>
                     </a>
                 <% } %>
-                <p><%= name %></p><br />
-                <p><%= duration %> weeks</p>
+                <p class="step-content"><%= name %></p>
+                <p class="time"><%= duration %> weeks</p>
             </div>
         <% } else if (type === 'DP') { /* Decision Point */ %>
             <div class="timeline">
@@ -95,13 +92,13 @@
                     </a>
                 <% } %>
                 
-                <p>
+                <p class="step-content">
                     <%= name %>?
                     <% if (decision === undefined) { %>
                         <div class="decision_buttons">
-                            <button type="button" class="btn btn-primary decision-point-button"
+                            <button type="button" class="btn btn-success btn-small decision-point-button"
                                 data-id="<%=id%> data-loading-text="Loading..." value="1">Yes</button>
-                            <button type="button" class="btn btn-primary decision-point-button"
+                            <button type="button" class="btn btn-danger btn-small decision-point-button"
                                 data-id="<%=id%> data-loading-text="Loading..." value="0">No</button>
                         </div>
                     <% } %>
@@ -109,7 +106,7 @@
             </div>
         <% } else if (type === 'PR') { /* Decision Point Branch -- Yes/No */ %>
             <div class="timeline"></div>
-            <div class="medication">
+            <div class="medication branch">
                 <% if (can_edit) { %>
                     <a href="/admin/treatment_activity/treatmentnode/<%=id%>/"
                        target="_blank"
@@ -117,17 +114,17 @@
                         <i class="icon-edit"></i>
                     </a>
                 <% } %>            
-                <p>
+                <p class="step-content">
                     <%= name %> &mdash; <%= text %>
                 </p>
-                <button type="button" class="btn choose-again"
-                    data-id="<%=id%>" data-loading-text="Loading...">Choose again</button>
+                <button type="button" class="btn btn-small choose-again"
+                    data-id="<%=id%>" data-loading-text="Loading..."><i class="icon-repeat"></i> Choose again</button>
             </div>
         <% } else if (type === 'ST') { /* Stop */ %>
             <div class="timeline">
                 <div class="duration"></div>
             </div>
-            <div class="medication">
+            <div class="medication stop">
                 <% if (help) { %><i class="icon-question-sign"></i><% } %>
                 <% if (can_edit) { %>
                     <a href="/admin/treatment_activity/treatmentnode/<%=id%>/"
@@ -141,8 +138,8 @@
                     <div>
                         To view other treatment paths, reset patient factors.
                         <div>
-                        <button type="button" class="btn reset-state"
-                            data-loading-text="Resetting...">Reset Patient Factors</button>
+                        <button type="button" class="btn btn-small reset-state"
+                            data-loading-text="Resetting..."><i class="icon-repeat"></i> Reset Patient Factors</button>
                         </div>
                     </div>
                 </p>

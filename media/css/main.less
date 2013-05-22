@@ -570,11 +570,7 @@ form.register {
 }
 
 .treatment-activity-view {
-   background-color: #fff;
-   border-radius: 4px;
-   padding: 10px;
-   margin: 0 0 20px 0;
-   
+
    input {
       margin: 0 5px 0 0;
     }
@@ -588,14 +584,25 @@ form.register {
 }
 
 .treatment-activity-view {
+  
+  #factors-choice {
+    width: 500px;
+    background-color: #fff;
+    padding: 8px 15px;
+    margin: 10px 0;
+    border-radius: 10px;
+    line-height: 24px;
+  }
 }
+
+
 
 div.patient-factors {
     margin: 5px 0;
 }
 
 input.reset-state {
-    margin: 0 0 20px 0;
+    margin: auto 0;
 }
 
 div.treatment-steps {
@@ -620,7 +627,7 @@ div.timeline {
 }
 
 div.timeline div.duration {
-    background-color: #bebebe;
+    background-color: #E7E7E7;
     width: 20px;
     margin-left: 40px;
     margin-right: 40px;
@@ -634,13 +641,20 @@ div.medication {
     padding: 5px;
     width: 350px;
     text-align: center;
-    background-color: white;
+    background-color: #fff;
     
     &:hover {
       border: solid 2px #76d6ff;
       background-color: #b9eaff;
     }
     
+    &.stop {
+     border-color: #ed513b;
+     background-color: #edb3ab;
+      p {
+        font-weight: bold;
+      }
+    }
 }
 
 div.medication p {
@@ -663,15 +677,16 @@ div.medication .icon-edit {
 
 
 div.treatment-step-help {
-    max-height: 200px;
-    position: absolute;
-    right: 110px;
-    width: 250px;
-    border: 1px solid #eee;
-    padding: 5px;
-    margin-top: 20px;
-    overflow-y: auto;
-    background-color: #eee;
+  max-height: 200px;
+  position: absolute;
+  right: 400px;
+  width: 250px;
+  border: 1px solid #eee;
+  padding: 10px;
+  margin-top: 20px;
+  overflow-y: auto;
+  background-color: #eee;
+  border-radius: 8px;
 }
 
 
@@ -696,6 +711,22 @@ div.height-24 {
     height: 240px;
 }
 
+.treatment-step {
+  .time {
+    font-size: .8em;
+    font-weight: bold;
+    text-transform: uppercase;
+    clear: both;
+    display: block;
+    margin: 0;
+  }  
+  
+  .step-content {
+    margin: 0 0 0 10px;
+  }
+  
+}
+
 div.treatment-step.minimized div.duration,
 div.treament-step.minimized div.medication {
     height: 20px !important;
@@ -707,10 +738,13 @@ div.treatment-step.DP.minimized div.duration {
 }
 
 div.treatment-step.DP.minimized div.medication {
-    border-bottom: none;
-    padding-bottom: 0;
-    margin-bottom: 0;
-    text-align: left;
+  border-bottom: none;
+  padding-bottom: 5px;
+  margin-bottom: 0;
+  text-align: center;
+  border-radius: 8px 8px 0 0;
+  background: #ffc23f;
+  border-color: #fdb61e;
 }
 
 div.treatment-step.DP .duration {
@@ -738,8 +772,9 @@ div.treatment-step.DP .duration:after {
 /* Decision Point Branch (Parent) */
 div.treatment-step.PR div.medication {
     border-top: none;
-    padding-top: 0;
+    padding-top: 5px;
     margin-top: 0;
+    border-radius: 0 0 8px 8px;
 }
 
 
