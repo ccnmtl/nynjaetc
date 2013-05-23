@@ -291,3 +291,16 @@ def my_clean_username(self):
         return self.cleaned_data['username']
 
 RegistrationForm.clean_username = my_clean_username
+
+
+
+
+RegistrationForm.base_fields['username'].label = 'Please choose a username:'
+RegistrationForm.base_fields['email'].label = """Please give us a current email address. This address will be used to confirm your account. We may also send a follow-up survey to this address to ask about your experience with our online learning content. We will never sell your email address or use it for any other reason."""
+RegistrationForm.base_fields['password1'].label = 'Please choose a password:'
+RegistrationForm.base_fields['password2'].label = 'Please retype your password:'
+
+
+
+
+

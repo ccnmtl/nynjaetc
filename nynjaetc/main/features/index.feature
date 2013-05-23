@@ -5,9 +5,9 @@ This also serves as a good test that the lettuce and selenium
 stuff is all hooked up properly and running.
 
     Scenario: Access login screen.
-        Given I am not logged in
-        When I access the url "/accounts/login/"
-        Then I see the header "Log in"
+        #Given I am not logged in
+        #When I access the url "/accounts/login/"
+        #Then I see the header "Log in"
         
 
     Scenario: Index Page Load
