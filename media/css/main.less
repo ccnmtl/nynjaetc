@@ -42,6 +42,52 @@ body, html {
   }
 }
 
+/*Not logged in*/
+.module- {
+  #nav {
+    display: none;
+  }
+  
+  #sidebar {
+    display: none;
+  }
+  
+  .container.main{
+    .span9 {
+      width: 100%;
+      
+      #register {
+        background-color: #f5f5f5;
+        padding: 20px;
+        border-radius: 4px;
+        box-shadow: 0px 1px 2px #ccc;
+      }
+    }
+  }
+}
+
+
+
+form.register, form.login {
+  label {
+   font-weight: 200 !important;
+ } 
+ 
+ input {
+   margin: 0 0 5px 0;
+ }
+ ul.errorlist {
+   margin: 0 0 -3px 0;
+   li {
+     list-style-type: none;
+     font-weight: 200 !important;
+     font-size:12px;
+     color: red;
+   }
+ }
+}
+
+
 
 /*Base Typography*/
 body {
@@ -65,6 +111,27 @@ body {
   border-radius: 10px;
   color: #035b9b;
 }
+
+#content { 
+  
+  
+  
+  h4 {
+    font-weight: 200;
+    font-size: 20px;
+    margin: 0 0 20px 0;
+  }
+}
+
+.pagetitle {
+    font-family: 'Asap', 'Helvetica Neue', 'Arial', sans-serif;
+    margin: 0 0 20px 0;
+    color: #444;
+    font-size: 22px;
+  }
+ 
+
+
 
 /*Top Navigation*/
 #login {
@@ -90,7 +157,7 @@ body {
    background: url('/site_media/img/nynjaetcbg.png') repeat;
   
   .subbrand {
-    font-size: 20px;
+    font-size: 19px;
     color: #555;
     font-weight: 200;
     font-family: 'Asap', 'Helvetica Neue', 'Arial', sans-serif;
@@ -183,51 +250,9 @@ body {
   }
 }
 
-/*Content*/
-
-.pagetitle {
-    font-family: 'Asap', 'Helvetica Neue', 'Arial', sans-serif;
-    margin: 0 0 20px 0;
-    color: #444;
-    font-size: 22px;
-  }
- 
-#content { 
-  h4 {
-    font-weight: 200;
-    font-size: 20px;
-    margin: 0 0 20px 0;
-  }
-}
-
 
 /*Login*/
 
-#register {
-  width: 300px;
-  background-color: #f5f5f5;
-  padding: 20px;
-  border-radius: 4px;
-  box-shadow: 0px 1px 2px #ccc;
-}
-
-form.register {
-  label {
-   font-weight: 200 !important;
- } 
- input {
-   margin: 0 0 5px 0;
- }
- ul.errorlist {
-   margin: 0 0 -3px 0;
-   li {
-     list-style-type: none;
-     font-weight: 200 !important;
-     font-size:12px;
-     color: red;
-   }
- }
-}
 
 /*Disclaimer*/
 
