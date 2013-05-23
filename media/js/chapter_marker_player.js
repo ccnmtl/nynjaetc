@@ -18,13 +18,24 @@ jQuery ( video_init);
 
 
 function video_init () {
+/*
 
-    video_1_id = 'zm_gtnGmnh8';
-    video_2_id = 'VI2Z_CNQVYA';
+Part 1
+<iframe width="560" height="315" src="http://www.youtube.com/embed/?rel=0" frameborder="0" allowfullscreen></iframe>
+
+Part 2
+<iframe width="560" height="315" src="http://www.youtube.com/embed/?rel=0" frameborder="0" allowfullscreen></iframe>
+*/
+
+
+
+    video_1_id = 'LIc5V4zGR2E';
+    video_2_id = 'MOL6VK0vCTc';
 
     if (jQuery ('#video_1_container').length > 0) {
         window.ChapterMarkerPlayer.insert({
           container: 'video_1_container',
+          playerOptions : {'playerVars': {'rel': 0}},
           videoId: video_1_id,
           width: 600,
           chapters: {
@@ -50,6 +61,7 @@ function video_init () {
     if (jQuery ('#video_2_container').length > 0) {
         window.ChapterMarkerPlayer.insert({
           container: 'video_2_container',
+          playerOptions : {'playerVars': {'rel': 0}},
           videoId: video_2_id,
           width: 600,
           chapters: {
@@ -89,6 +101,9 @@ window.ChapterMarkerPlayer = {
     //   width: (optional) The width of the embedded player. 400px is used by default.
     //   playerOptions: (optional) An object corresponding to the options that can be passed to the
     //                  YT.Player constructor. See https://developers.google.com/youtube/iframe_api_reference#Loading_a_Video_Player
+
+
+
     if (!('videoId' in params)) {
       throw 'The "videoId" parameter must be set to the YouTube video id to be embedded.';
     }
@@ -153,12 +168,17 @@ window.ChapterMarkerPlayer = {
     // instance to a parent element.
     // This is a private method that isn't exposed via the ChapterMarkerPlayer namespace.
     function initializePlayer(containerElement, params) {
+      console.log ('params is');
+      console.log (params);
+    
       var playerContainer = document.createElement('div');
       containerElement.appendChild(playerContainer);
 
       // Attempt to use any custom player options that were passed in via params.playerOptions.
       // Fall back to reasonable defaults as needed.
       var playerOptions = params.playerOptions || {};
+      console.log ('playerOptions.playerVars are');
+      console.log (playerOptions.playerVars);
       return new YT.Player(playerContainer, {
         // Maintain a 16:9 aspect ratio for the player based on the width passed in via params.
         // Override can be done via params.playerOptions if needed
