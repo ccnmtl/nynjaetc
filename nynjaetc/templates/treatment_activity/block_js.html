@@ -23,9 +23,9 @@
     </div>
     <br />
     <div>
-        <div>Is the patient treatment-naive?</div>
+        <div>What is the patient's prior treatment status?</div>
         <div>
-        <div><input type="radio" name="status" value="0" <% if (status === "0") { %>checked="checked"<% } %>/>Yes</div>
+        <div><input type="radio" name="status" value="0" <% if (status === "0") { %>checked="checked"<% } %>/>Treatment Naive</div>
         <div><input type="radio" name="status" value="1" <% if (status === "1") { %>checked="checked"<% } %>/>Prior Null Responder</div>
         <div><input type="radio" name="status" value="2" <% if (status === "2") { %>checked="checked"<% } %>/>Prior Relapser</div>
         <div><input type="radio" name="status" value="3" <% if (status === "3") { %>checked="checked"<% } %>/>Prior Partial Responder</div>
@@ -45,7 +45,7 @@
 
 <script type="text/template" id="treatment-flow">
     <div class="patient-factors">
-        <b><%= drug.capitalize() %></b> for a <b><%= status_description %></b> patient <b><%= cirrhosis_description %></b>
+        <b><%= drug.capitalize() %></b> for a <b><%= status_description %></b> <b><%= cirrhosis_description %></b>
 
         <div>
             <button type="button" class="btn reset-state"
