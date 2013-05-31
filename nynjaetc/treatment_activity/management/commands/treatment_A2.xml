@@ -5,9 +5,9 @@
         <TreatmentNode Type="DecisionPoint" Label="Week 4: &gt;=1 log drop viral load" Help="HCV RNA is measured at the end of Week 4 (the end of the peginterferon and ribavirin lead-in) to determine projected treatment duration. If there has been a less than 1 log drop from the baseline HCV RNA level, it is recommended to give a longer treatment course. If there has been greater than or equal to 1 log drop, then the patient may still be able to receive a shorter course as part of response-guided therapy.">
             <TreatmentNode Type="Parent" Value="0" Label="No" Text="&lt; 1 log drop viral load">
                 <TreatmentNode Type="TreatmentStep"
-                    Label="PEG-IFN/RBV + Boceprevir" Duration="8" Help="After the 4 week lead-in, boceprevir is added to the peginterferon and ribavirin. HCV RNA levels are measured at week 4 and 8, but they do not change the management of the patient. At the end of Week 12, the HCV RNA is measured again. The Week 12 response determines whether or not to continue treatment.">
+                    Label="PEG-IFN/RBV + Boceprevir" Duration="8" Help="After the 4 week lead-in, boceprevir is added to the peginterferon and ribavirin. HCV RNA levels are measured at week 8, but they do not change the management of the patient. At the end of Week 12, the HCV RNA is measured again. The Week 12 response determines whether or not to continue treatment.">
                 </TreatmentNode>
-                <TreatmentNode Type="DecisionPoint" Label="Week 12: HCV RNA &gt;= 100 IU/ml">
+                <TreatmentNode Type="DecisionPoint" Label="Week 12: HCV RNA &gt;= 100 IU/ml" Help="At the end of Week 12, the HCV RNA is measured again. At this testing point you are checking to make sure the patient is not experiencing virologic breakthrough, which at this point in the treatment (12 weeks in) means HCV RNA above 100 IU/ml">
                     <TreatmentNode Type="Parent" Value="0" Label="No" Text="HCV RNA &lt; 100 IU/ml">
                         <TreatmentNode Type="TreatmentStep"
                             Label="PEG-IFN/RBV + Boceprevir"
