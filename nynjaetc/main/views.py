@@ -11,6 +11,23 @@ from nynjaetc.main.views_helpers import self_and_descendants
 from nynjaetc.main.views_helpers import set_timestamp_for_section
 from nynjaetc.main.views_helpers import module_info
 from nynjaetc.main.models import SectionTimestamp, SectionQuizAnsweredCorrectly
+from django.template import RequestContext, loader
+
+def background(request,  content_to_show):
+    """ the pagetree page view breaks flatpages, so this is a simple workaround."""
+    file_names = {
+        'about'   : 'about.html',
+        'credits' : 'credits.html',
+        'contact' : 'contact.html',
+        'help'    : 'help.html',
+    } 
+
+    if content_to_show not in file_names.keys():
+        return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
+    file_name = file_names [content_to_show]
+    t = loader.get_template('main/standard_elements/%s' % file_name)
+    c = RequestContext(request, {})
+    return HttpResponse(t.render(c))  
 
 
 @login_required
@@ -26,11 +43,6 @@ def page(request, path):
         section=section, user=request.user).exists()
     set_timestamp_for_section(section, request.user)
 
-    if 1 == 0:
-
-        print section.sectionalternatenavigation_set.get().alternate_back
-
-        print section.sectionalternatenavigation_set.get().alternate_next
 
     # We're leaving the top level pages as blank and navigating around them.
     send_to_first_child = False
