@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+
+{%block header_logo_link%}/login/{%endblock%}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="/media/css/base.css" />
+
+<style type="text/css">
+    /*
+    undo all properties of base.css line 612*/
+
+    #primarynav {
+        display:none;
+    }
+</style>
+
+{%endblock %}
+
+{% block content %}
+    <div>
+    {% block standard_elements_content %}
+    {%endblock %}
+    </div>
+{%endblock %}
+
+{% block footer %}
+    {%include 'main/standard_elements/standard_elements_footer.html' %}
+{% endblock %}
+
+

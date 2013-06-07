@@ -13,5 +13,13 @@
     {% if block.rhetorical %}
       <script src="/site_media/js/quiz/quizshow.js" type="text/javascript" language="javascript"></script>
       <script src="/site_media/js/quiz/answer_feedback.js" type="text/javascript" language="javascript"></script>
+    {%else %}
+    
+      <script src="/site_media/js/quiz/validation.js" type="text/javascript" language="javascript"></script>
+      
+      <div id="quiz_general_feedback" class="quiz_feedbackbox alert alert-error" >
+      </div>
     {% endif %}	
+    
+    
 {% endif %}

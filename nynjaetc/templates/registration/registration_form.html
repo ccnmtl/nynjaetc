@@ -2,13 +2,44 @@
 {% load i18n %}
 
 {% block registration_content %}
-<h2 class="pagetitle">Register</h2>Sign up for an account to use Learn.nynjaetc.org<br /><br />
+<h2 class="pagetitle">Register</h2>Sign up for an account to use Learn.nynjaetc.org.<br /><br />
+
 
 <form method="post" action="." class="register">
-  {{ form.as_p }}
+    {{ form.non_field_errors }}
+    <div class="fieldWrapper well">
+        {{ form.username.errors }}
+        <label for="id_subject">Please choose a username:</label>
+        {{ form.username }}
+    </div>
+    <div class="fieldWrapper well">
+        {{ form.email.errors }}
+        <label for="id_subject">Please give us a current email addess:</label>
+        {{ form.email }}
+        <div class="alert alert-info email-notice">Your email address will be used to confirm your account. We may also send a follow-up survey to this address to ask about your experience with our online learning content. We will never sell your email address or use it for any other reason.</div>
+    </div>
+
+    <div class="fieldWrapper well email-info">
+        {{ form.password1.errors }}
+        <label for="id_subject">Please choose a password:</label>
+        {{ form.password1 }}
+        
+        {{ form.password2.errors }}
+        <label for="id_subject">Please retype your password:</label>
+        {{ form.password2}}
+    </div>
   <input class="btn btn-primary" type="submit" value="{% trans 'Submit' %}" />
 </form>
 
+
+{%comment %}
+        <!-- this was too annoying. -->
+        <form method="post" action="." class="register">
+          {{ form.as_p }}
+          <input class="btn btn-primary" type="submit" value="{% trans 'Submit' %}" />
+        </form>
+        <hr/>
+{%endcomment %}
 <p>
     If you already have a username or password, but have forgotten either,
     <a href="{% url auth_password_reset %}">reset them here</a>.
