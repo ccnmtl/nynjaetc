@@ -12,44 +12,73 @@
 </script>
 
 <script type="text/template" id="patient-factors">
-    <h5>Select from the following patient factors:</h5>
-
-    <div class="factors-choice">
-        <div><strong>Does the patient have cirrhosis?</strong></div>
-        <div>
-        <div><input type="radio" name="cirrhosis" value="1" <% if (cirrhosis === "1") { %>checked="checked"<% } %>/>Yes</div>
-        <div><input type="radio" name="cirrhosis" value="0" <% if (cirrhosis === "0") { %>checked="checked"<% } %>/>No</div>
+    <div id="patient-factor-cirrhosis" class="factors-choice <% if (cirrhosis !== undefined) { %> minimized<% } %>">
+        <p class="step-content">Does the patient have cirrhosis?</p>
+        <% if (cirrhosis === undefined) { %>
+            <div class="decision_buttons">
+                <button type="button" class="btn btn-small btn-success btn-primary cirrhosis"
+                    data-loading-text="Loading..." value="1">Yes</button>
+                <button type="button" class="btn btn-small btn-danger btn-primary cirrhosis"
+                    data-loading-text="Loading..." value="0">No</button>
+            </div>        
+        <% } else if (cirrhosis === "1") { %>
+            <p class="step-content">
+                <span>Yes</span>
+                <button type="button" class="btn btn-small choose-cirrhosis-again"
+                    data-loading-text="Loading..."><i class="icon-refresh"></i> Choose again</button>                
+            </p>
+        <% } else if (cirrhosis === "0") { %>
+            <p class="step-content">
+                <span>No</span>
+                <button type="button" class="btn btn-small choose-cirrhosis-again"
+                    data-loading-text="Loading..."><i class="icon-refresh"></i> Choose again</button>                        
+            </p>
+        <% } %>
+    </div>
+    <% if (cirrhosis !== undefined) { %>
+        <div id="patient-factor-status"
+            class="factors-choice"
+            <% if (status === undefined) { %>style="display: none" <% } %>>
+            <p class="step-content">What is the patient's prior treatment status?</p>
+            <% if (status === undefined) { %>
+                <select class="btn-info treatment-status">
+                    <option value="-----" <% if (status === undefined) { %>selected="selected"<% } %>>-----</option>
+                    <option value="0" <% if (status === "0") { %>selected="selected"<% } %>>Treatment Naive</option>
+                    <option value="1" <% if (status === "1") { %>checked="checked"<% } %>>Prior Null Responder</option>
+                    <option value="2" <% if (status === "2") { %>checked="checked"<% } %>>Prior Relapser</option>
+                    <option value="3" <% if (status === "3") { %>checked="checked"<% } %>>Prior Partial Responder</option>
+                </select>
+            <% } else { %>
+                <p class="step-content">
+                    <span><%= statusDescription %></span>
+                    
+                    <button type="button" class="btn btn-small choose-status-again"
+                        data-loading-text="Loading..."><i class="icon-refresh"></i> Choose again</button>                        
+                </p>
+            <% } %>
         </div>
-    </div>
-    <br />
-    <div class="factors-choice">
-        <div><strong>What is the patient's prior treatment status?</strong></div>
-        <div>
-        <div><input type="radio" name="status" value="0" <% if (status === "0") { %>checked="checked"<% } %>/>Treatment Naive</div>
-        <div><input type="radio" name="status" value="1" <% if (status === "1") { %>checked="checked"<% } %>/>Prior Null Responder</div>
-        <div><input type="radio" name="status" value="2" <% if (status === "2") { %>checked="checked"<% } %>/>Prior Relapser</div>
-        <div><input type="radio" name="status" value="3" <% if (status === "3") { %>checked="checked"<% } %>/>Prior Partial Responder</div>
+    <% } %>
+    <% if (cirrhosis !== undefined && status !== undefined) { %>
+        <div id="patient-factor-drug"
+            class="factors-choice"
+            <% if (drug === undefined) { %>style="display: none" <% } %>>
+            <p class="step-content">Choose a drug to use</strong>:</p>
+            <% if (drug === undefined) { %>
+                <div class="decision_buttons">
+                    <button type="button" class="btn btn-small btn-info btn-primary drug"
+                        data-loading-text="Loading..." value="boceprevir">Boceprevir</button>
+                    <button type="button" class="btn btn-small btn-info btn-primary drug"
+                        data-loading-text="Loading..." value="telaprevir">Telaprevir</button>
+                </div>        
+            <% } else { %>
+                <p class="step-content">
+                    <span><%= drug.charAt(0).toUpperCase() + drug.slice(1) %></span>
+                    <button type="button" class="btn btn-small choose-drug-again"
+                        data-loading-text="Loading..."><i class="icon-refresh"></i> Choose again</button>                
+                </p>
+            <% } %>            
         </div>
-    </div>
-    <br />
-    <div class="factors-choice">
-        <div><strong>Choose a drug to use</strong>:</div>
-        <div>
-        <div><input type="radio" name="drug" value="boceprevir" <% if (drug === "boceprevir") { %>checked="checked"<% } %>/>Boceprevir</div>
-        <div><input type="radio" name="drug" value="telaprevir" <% if (drug === "telaprevir") { %>checked="checked"<% } %>/>Telaprevir</div>
-        </div>
-    </div>
-    <br />
-    <button id="select-patient-factors" class="btn pull-right btn-primary">Continue</button>
-</script>
-
-<script type="text/template" id="treatment-flow">
-    <div class="patient-factors">
-        <b><%= drug.capitalize() %></b> for a <b><%= status_description %></b> <b><%= cirrhosis_description %></b>
-
-            <button type="button" class="btn reset-state"
-                data-loading-text="Resetting..."><i class="icon-repeat"></i> Reset Patient Factors</button>
-    </div>
+    <% } %>
 </script>
 
 <script type="text/template" id="treatment-step">
@@ -98,9 +127,9 @@
                     <% if (decision === undefined) { %>
                         <div class="decision_buttons">
                             <button type="button" class="btn btn-small btn-success btn-primary decision-point-button"
-                                data-id="<%=id%> data-loading-text="Loading..." value="1">Yes</button>
+                                data-id="<%=id%>" data-loading-text="Loading..." value="1">Yes</button>
                             <button type="button" class="btn btn-small btn-danger btn-primary decision-point-button"
-                                data-id="<%=id%> data-loading-text="Loading..." value="0">No</button>
+                                data-id="<%=id%>" data-loading-text="Loading..." value="0">No</button>
                         </div>
                     <% } %>
                 </p>
@@ -116,10 +145,14 @@
                     </a>
                 <% } %>            
                 <p class="step-content">
-                    <%= name %>
+                    <% if (name === "Yes") { %>
+                        <span><%= name %></span>                        
+                    <% } else if (name === "No") { %>
+                        <span><%= name %></span>
+                    <% } %>
                 </p>
                 <button type="button" class="btn btn-small choose-again"
-                    data-id="<%=id%>" data-loading-text="Loading...">Choose again</button>
+                    data-id="<%=id%>" data-loading-text="Loading..."><i class="icon-refresh"></i> Choose again</button>
             </div>
         <% } else if (type === 'ST') { /* Stop */ %>
             <div class="timeline">
@@ -140,7 +173,7 @@
                         To view other treatment paths, reset patient factors.
                         <div>
                         <button type="button" class="btn reset-state"
-                            data-loading-text="Resetting..."><i class="icon-repeat"></i> Reset Patient Factors</button>
+                            data-loading-text="Resetting..."><i class="icon-repeat"></i> Start Over</button>
                         </div>
                     </div>
                 </p>

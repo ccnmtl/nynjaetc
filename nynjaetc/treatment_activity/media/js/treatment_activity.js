@@ -23,7 +23,9 @@
         events: {
         },
         initialize: function (options, render) {
-            _.bindAll(this, "render", "unrender");
+            var self = this;
+            
+            _.bindAll(this, "render", "unrender");            
             this.model.bind("destroy", this.unrender);
             this.model.bind("change:minimized", this.render);
             this.template = _.template(jQuery("#treatment-step").html());
@@ -32,7 +34,12 @@
             this.model.set('initial', false);
             
             var eltStep = jQuery(this.el).find("div.treatment-step");           
-            jQuery(eltStep).fadeIn("slow");
+            jQuery(eltStep).fadeIn("slow", function() {
+                if (self.model.get('last')) {
+                    jQuery('html, body').animate({scrollTop: jQuery(self.el).position().top}, 500);
+                    self.model.set('last', false);
+                }                
+            });            
         },
         render: function () {
             var eltStep = jQuery(this.el).find("div.treatment-step");            
@@ -47,12 +54,7 @@
     });
         
     var ActivityState = Backbone.Model.extend({
-        templates: [
-            'patient-factors',
-            'treatment-flow'
-        ],
         defaults: {
-            template: 0,
             path: '',
             node: '',
             cirrhosis: undefined,
@@ -61,18 +63,11 @@
         },
         statusDescription: function() {
             switch(this.get('status')) {
-                case '0': return 'treatment-naive patient';
-                case '1': return 'prior null responder';
-                case '2': return 'prior relapser';
-                case '3': return 'prior partial responder';
+                case '0': return 'Treatment-naive patient';
+                case '1': return 'Prior null responder';
+                case '2': return 'Prior relapser';
+                case '3': return 'Prior partial responder';
                 default: return '';
-            }
-        },
-        cirrhosisDescription: function() {
-            if (this.get('cirrhosis') === '1') {
-                return 'with cirrhosis';
-            } else {
-                return 'without known cirrhosis';
             }
         },
         toTemplate: function() {
@@ -81,8 +76,7 @@
                 this.get('cirrhosis') !== undefined &&
                 this.get('status') !== undefined &&
                 this.get('drug') !== undefined;
-            ctx.status_description = this.statusDescription();
-            ctx.cirrhosis_description = this.cirrhosisDescription();
+            ctx.statusDescription = this.statusDescription();
             return ctx;
         },
         getNextUrl: function() {
@@ -93,7 +87,6 @@
             return url;  
         },        
         reset: function() {
-            this.set('template', 0);
             this.set('cirrhosis', undefined);
             this.set('status', undefined);
             this.set('drug', undefined);
@@ -104,22 +97,28 @@
 
     window.TreatmentActivityView = Backbone.View.extend({
         events: {
-            "click div.treatment-activity-container input[type='radio']":
-                "onSelectPatientFactor",
-            "click #select-patient-factors": "onContinue",
             "click .reset-state": "onResetState",
             "click .decision-point-button": "onDecisionPoint",
             "click .choose-again": "onChooseAgain",
-            "click i.icon-question-sign": "onHelp"
+            "click i.icon-question-sign": "onHelp",
+            "click button.cirrhosis": "onSelectCirrhosis",
+            "change select.treatment-status": "onSelectTreatmentStatus",
+            "click button.drug": "onSelectDrug",
+            "click .choose-cirrhosis-again": "onResetState",
+            "click .choose-status-again": "onChooseStatusAgain",
+            "click .choose-drug-again": "onChooseDrugAgain"            
         },
         initialize: function(options) {
             _.bindAll(this,
                 "render",
-                "onSelectPatientFactor",
-                "onContinue",
+                "onSelectCirrhosis",
+                "onSelectTreatmentStatus",
+                "onSelectDrug",
                 "onResetState",
                 "onDecisionPoint",
                 "onChooseAgain",
+                "onChooseStatusAgain",
+                "onChooseDrugAgain",
                 "onAddStep",
                 "onRemoveStep",
                 "onHelp"
@@ -133,11 +132,8 @@
             this.treatmentSteps.bind("add", this.onAddStep);
             this.treatmentSteps.bind("remove", this.onRemoveStep);
             
-            this.templates = [];
-            for (var i = 0; i < this.activityState.templates.length; i++) {
-                this.templates.push(_.template(
-                    jQuery("#" + this.activityState.templates[i]).html()));
-            }
+            this.patientFactorsTemplate =
+                _.template(jQuery("#patient-factors").html()); 
             
             this.render();
         },
@@ -145,10 +141,9 @@
             var self = this;
             var templateIdx = this.activityState.get('template');
             var context = this.activityState.toTemplate();
-            var markup = this.templates[templateIdx](context);
-            
-            jQuery("div.treatment-activity-view").html(markup);            
-            jQuery("div.treatment-activity-view, div.treatment-steps").fadeIn("slow");
+            var markup = this.patientFactorsTemplate(context);            
+            jQuery("div.treatment-activity-view").html(markup);       
+            jQuery("div.treatment-activity-view, div.treatment-steps, div.factors-choice").fadeIn("slow");
         },
         next: function() {
             var self = this;
@@ -177,15 +172,17 @@
                     });
                     
                     // Appear the new treatment steps
+                    var ts;
                     for (var i = 0; i < json.steps.length; i++) {
                         var opts = json.steps[i];
                         opts.can_edit = json.can_edit;
                         
-                        var ts = new TreatmentStep(opts);
+                        ts = new TreatmentStep(opts);
                         ts.set('week', week);
+                        ts.set('last', i === (json.steps.length - 1));
                         self.treatmentSteps.add(ts);
                         week += ts.get('duration');
-                    }    
+                    }
                 }
             });
         },
@@ -194,32 +191,38 @@
                 model: step,
                 parentView: this
             });
-            jQuery("div.treatment-steps").append(view.el);    
+            jQuery("div.treatment-steps").append(view.el);
         },
         onRemoveStep: function(step) {
             step.destroy();
         },
-        onSelectPatientFactor: function() {
+        onSelectCirrhosis: function(evt) {
+            var self = this;
+            var elt = evt.srcElement || evt.target || evt.originalTarget;
+            jQuery(elt).button("loading");
+            
             this.activityState.set({
-                'cirrhosis': jQuery("input:radio[name=cirrhosis]:checked").attr("value"),
-                'status': jQuery("input:radio[name=status]:checked").attr("value"),
-                'drug':  jQuery("input:radio[name=drug]:checked").attr("value")
+                'cirrhosis': jQuery(elt).attr("value")
             });
         },
-        onContinue: function() {
+        onSelectTreatmentStatus: function(evt) {
             var self = this;
+            var elt = evt.srcElement || evt.target || evt.originalTarget;
             
-            if (jQuery("input:radio[name=cirrhosis]:checked").length < 1) {
-                alert("Does the patient have cirrhosis?");
-            } else if (jQuery("input:radio[name=status]:checked").length < 1) {
-                alert("Is the patient treatment-naive?");
-            } else if (jQuery("input:radio[name=drug]:checked").length < 1) {
-                alert("Choose a drug to use.");
-            } else {
-                jQuery("div.treatment-activity-view").fadeOut("slow", function() {
-                    self.next();
-                });
-            }
+            this.activityState.set({
+                'status': jQuery(elt).attr("value")
+            });
+        },
+        onSelectDrug: function(evt) {
+            var self = this;
+            var elt = evt.srcElement || evt.target || evt.originalTarget;
+            jQuery(elt).button("loading");
+            
+            this.activityState.set({
+                'drug': jQuery(elt).attr("value")
+            });
+            
+            self.next();
         },
         onResetState: function(evt) {
             var self = this;
@@ -266,6 +269,37 @@
                 step.destroy();
             }
             this.activityState.set('node', chosen);
+        },
+        onChooseStatusAgain: function(evt) {
+            var self = this;
+            var srcElement = evt.srcElement || evt.target || evt.originalTarget;
+            jQuery(srcElement).button("loading");
+
+            while ((model = self.treatmentSteps.first()) !== undefined) {
+                model.destroy();
+            }
+            self.treatmentSteps.reset();            
+            jQuery("div.treatment-steps").fadeOut("slow", function() {
+                self.activityState.set('status', undefined);
+                self.activityState.set('drug', undefined);
+                self.activityState.set('path', '');
+                self.activityState.set('node', '');                
+            });
+        },
+        onChooseDrugAgain: function(evt) {
+            var self = this;
+            var srcElement = evt.srcElement || evt.target || evt.originalTarget;
+            jQuery(srcElement).button("loading");
+
+            while ((model = self.treatmentSteps.first()) !== undefined) {
+                model.destroy();
+            }
+            self.treatmentSteps.reset();            
+            jQuery("div.treatment-steps").fadeOut("slow", function() {
+                self.activityState.set('drug', undefined);
+                self.activityState.set('path', '');
+                self.activityState.set('node', '');             
+            });
         },
         onHelp: function(evt) {
             
