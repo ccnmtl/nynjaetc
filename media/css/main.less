@@ -627,12 +627,20 @@ body {
 .treatment-activity-view {
   
   .factors-choice {
-    width: 500px;
+    border: 2px solid #eee;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    padding: 5px;
+    width: 475px;
+    text-align: center;
     background-color: #fff;
-    padding: 8px 15px;
-    margin: 5px 0;
-    border-radius: 10px;
-    line-height: 24px;
+    &.stop {
+     border-color: #ed513b;
+     background-color: #edb3ab;
+      p {
+        font-weight: bold;
+      }
+    }
   }
 }
 
@@ -801,7 +809,7 @@ div.treatment-step.DP .duration {
     border-bottom-color: gray;
     position: relative;
     background-color: #fafafa;
-    margin-top: 10px;
+    margin-top: 25px;
 }
 
 div.treatment-step.DP .duration:after {
