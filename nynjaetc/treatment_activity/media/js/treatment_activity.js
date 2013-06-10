@@ -31,15 +31,16 @@
             this.template = _.template(jQuery("#treatment-step").html());
             
             this.render();
-            this.model.set('initial', false);
             
-            var eltStep = jQuery(this.el).find("div.treatment-step");           
-            jQuery(eltStep).fadeIn("slow", function() {
-                if (self.model.get('last')) {
-                    jQuery('html, body').animate({scrollTop: jQuery(self.el).position().top}, 500);
+            if (self.model.get('last')) {
+                setTimeout(function() {
+                    var eltStep = jQuery(self.el).find("div.treatment-step");
+                    jQuery('html, body').animate({
+                        scrollTop: jQuery(eltStep).position().top
+                    }, 300);
                     self.model.set('last', false);
-                }                
-            });            
+                }, 0);
+            }
         },
         render: function () {
             var eltStep = jQuery(this.el).find("div.treatment-step");            
@@ -47,7 +48,7 @@
             this.el.innerHTML = this.template(ctx);
         },
         unrender: function () {
-            jQuery(this.el).fadeOut('slow', function() {
+            jQuery(this.el).fadeOut('fast', function() {
                 jQuery(this.el).remove();
             });            
         }
@@ -143,7 +144,7 @@
             var context = this.activityState.toTemplate();
             var markup = this.patientFactorsTemplate(context);            
             jQuery("div.treatment-activity-view").html(markup);       
-            jQuery("div.treatment-activity-view, div.treatment-steps, div.factors-choice").fadeIn("slow");
+            jQuery("div.treatment-activity-view, div.treatment-steps, div.factors-choice").fadeIn("fast");
         },
         next: function() {
             var self = this;
