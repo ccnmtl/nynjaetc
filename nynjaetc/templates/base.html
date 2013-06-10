@@ -44,8 +44,19 @@
       {% block usernav %}
       {% if request.user.is_anonymous %}
       
+      {% block log_in_and_register_buttons %}
        <a href="/accounts/register/" class="btn pull-right">Register</a>
        <a href="/accounts/login/?next=/" class="btn pull-right">Log In</a>
+       
+      {% endblock log_in_and_register_buttons %}
+       
+       
+       <a href="/about/"    {% block aboutlinknav %}{% endblock %} >About</a>
+       <a href="/credits/"  {% block creditslinknav %}{% endblock %} >Credits</a>
+       <a href="/contact/"  {% block contactlinknav %}{% endblock %} >Contact</a>
+       <a href="/help/"     {% block helplinknav %}{% endblock %} >Help</a>
+       
+       
       {% else %}
        <!-- <a href="/accounts/password_change/" class="btn pull-right">Change Password</a> -->
        <a href="/accounts/logout/" class="btn pull-right">Log Out</a>

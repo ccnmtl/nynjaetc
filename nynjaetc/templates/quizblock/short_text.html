@@ -7,7 +7,10 @@
     <p class="yours">HRSA ID ENTERED</p>
     {%comment %} The only short text question in this intervention is the encrypted hrsa id {%endcomment %}
   {% else %}
-    <input type="text" name="pageblock-{{block.pageblock.id}}-question{{question.id}}" />
+    <input type="text" name="pageblock-{{block.pageblock.id}}-question{{question.id}}" id= "input_for_question_{{question.id}}"/>
+    
+    <div id = "feedback_for_question_{{question.id}}" class = "quiz_feedbackbox alert alert-error"></div>
+    
   {% endif %}
 {% endif %}
   
