@@ -38,7 +38,12 @@
     <div class="span12" id="nav">
       {% block topnavbar %}
       <ul class="nav">
-      {% block topnavbarleftitems %}{% endblock %}
+      {% block topnavbarleftitems %}      
+      <li><a href="/about/"    {% block aboutlinknav %}{% endblock %} >About</a></li>
+      <li><a href="/credits/"  {% block creditslinknav %}{% endblock %} >Credits</a></li>
+      <li><a href="/contact/"  {% block contactlinknav %}{% endblock %} >Contact</a></li>
+      <li><a href="/help/"     {% block helplinknav %}{% endblock %} >Help</a></li>        
+        {% endblock %}
       </ul>
       {% block topnavbarrightitems %}{% endblock %}
       {% block usernav %}
@@ -48,14 +53,7 @@
        <a href="/accounts/register/" class="btn pull-right">Register</a>
        <a href="/accounts/login/?next=/" class="btn pull-right">Log In</a>
        
-      {% endblock log_in_and_register_buttons %}
-       
-       
-       <a href="/about/"    {% block aboutlinknav %}{% endblock %} >About</a>
-       <a href="/credits/"  {% block creditslinknav %}{% endblock %} >Credits</a>
-       <a href="/contact/"  {% block contactlinknav %}{% endblock %} >Contact</a>
-       <a href="/help/"     {% block helplinknav %}{% endblock %} >Help</a>
-       
+      {% endblock log_in_and_register_buttons %}   
        
       {% else %}
        <!-- <a href="/accounts/password_change/" class="btn pull-right">Change Password</a> -->
@@ -84,6 +82,7 @@
     </div>
     </div>  
 </div>
+<div id="wrap">
 <div class="container" id="outer-container">
   <div class="container">
    
@@ -160,11 +159,10 @@
         {% block content-nav %}{% endblock %}
       </div>
 </div>
-  <div id="clearfooter"></div>
 </div>
-<div class="container" id="footer">
-      <div class="row-fluid">
-        <div class="span12">
+</div>
+<div  id="footer">
+  <div class="footer-interior">
         {% block footer %}
         <a href="http://nynjaetc.org" target="_blank"><img src="/site_media/img/nynjaetclogo.png" class="printonly pull-left" style="height: 50px; margin: 0 15px 0 0;"/></a>
         <img src="/site_media/img/cornelllogo.png" class="printonly pull-left" style="height:50px" />
@@ -173,7 +171,6 @@
         </div>
       </div> <!-- end second row -->
 </div>
-
  
 
 <script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>

@@ -17,16 +17,21 @@
 
 
 /*Body Set*/
-
 body, html {
   height: 100%;
+}
+
+body {
   background: url('/site_media/img/nynjaetcbg.png') repeat;
 }
 
-#outer-container {
+#wrap {
   min-height: 100%;
-  margin-bottom: -70px;
-  position: relative;
+  width: 100%;
+}
+
+#outer-container{
+    padding: 0 0 90px 0;
 }
 
 .pager.main {
@@ -36,10 +41,25 @@ body, html {
   border-bottom: solid 1px #ccc;
   border-top: solid 1px #ccc;
   padding: 10px 0;
-  
-  a {
-    color: #ec1c23;
-  }
+
+}
+
+/*Footer*/
+
+#footer {
+  clear: both;
+  height: 90px;
+  margin-top: -90px;
+  position: relative;
+}
+
+.footer-interior {
+  margin: 0 auto;
+  width: 960px;
+}
+
+#footer img {
+  padding: 0 0 20px 0;
 }
 
 /*Base Typography*/
@@ -134,8 +154,28 @@ body {
   background-color: #035b9b;
   height: 40px;
 
- .nav {
+ ul.nav {
     margin: 0;
+    float:left;
+    padding: 10px 0 0 0;
+    width: 300px;
+    
+      li {
+        float: left;
+        display: inline;
+        padding: 0 10px 0 0;
+        
+          a {
+            font-weight: bold;
+            color: #fff;
+             
+              &:hover {
+                color: #e5e5e5;
+                background-color: transparent;
+                text-decoration: none;
+              }
+          }
+      }
   }
   
   .navbar-text {
@@ -880,18 +920,6 @@ btn.reset-state {
 }
 
 
-/*Footer*/
-
-#clearfooter {
-  height: 70px;
-  clear:both;
-}
-
-#footer {
-  height: 70px;
-  position: relative;
-  padding: 0 0 20px 0;
-}
 
 
 
