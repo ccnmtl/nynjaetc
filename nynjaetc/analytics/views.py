@@ -55,7 +55,7 @@ def generate_the_table(testing=False):
     the_table = []
     heading = generate_heading(all_sections, all_questions, testing)
 
-    the_table.append([("column %d" % (a + 1)) for a in range(len(heading))])
+    #the_table.append([("column %d" % (a + 1)) for a in range(len(heading))])
     the_table.append(heading)
 
     for the_user in all_users:
