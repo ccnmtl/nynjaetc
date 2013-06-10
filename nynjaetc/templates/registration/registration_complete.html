@@ -1,6 +1,18 @@
 {% extends "registration/base_registration.html" %}
 {% load i18n %}
+{% block log_in_and_register_buttons %}{% endblock log_in_and_register_buttons %}
 
 {% block registration_content %}
-<p>{% trans "You are now registered. Activation email sent." %}</p>
+    <p>
+    You are now registered and a link to activate your account has been sent to the email address you provided.
+    </p>
+
+    <p>
+    Having trouble? If you did not receive your activation email, click here to resend it. You should also check your spam folder for the activation email and/or add the sender
+    <em>nynjaetc@ccnmtl.columbia.edu</em> as an exception to your spam filters.
+    </p>
+
+    <p>
+    If you need help, you can contact CCNMTL at <em>ccnmtl-learn.nynjaetc@columbia.edu</em>. CCNMTL is open from 9am-5pm M-F.
+    </p>
 {% endblock %}
