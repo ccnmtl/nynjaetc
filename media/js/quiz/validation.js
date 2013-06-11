@@ -61,6 +61,7 @@ function init_disclaimer () {
     jQuery ('#continue_button').hide();
     the_checkbox = jQuery('input[name=pageblock-116-question50]');
     the_checkbox.change (checkbox_changed);
+    jQuery('input[type=submit]').hide()
 }
 
 function allow_to_proceed () {
@@ -81,11 +82,12 @@ function record_success_on_disclaimer (){
 
 
 function init_disclaimer_and_pre_and_post_tests() {
-    //TODO: if this is the pretest or the post-test:
+    
+    if (jQuery('.section_id').html() == '35' || jQuery('.section_id').html() == '51') {
         jQuery(".quiz_feedbackbox").hide();
         
         jQuery('form').submit(validate_pretest_form);
-        jQuery('input[type=submit]').hide()
+    }
     // if this is the disclaimer page:
     
     if (jQuery('input[name=pageblock-116-question50]').length) {
