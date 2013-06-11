@@ -2,7 +2,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from annoying.decorators import render_to
 from django.contrib.auth.models import User
-from nynjaetc.main.models import Section, UserProfile
+from nynjaetc.main.models import Section, UserProfile, SectionQuizAnsweredCorrectly
 from django.http import HttpResponse
 import csv
 
@@ -53,13 +53,13 @@ def generate_the_table(testing=False):
         all_users = User.objects.filter(is_staff=False)
 
     the_table = []
-    heading = generate_heading(all_sections, all_questions)
+    heading = generate_heading(all_sections, all_questions, testing)
 
-    the_table.append([("column %d" % (a + 1)) for a in range(len(heading))])
+    #the_table.append([("column %d" % (a + 1)) for a in range(len(heading))])
     the_table.append(heading)
 
     for the_user in all_users:
-        the_table.append(generate_row(the_user, all_sections, all_questions))
+        the_table.append(generate_row(the_user, all_sections, all_questions, testing))
 
     return the_table
 
@@ -70,10 +70,28 @@ def find_the_questions(sections_in_order):
     in the order they are presented
     in the sections."""
     result = []
+    all_questions = []
+    quizzes_we_want =  [25, 15]
+    
+    #first get all the questions in pagetree order:
     for the_section in sections_in_order:
         for the_pageblock in the_section.pageblock_set.all():
             if the_pageblock.block().__class__.display_name == 'Quiz':
-                result.extend(the_pageblock.block().question_set.all())
+                all_questions.extend(the_pageblock.block().question_set.all())
+                
+
+    #filter out most of the questions; re-label one of them.                 
+    #enduring_materials_question_id = 50
+    for the_q in all_questions:
+        #print 'question id ', the_q.id
+        #print 'quiz ', the_q.quiz
+        #print 'quiz id ', the_q.quiz.id
+        #if the_q.id == enduring_materials_question_id:
+        #    the_q.text = 'Enduring materials acknowledgement'
+
+        if the_q.quiz.id in quizzes_we_want :
+            result.append (the_q)
+    
     return result
 
 
@@ -90,40 +108,60 @@ def traverse_tree(node, the_list):
         traverse_tree(k, the_list)
 
 
-def generate_heading(all_sections, all_questions):
+
+
+
+def generate_heading(all_sections, all_questions, testing):
     result = [
-        'User ID', 'username', 'plaintext email',
-        'joined', 'last login', 'is staff',
-        'encrypted email', 'hrsa id'
+         'hrsa id', 'encrypted email',  'joined', 'last login' , 'enduring materials checkbox',
     ]
+        
+    if testing:
+        result .extend( ['User ID',  'username', 'plaintext email', 'is staff'])
+        
     result.extend(["%d: %s" % (section.id, section)
                    for section in all_sections])
-    result.extend(["%d: %s" % (question.id, question)
-                   for question in all_questions])
+                   
+    result.extend(["%d: %s%s" % (question.id, question.text[0:64], (len(question.text) > 64 and '... ' or ''))
+                   for question in all_questions ])
     return result
 
 
-def generate_row(the_user, all_sections, all_questions):
+def generate_row(the_user, all_sections, all_questions, testing):
     line = generate_row_info(the_user, all_sections, all_questions)
-    result = [
-        line['the_user'].id,
-        line['the_user'].username,
-        line['the_user'].email,
-        line['the_user'].date_joined,
-        line['the_user'].last_login,
-        line['the_user'].is_staff
-    ]
+    
     the_profile = line['the_profile']
+
+    result = []
+    
     if the_profile:
         result.extend([
-            the_profile.encrypted_email,
-            the_profile.hrsa_id
+            the_profile.hrsa_id,
+            the_profile.encrypted_email
         ])
     else:
         result.extend([
             None,
             None
         ])
+    
+    result .extend( [
+    
+        line['the_user'].date_joined,
+        line['the_user'].last_login,
+        line['read_intro'],
+    ])
+    
+    
+    if testing:
+        result .extend( [
+            line['the_user'].id,
+            line['the_user'].username,
+            line['the_user'].email,
+            line['the_user'].is_staff
+        ])
+    
+    
     result.extend(line['user_sections'])
     result.extend(line['user_questions'])
     return result
@@ -162,7 +200,13 @@ def generate_row_info(the_user, all_sections, all_questions):
         'the_profile': the_profile,
         'user_questions': user_questions,
         'user_sections': user_sections,
+        'read_intro' : checked_enduring_materials_box(the_user)
     }
+
+
+def checked_enduring_materials_box (the_user):
+        enduring_materials_section = Section.objects.get(pk=50)
+        return SectionQuizAnsweredCorrectly.objects.filter(user=the_user, section=enduring_materials_section).exists()
 
 
 def timestamps_for(the_user):
@@ -181,3 +225,6 @@ def responses_for(the_user):
         for resp in sub.response_set.all():
             result[resp.question.id] = resp.value
     return result
+    
+
+    
