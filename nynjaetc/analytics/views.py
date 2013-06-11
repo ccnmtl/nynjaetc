@@ -2,7 +2,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from annoying.decorators import render_to
 from django.contrib.auth.models import User
-from nynjaetc.main.models import Section, UserProfile
+from nynjaetc.main.models import Section, UserProfile, SectionQuizAnsweredCorrectly
 from django.http import HttpResponse
 import csv
 
@@ -200,13 +200,14 @@ def generate_row_info(the_user, all_sections, all_questions):
         'the_profile': the_profile,
         'user_questions': user_questions,
         'user_sections': user_sections,
-        'read_intro' : has_timestamp_for_intro(timestamps)
+        'read_intro' : checked_enduring_materials_box(the_user)
     }
 
 
-def has_timestamp_for_intro(timestamps):
-    intro_section_id = 2
-    return intro_section_id in  timestamps.keys()
+def checked_enduring_materials_box (the_user):
+        enduring_materials_section = Section.objects.get(pk=50)
+        return SectionQuizAnsweredCorrectly.objects.filter(user=the_user, section=enduring_materials_section).exists()
+
 
 def timestamps_for(the_user):
     the_timestamps = the_user.sectiontimestamp_set.all()

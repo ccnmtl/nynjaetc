@@ -48,7 +48,6 @@ function validate_pretest_form ()  {
 
 function checkbox_changed() {
     if (the_checkbox[0].checked) {
-        //jQuery('form')[0].submit()
         record_success_on_disclaimer ()
     }
     else {
@@ -58,11 +57,10 @@ function checkbox_changed() {
 }
 
 function init_disclaimer () {
+    jQuery('#primarynav').hide();
     jQuery ('#continue_button').hide();
     the_checkbox = jQuery('input[name=pageblock-116-question50]');
     the_checkbox.change (checkbox_changed);
-    
-    
 }
 
 function allow_to_proceed () {
