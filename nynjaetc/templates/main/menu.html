@@ -3,23 +3,19 @@
 {% for s in module.get_descendants %}
 {% ifequal s.id module.id %}
 {% else %}
-<li class="menu-{{s.depth}}">
-  {% ifnotequal s.id section.id %}
-  <a href="{{menu_base}}{{s.get_absolute_url}}">
-  {% else %}
-  {% endifnotequal %}
-  {{s.label}}
-  {% ifnotequal s.id section.id %}
-    </a>
-  {% else %}
-  {% endifnotequal %}
-  {% if s.get_children %}
-     <ul id="section-ul-{{s.id}}">
-     {% else %}
-     {% if s.is_last_child %}
-     {% for lc in s.closing_children %}
-          </ul>
-     {% endfor %}
+<li class="menu-{{s.depth}} {% ifequal s.id section.id %}the_current_section{%else %}not_the_current_section{%endifequal%}">
+  {% ifequal s.id section.id %}
+        <span class="the_current_section">{{s.label}}</span>
+  {%else %}
+    <a href="{{menu_base}}{{s.get_absolute_url}}">{{s.label}}</a>
+  {% endifequal %}
+ {% if s.get_children %}
+ <ul id="section-ul-{{s.id}}">
+ {% else %}
+ {% if s.is_last_child %}
+ {% for lc in s.closing_children %}
+      </ul>
+ {% endfor %}
 {% endif %}
 {% endif %}
 {% if s.get_children %}
