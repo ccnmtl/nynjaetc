@@ -156,6 +156,7 @@ def resend_activation_email(request):
     if (request.method == "POST"):
         email = request.POST.get('email', '')
         form_template = loader.get_template('registration/resend_activation_email_form.html')
+        confirm_template =  loader.get_template('registration/resend_activation_email_confirm.html') 
         
         if  email == '':
             c = RequestContext(request, {'error' : 'no_email_entered', 'email': email})
@@ -166,6 +167,11 @@ def resend_activation_email(request):
         except:
             c = RequestContext(request, {'error' : 'no_email_found', 'email': email})
             return HttpResponse(form_template.render(c))
+            
+        if reg_profile.activation_key == 'ALREADY_ACTIVATED':
+            c = RequestContext(request, {'message' : 'already_active', 'email': email})
+            return HttpResponse(confirm_template.render(c))
+            
         if reg_profile.activation_key_expired():
             c = RequestContext(request, {'error' : 'expired', 'email': email})
             return HttpResponse(form_template.render(c))
@@ -177,6 +183,5 @@ def resend_activation_email(request):
             site = RequestSite(request)
     
         reg_profile.send_activation_email(site)
-        t = loader.get_template('registration/resend_activation_email_confirm.html') 
         c = RequestContext(request, {'message': 'success_message', 'email': email})
-        return HttpResponse(t.render(c))
+        return HttpResponse(confirm_template.render(c))

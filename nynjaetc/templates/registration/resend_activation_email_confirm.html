@@ -4,6 +4,9 @@
     {%ifequal message  'success_message' %}
         We just resent an account activation message to {{email}}.    
     {%endifequal %}
-        
+    
+    {%ifequal message  'already_active' %}
+       The email address <em>{{email}}</em> is already active.    
+    {%endifequal %}
         
 {% endblock %}
