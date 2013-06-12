@@ -1,0 +1,22 @@
+{% extends "registration/base_registration.html" %}
+{% load i18n %}
+
+{% block registration_content %}
+<h2 class="pagetitle">Resend activation email</h2>
+       
+    {%ifequal error  'no_email_entered' %}
+        Please enter your email address.
+    {%endifequal %}
+    {%ifequal error  'no_email_found' %}
+        We do not have that address on record. If this is a valid address for you, you may use it to register by clicking the 'register' button above.
+    {%endifequal %}
+    {%ifequal error  'expired' %}
+        The registration period for this email has expired. Please register again by clicking the 'register button' above.
+    {%endifequal %}
+
+    <form method="post" action=".">
+      <p><label for="id_email">E-mail:</label> <input id="id_email" type="text"     name="email" maxlength="75" /></p>
+      <input type="submit" value="Submit" />
+        {% csrf_token %}
+    </form>
+{% endblock %}

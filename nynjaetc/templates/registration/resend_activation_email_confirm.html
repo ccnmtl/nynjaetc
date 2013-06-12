@@ -1,0 +1,9 @@
+{% extends "registration/base_registration.html" %}
+{% block registration_content %}
+        
+    {%ifequal message  'success_message' %}
+        We just resent an account activation message to {{email}}.    
+    {%endifequal %}
+        
+        
+{% endblock %}

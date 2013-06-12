@@ -5,13 +5,19 @@ from pagetree.helpers import get_section_from_path
 from pagetree.helpers import get_module, needs_submit, submitted
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
-from nynjaetc.main.models import SectionPreference
+from nynjaetc.main.models import SectionPreference, UserProfile
 from nynjaetc.main.views_helpers import whether_already_visited
 from nynjaetc.main.views_helpers import self_and_descendants
 from nynjaetc.main.views_helpers import set_timestamp_for_section
 from nynjaetc.main.views_helpers import module_info
 from nynjaetc.main.models import SectionTimestamp, SectionQuizAnsweredCorrectly
 from django.template import RequestContext, loader
+from registration.models import RegistrationProfile
+from django.contrib.sites.models import RequestSite
+from django.contrib.sites.models import Site
+from django.views.decorators.csrf import csrf_protect
+from django.contrib.auth.models import User
+
 
 def background(request,  content_to_show):
     """ the pagetree page view breaks flatpages, so this is a simple workaround."""
@@ -136,3 +142,41 @@ def edit_page(request, path):
                 module=get_module(section),
                 modules=root.get_children(),
                 root=section.hierarchy.get_root())
+                
+                
+                
+@csrf_protect
+def resend_activation_email(request):
+    """allows you to  resent the activation email to an arbitrary address."""
+    if (request.method == "GET"):
+        t = loader.get_template('registration/resend_activation_email_form.html')
+        c = RequestContext(request, {})
+        return HttpResponse(t.render(c))
+        
+    if (request.method == "POST"):
+        email = request.POST.get('email', '')
+        form_template = loader.get_template('registration/resend_activation_email_form.html')
+        
+        if  email == '':
+            c = RequestContext(request, {'error' : 'no_email_entered', 'email': email})
+            return HttpResponse(form_template.render(c))
+        try:
+            user_profile = UserProfile.find_user_profiles_by_plaintext_email(email)
+            reg_profile = user_profile[0].user.registrationprofile_set.get()
+        except:
+            c = RequestContext(request, {'error' : 'no_email_found', 'email': email})
+            return HttpResponse(form_template.render(c))
+        if reg_profile.activation_key_expired():
+            c = RequestContext(request, {'error' : 'expired', 'email': email})
+            return HttpResponse(form_template.render(c))
+        
+        #ok success.
+        if Site._meta.installed:
+            site = Site.objects.get_current()
+        else:
+            site = RequestSite(request)
+    
+        reg_profile.send_activation_email(site)
+        t = loader.get_template('registration/resend_activation_email_confirm.html') 
+        c = RequestContext(request, {'message': 'success_message', 'email': email})
+        return HttpResponse(t.render(c))
