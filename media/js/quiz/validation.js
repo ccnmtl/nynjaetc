@@ -2,11 +2,14 @@
   
 (function () {
 
-function validate_pretest_form ()  {
+function validate_pre_and_post_test_forms (e)  {
+
+    e.preventDefault(); // don't submit multiple times
     var valid = true;
     jQuery(".quiz_feedbackbox").hide();
     
     if (jQuery("#input_for_question_17").length > 0 ) {
+            // special hrsa ID validation.
             var hrsa_id  = jQuery("#input_for_question_17")[0].value;
             var there_are_exactly_eight_digits =  (/^[0-9]{8}$/g.test(hrsa_id));
             if (!there_are_exactly_eight_digits ) {
@@ -16,7 +19,7 @@ function validate_pretest_form ()  {
             //return false;
           }
           else {
-                console.log ('ok there were 8 chars');
+                // console.log ('ok there were 8 chars');
           }
   }
   done_questions = []
@@ -41,8 +44,27 @@ function validate_pretest_form ()  {
      if  ( checked_radio_button_question_count < radio_button_question_count) {
         valid = false;
         jQuery("#quiz_general_feedback").text("Please answer all the questions.").show();
-     }
-    return valid; 
+    }
+    if (valid) {
+        submit_quiz_via_ajax_then_go_to_next_page();
+    }
+}
+
+
+function submit_quiz_via_ajax_then_go_to_next_page (){
+    jQuery.ajax({
+        data: jQuery('form').serialize(),
+        type: 'POST',
+        url: '.',
+        success: go_to_next_page
+    });
+    return false;
+}
+
+
+
+function go_to_next_page () {
+    jQuery('li.next a')[0].click();    
 }
 
 
@@ -82,11 +104,16 @@ function record_success_on_disclaimer (){
 
 
 function init_disclaimer_and_pre_and_post_tests() {
+    jQuery ('#quiz_general_feedback').hide()
     
     if (jQuery('.section_id').html() == '35' || jQuery('.section_id').html() == '51') {
         jQuery(".quiz_feedbackbox").hide();
         
-        jQuery('form').submit(validate_pretest_form);
+        
+        
+        jQuery('form').submit(validate_pre_and_post_test_forms);
+    
+    
     }
     // if this is the disclaimer page:
     
