@@ -1,6 +1,22 @@
 {% load markup %}
 {% load getresponse %}
 {{ block.description|markdown }}
+{% with  block.question_set.all.0 as question %}
+    {% getquestionresponse question as the_response %}
+    {% if the_response %}
+    <div class="alert alert-info">
+        You have submitted the answers to the questions on this test.</br>The answers you selected are marked in gray.
+    </div>
+    {%endif %}
+    {%comment %}
+        {% getquestionresponse block.question_set.all.0 as response1 %}
+    {%endcomment %}
+{%endwith %}
+
+{% if response1 %}
+    <div>You have answered this quiz.</div>
+{%endif%}
+
 
 {% if request.user.is_anonymous %}
   <p class="warning">You must be logged in to view this content</p>
