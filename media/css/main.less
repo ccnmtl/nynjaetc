@@ -17,9 +17,6 @@
 
 
 /*Body Set*/
-body, html {
-  height: 100%;
-}
 
 body {
   background: url('/site_media/img/nynjaetcbg.png') repeat;
@@ -31,7 +28,7 @@ body {
 }
 
 #outer-container{
-    padding: 0 0 90px 0;
+    padding: 0 0 20px 0;
 }
 
 .pager.main {
@@ -43,24 +40,19 @@ body {
   padding: 10px 0;
 
 }
-
 /*Footer*/
 
 #footer {
   clear: both;
-  height: 90px;
-  margin-top: -90px;
+  height: 120px;
   position: relative;
 }
 
 .footer-interior {
   margin: 0 auto;
-  width: 960px;
+  width: 1170px;
 }
 
-#footer img {
-  padding: 0 0 20px 0;
-}
 
 /*Base Typography*/
 body {
@@ -99,6 +91,17 @@ body {
     #nav {
      display: none;
     }
+    #welcome {
+      line-height: 32px;
+      font-size: 16px;
+      
+      h4 {
+        font-size: 24px;
+        font-weight: 300;
+        line-height: 36px;
+      }
+      
+    }
   }
   
   #sidebar {
@@ -106,8 +109,11 @@ body {
   }
   
   .container.main{
+    margin: 35px 0;
+    
     .span9 {
       width: 100%;
+      margin: 0;
       
       #register {
         background-color: #f5f5f5;
