@@ -44,7 +44,7 @@ def table_to_csv(request, table):
 
 def generate_the_table(testing=False):
 
-    all_sections = Section.objects.get(pk=1).get_tree()
+    all_sections = [s for s in Section.objects.get(pk=1).get_tree() if s.is_leaf_or_has_content()]
     all_questions = find_the_questions(all_sections)
     all_users = []
     if testing:
@@ -119,8 +119,8 @@ def generate_heading(all_sections, all_questions, testing):
     if testing:
         result .extend( ['User ID',  'username', 'plaintext email', 'is staff'])
         
-    result.extend(["%d: %s" % (section.id, section)
-                   for section in all_sections])
+    for section in all_sections:
+        result.append("%d: %s" % (section.id, section))
                    
     result.extend(["%d: %s%s" % (question.id, question.text[0:64], (len(question.text) > 64 and '... ' or ''))
                    for question in all_questions ])
