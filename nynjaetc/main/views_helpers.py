@@ -34,11 +34,7 @@ def is_in_one_of(section, set_of_parents):
 
 
 def is_descendant_of(child, parent):
-    if parent == child:
-        return False
-    if child in self_and_descendants(parent):
-        return True
-    return False
+    return child.is_descendant_of(parent)
 
 
 def self_and_descendants(section):
