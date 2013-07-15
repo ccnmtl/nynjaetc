@@ -43,8 +43,8 @@ urlpatterns = patterns(
 
     (r'^accounts/', include('registration.backends.default.urls')),
 
-
-    (r'^resend_activation_email/$', 'nynjaetc.main.views.resend_activation_email'),
+    (r'^resend_activation_email/$',
+     'nynjaetc.main.views.resend_activation_email'),
 
     (r'^munin/', include('munin.urls')),
     (r'^stats/', direct_to_template, {'template': 'stats.html'}),
