@@ -190,9 +190,10 @@ def generate_row_info(the_user, all_sections, all_questions):
 
 
 def checked_enduring_materials_box(the_user):
-        enduring_materials_section = Section.objects.get(pk=50)
-        return SectionQuizAnsweredCorrectly.objects.filter(
-            user=the_user, section=enduring_materials_section).exists()
+    # you've got to be kidding me -------------------\/
+    enduring_materials_section = Section.objects.get(pk=50)
+    return SectionQuizAnsweredCorrectly.objects.filter(
+        user=the_user, section=enduring_materials_section).exists()
 
 
 def timestamps_for(the_user):
