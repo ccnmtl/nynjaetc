@@ -12,11 +12,9 @@ from nynjaetc.main.views_helpers import set_timestamp_for_section
 from nynjaetc.main.views_helpers import module_info
 from nynjaetc.main.models import SectionTimestamp, SectionQuizAnsweredCorrectly
 from django.template import RequestContext, loader
-from registration.models import RegistrationProfile
 from django.contrib.sites.models import RequestSite
 from django.contrib.sites.models import Site
 from django.views.decorators.csrf import csrf_protect
-from django.contrib.auth.models import User
 
 
 def background(request,  content_to_show):
