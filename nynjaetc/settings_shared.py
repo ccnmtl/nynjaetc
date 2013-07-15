@@ -52,7 +52,7 @@ JENKINS_TASKS = (
 # BY CONTRAST, anything in this list will be tested by Jenkins,
 # otherwise the build will fail.
 PROJECT_APPS = [
-    'nynjaetc.main',
+    'nynjaetc.main', 'nynjaetc.analytics',
 ]
 
 ALLOWED_HOSTS = ['localhost', '.ccnmtl.columbia.edu']
