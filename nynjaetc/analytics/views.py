@@ -97,19 +97,6 @@ def find_the_questions(sections_in_order):
     return result
 
 
-def self_and_descendants(section):
-    """Self and descendants, in depth-first order."""
-    result = []
-    traverse_tree(section, result)
-    return result
-
-
-def traverse_tree(node, the_list):
-    the_list.append(node)
-    for k in node.get_children():
-        traverse_tree(k, the_list)
-
-
 def generate_heading(all_sections, all_questions, testing):
     result = [
         'hrsa id', 'encrypted email', 'joined', 'last login',
