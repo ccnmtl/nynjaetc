@@ -7,7 +7,6 @@ from nynjaetc.main.models import SectionPreference
 from nynjaetc.main.models import SectionTimestamp
 from nynjaetc.main.views_helpers import whether_already_visited
 from nynjaetc.main.views_helpers import already_visited_pages
-from nynjaetc.main.views_helpers import traverse_tree
 from nynjaetc.main.views_helpers import self_and_descendants
 from nynjaetc.main.views_helpers import is_descendant_of
 from nynjaetc.main.views_helpers import is_in_one_of
@@ -157,31 +156,6 @@ class SADTest(TestCase):
     def test_self_and_descendants(self):
         result = self_and_descendants(self.root)
         self.assertEquals(result, [self.root, self.section1])
-
-
-class TraverseTreeTest(TestCase):
-    def setUp(self):
-        self.h = Hierarchy.objects.create(name="main", base_url="")
-        self.root = self.h.get_root()
-        self.root.add_child_section_from_dict(
-            {
-                'label': 'Section 1',
-                'slug': 'section-1',
-                'pageblocks': [],
-                'children': [],
-            })
-        r = self.root.get_children()
-        self.section1 = r[0]
-
-    def tearDown(self):
-        self.root.delete()
-        self.h.delete()
-
-    def test_traverse_tree(self):
-        result = []
-        traverse_tree(self.root, result)
-        self.assertTrue(self.section1 in result)
-        self.assertTrue(self.root in result)
 
 
 class ModuleInfoTest(TestCase):

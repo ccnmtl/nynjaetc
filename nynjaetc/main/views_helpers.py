@@ -43,15 +43,7 @@ def is_descendant_of(child, parent):
 
 def self_and_descendants(section):
     """Self and descendants, in depth-first order."""
-    result = []
-    traverse_tree(section, result)
-    return result
-
-
-def traverse_tree(node, the_list):
-    the_list.append(node)
-    for k in node.get_children():
-        traverse_tree(k, the_list)
+    return [section] + list(section.get_descendants())
 
 
 def set_timestamp_for_section(section, user):
