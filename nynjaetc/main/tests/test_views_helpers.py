@@ -2,6 +2,8 @@ from datetime import datetime
 from django.contrib.auth.models import User, AnonymousUser
 from django.test import TestCase
 from django.utils.timezone import utc
+from nynjaetc.main.models import Preference
+from nynjaetc.main.models import SectionPreference
 from nynjaetc.main.models import SectionTimestamp
 from nynjaetc.main.views_helpers import whether_already_visited
 from nynjaetc.main.views_helpers import already_visited_pages
@@ -9,6 +11,7 @@ from nynjaetc.main.views_helpers import traverse_tree
 from nynjaetc.main.views_helpers import self_and_descendants
 from nynjaetc.main.views_helpers import is_descendant_of
 from nynjaetc.main.views_helpers import is_in_one_of
+from nynjaetc.main.views_helpers import module_info
 from pagetree.models import Hierarchy
 
 
@@ -179,3 +182,39 @@ class TraverseTreeTest(TestCase):
         traverse_tree(self.root, result)
         self.assertTrue(self.section1 in result)
         self.assertTrue(self.root in result)
+
+
+class ModuleInfoTest(TestCase):
+    def setUp(self):
+        self.h = Hierarchy.objects.create(name="main", base_url="")
+        self.root = self.h.get_root()
+        self.root.add_child_section_from_dict(
+            {
+                'label': 'Section 1',
+                'slug': 'section-1',
+                'pageblocks': [],
+                'children': [],
+            })
+        r = self.root.get_children()
+        self.section1 = r[0]
+
+    def tearDown(self):
+        self.root.delete()
+        self.h.delete()
+
+    def test_module_info(self):
+        result = module_info(self.section1)
+        self.assertTrue('id' in result[0])
+        self.assertTrue('label' in result[0])
+        self.assertTrue('url' in result[0])
+
+    def test_module_info_special(self):
+        p = Preference.objects.create(slug='top_nav_link_to_latest')
+        SectionPreference.objects.create(
+            section=self.section1,
+            preference=p)
+        result = module_info(self.section1)
+        self.assertTrue('id' in result[0])
+        self.assertTrue('label' in result[0])
+        self.assertTrue('url' in result[0])
+        self.assertTrue(result[0]['url'].startswith('/latest'))
