@@ -31,17 +31,21 @@ urlpatterns = patterns(
     (r'^_rgt/', include('nynjaetc.treatment_activity.urls')),
     (r'^admin/', include(admin.site.urls)),
     (r'^analytics/', include('nynjaetc.analytics.urls')),
-    
-    ('^about/$',   'nynjaetc.main.views.background',  {'content_to_show': 'about'  }),
-    ('^help/$',    'nynjaetc.main.views.background',  {'content_to_show': 'help'   }),
-    ('^contact/$', 'nynjaetc.main.views.background',  {'content_to_show': 'contact'}),
-    ('^credits/$', 'nynjaetc.main.views.background',  {'content_to_show': 'credits'}),
-    
+
+    ('^about/$', 'nynjaetc.main.views.background',
+     {'content_to_show': 'about'}),
+    ('^help/$', 'nynjaetc.main.views.background',
+     {'content_to_show': 'help'}),
+    ('^contact/$', 'nynjaetc.main.views.background',
+     {'content_to_show': 'contact'}),
+    ('^credits/$', 'nynjaetc.main.views.background',
+     {'content_to_show': 'credits'}),
+
     (r'^accounts/', include('registration.backends.default.urls')),
-    
-    
+
+
     (r'^resend_activation_email/$', 'nynjaetc.main.views.resend_activation_email'),
-    
+
     (r'^munin/', include('munin.urls')),
     (r'^stats/', direct_to_template, {'template': 'stats.html'}),
     (r'smoketest/', include('smoketest.urls')),

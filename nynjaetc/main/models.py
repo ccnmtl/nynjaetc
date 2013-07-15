@@ -20,7 +20,7 @@ from django import forms
 def is_leaf_or_has_content(self):
     is_leaf = (len(self.get_children()) == 0)
     has_content = (self.pageblock_set.count())
-    return is_leaf or has_content # Get it?
+    return is_leaf or has_content  # Get it?
 Section.is_leaf_or_has_content = is_leaf_or_has_content
 
 
@@ -79,7 +79,6 @@ class UserProfile(models.Model):
 
 
 class SectionTimestamp(models.Model):
-
     """Marks when this section was last visited by a particular user."""
     def __unicode__(self):
         return self.section.get_path()
@@ -96,27 +95,42 @@ class SectionTimestamp(models.Model):
 
 
 class SectionAlternateNavigation(models.Model):
-
     """Allows extra back and next buttons on certain special sections."""
-    
+
     class Meta:
         verbose_name = 'Alt. nav setting'
         verbose_name_plural = 'Alt. nav settings'
-    
+
     def __unicode__(self):
         return "Alternate nav for %s" % self.section.get_path()
 
-    section        = models.ForeignKey(Section, null=False, blank=False, unique=True)
+    section = models.ForeignKey(Section, null=False, blank=False, unique=True)
 
-    alternate_back = models.CharField(max_length= 64, null=True,  blank=True, help_text = "An alternate back button on this section will point to this path.")
+    alternate_back = models.CharField(
+        max_length=64,
+        null=True,
+        blank=True,
+        help_text=("An alternate back button on this section "
+                   "will point to this path."))
 
-    alternate_back_label = models.CharField(max_length= 64, null=True,  blank=True, help_text = "A label for this alternate back button, if necessary.")
-    
-    alternate_next = models.CharField(max_length= 64, null=True, blank=True, help_text = "An alternate next button on this section will point to this path.")
+    alternate_back_label = models.CharField(
+        max_length=64,
+        null=True,
+        blank=True,
+        help_text="A label for this alternate back button, if necessary.")
 
-    alternate_next_label = models.CharField(max_length= 64, null=True,  blank=True, help_text = "A label for this alternate next button, if necessary.")
+    alternate_next = models.CharField(
+        max_length=64,
+        null=True,
+        blank=True,
+        help_text=("An alternate next button on this section will point "
+                   "to this path."))
 
-
+    alternate_next_label = models.CharField(
+        max_length=64,
+        null=True,
+        blank=True,
+        help_text="A label for this alternate next button, if necessary.")
 
 
 class SectionQuizAnsweredCorrectly(models.Model):
@@ -202,7 +216,6 @@ signals.post_save.connect(steal_email, sender=User)
 
 
 Quiz.original_submit = Quiz.submit
-
 
 
 def my_quiz_submit(self, user, data):
@@ -293,14 +306,14 @@ def my_clean_username(self):
 RegistrationForm.clean_username = my_clean_username
 
 
-
-
 RegistrationForm.base_fields['username'].label = 'Please choose a username:'
-RegistrationForm.base_fields['email'].label = """Please give us a current email address. This address will be used to confirm your account. We may also send a follow-up survey to this address to ask about your experience with our online learning content. We will never sell your email address or use it for any other reason."""
+RegistrationForm.base_fields['email'].label = (
+    """Please give us a current email address. """
+    """This address will be used to confirm your account. """
+    """We may also send a follow-up survey to this address to """
+    """ask about your experience with our online learning content. """
+    """We will never sell your email address or use it """
+    """for any other reason.""")
 RegistrationForm.base_fields['password1'].label = 'Please choose a password:'
-RegistrationForm.base_fields['password2'].label = 'Please retype your password:'
-
-
-
-
-
+RegistrationForm.base_fields['password2'].label = (
+    'Please retype your password:')

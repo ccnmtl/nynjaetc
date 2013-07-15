@@ -20,20 +20,21 @@ from django.contrib.auth.models import User
 
 
 def background(request,  content_to_show):
-    """ the pagetree page view breaks flatpages, so this is a simple workaround."""
+    """ the pagetree page view breaks flatpages,
+    so this is a simple workaround."""
     file_names = {
-        'about'   : 'about.html',
-        'credits' : 'credits.html',
-        'contact' : 'contact.html',
-        'help'    : 'help.html',
-    } 
+        'about': 'about.html',
+        'credits': 'credits.html',
+        'contact': 'contact.html',
+        'help': 'help.html',
+    }
 
     if content_to_show not in file_names.keys():
         return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
-    file_name = file_names [content_to_show]
+    file_name = file_names[content_to_show]
     t = loader.get_template('main/standard_elements/%s' % file_name)
     c = RequestContext(request, {})
-    return HttpResponse(t.render(c))  
+    return HttpResponse(t.render(c))
 
 
 @login_required
@@ -48,7 +49,6 @@ def page(request, path):
     already_answered = SectionQuizAnsweredCorrectly.objects.filter(
         section=section, user=request.user).exists()
     set_timestamp_for_section(section, request.user)
-
 
     # We're leaving the top level pages as blank and navigating around them.
     send_to_first_child = False
@@ -142,46 +142,53 @@ def edit_page(request, path):
                 module=get_module(section),
                 modules=root.get_children(),
                 root=section.hierarchy.get_root())
-                
-                
-                
+
+
 @csrf_protect
 def resend_activation_email(request):
     """allows you to  resent the activation email to an arbitrary address."""
     if (request.method == "GET"):
-        t = loader.get_template('registration/resend_activation_email_form.html')
+        t = loader.get_template(
+            'registration/resend_activation_email_form.html')
         c = RequestContext(request, {})
         return HttpResponse(t.render(c))
-        
+
     if (request.method == "POST"):
         email = request.POST.get('email', '')
-        form_template = loader.get_template('registration/resend_activation_email_form.html')
-        confirm_template =  loader.get_template('registration/resend_activation_email_confirm.html') 
-        
-        if  email == '':
-            c = RequestContext(request, {'error' : 'no_email_entered', 'email': email})
+        form_template = loader.get_template(
+            'registration/resend_activation_email_form.html')
+        confirm_template = loader.get_template(
+            'registration/resend_activation_email_confirm.html')
+
+        if email == '':
+            c = RequestContext(request,
+                               {'error': 'no_email_entered', 'email': email})
             return HttpResponse(form_template.render(c))
         try:
-            user_profile = UserProfile.find_user_profiles_by_plaintext_email(email)
+            user_profile = UserProfile.find_user_profiles_by_plaintext_email(
+                email)
             reg_profile = user_profile[0].user.registrationprofile_set.get()
         except:
-            c = RequestContext(request, {'error' : 'no_email_found', 'email': email})
+            c = RequestContext(request,
+                               {'error': 'no_email_found', 'email': email})
             return HttpResponse(form_template.render(c))
-            
+
         if reg_profile.activation_key == 'ALREADY_ACTIVATED':
-            c = RequestContext(request, {'message' : 'already_active', 'email': email})
+            c = RequestContext(request,
+                               {'message': 'already_active', 'email': email})
             return HttpResponse(confirm_template.render(c))
-            
+
         if reg_profile.activation_key_expired():
-            c = RequestContext(request, {'error' : 'expired', 'email': email})
+            c = RequestContext(request, {'error': 'expired', 'email': email})
             return HttpResponse(form_template.render(c))
-        
+
         #ok success.
         if Site._meta.installed:
             site = Site.objects.get_current()
         else:
             site = RequestSite(request)
-    
+
         reg_profile.send_activation_email(site)
-        c = RequestContext(request, {'message': 'success_message', 'email': email})
+        c = RequestContext(request,
+                           {'message': 'success_message', 'email': email})
         return HttpResponse(confirm_template.render(c))
