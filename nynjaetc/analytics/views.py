@@ -189,9 +189,10 @@ def generate_row_info(the_user, all_sections, all_questions):
     }
 
 
-def checked_enduring_materials_box(the_user):
-    # you've got to be kidding me -------------------\/
-    enduring_materials_section = Section.objects.get(pk=50)
+# hard-coding the section pk is still a terrible idea
+# but at least now it's injectable for testing
+def checked_enduring_materials_box(the_user, section_pk=50):
+    enduring_materials_section = Section.objects.get(pk=section_pk)
     return SectionQuizAnsweredCorrectly.objects.filter(
         user=the_user, section=enduring_materials_section).exists()
 
