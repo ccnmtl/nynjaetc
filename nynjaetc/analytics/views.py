@@ -152,7 +152,7 @@ def generate_row(the_user, all_sections, all_questions, testing):
     return result
 
 
-def generate_row_info(the_user, all_sections, all_questions):
+def generate_row_info(the_user, all_sections, all_questions, cemb_pk=50):
 
     responses = responses_for(the_user)
     timestamps = timestamps_for(the_user)
@@ -185,7 +185,7 @@ def generate_row_info(the_user, all_sections, all_questions):
         'the_profile': the_profile,
         'user_questions': user_questions,
         'user_sections': user_sections,
-        'read_intro': checked_enduring_materials_box(the_user)
+        'read_intro': checked_enduring_materials_box(the_user, cemb_pk)
     }
 
 

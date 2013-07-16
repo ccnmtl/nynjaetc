@@ -5,6 +5,7 @@ from pagetree.models import Hierarchy
 from nynjaetc.analytics.views import checked_enduring_materials_box
 from nynjaetc.analytics.views import timestamps_for
 from nynjaetc.analytics.views import responses_for
+from nynjaetc.analytics.views import generate_row_info
 
 
 class SimpleViewsTest(TestCase):
@@ -71,3 +72,13 @@ class HelpersTest(TestCase):
 
     def test_responses_for(self):
         self.assertEquals(responses_for(self.u), {})
+
+    def test_generate_row_info(self):
+        r = generate_row_info(
+            self.u, [self.section1], [],
+            cemb_pk=self.section1.id)
+        self.assertEquals(r['the_user'], self.u)
+        self.assertEquals(r['the_profile'].user, self.u)
+        self.assertEquals(r['user_questions'], [])
+        self.assertEquals(r['user_sections'], [None])
+        self.assertEquals(r['read_intro'], False)
