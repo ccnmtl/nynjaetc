@@ -6,6 +6,7 @@ from nynjaetc.analytics.views import checked_enduring_materials_box
 from nynjaetc.analytics.views import timestamps_for
 from nynjaetc.analytics.views import responses_for
 from nynjaetc.analytics.views import generate_row_info
+from nynjaetc.analytics.views import generate_row
 
 
 class SimpleViewsTest(TestCase):
@@ -82,3 +83,14 @@ class HelpersTest(TestCase):
         self.assertEquals(r['user_questions'], [])
         self.assertEquals(r['user_sections'], [None])
         self.assertEquals(r['read_intro'], False)
+
+    def test_generate_row(self):
+        r = generate_row(
+            self.u, [self.section1], [], False,
+            cemb_pk=self.section1.id)
+        self.assertEquals(len(r), 6)
+
+        r = generate_row(
+            self.u, [self.section1], [], True,
+            cemb_pk=self.section1.id)
+        self.assertEquals(len(r), 10)

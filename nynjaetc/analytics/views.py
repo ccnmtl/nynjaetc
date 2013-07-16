@@ -115,8 +115,9 @@ def generate_heading(all_sections, all_questions, testing):
     return result
 
 
-def generate_row(the_user, all_sections, all_questions, testing):
-    line = generate_row_info(the_user, all_sections, all_questions)
+def generate_row(the_user, all_sections, all_questions, testing, cemb_pk=50):
+    line = generate_row_info(the_user, all_sections, all_questions,
+                             cemb_pk=cemb_pk)
 
     the_profile = line['the_profile']
 
