@@ -5,12 +5,14 @@ from django.contrib.auth.models import User
 from nynjaetc.main.models import Section, UserProfile
 from nynjaetc.main.models import SectionQuizAnsweredCorrectly
 from django.http import HttpResponse
-import csv
+
+import csv, datetime
 
 
 @login_required
 @staff_member_required
 def analytics_csv(request):
+    """keep the code in here to a minimum"""
     return table_to_csv(request, generate_the_table())
 
 
@@ -50,9 +52,9 @@ def generate_the_table(testing=False):
     all_questions = find_the_questions(all_sections)
     all_users = []
     if testing:
-        all_users = User.objects.all()
+        all_users = User.objects.all().order_by('-last_login')
     else:
-        all_users = User.objects.filter(is_staff=False)
+        all_users = User.objects.filter(is_staff=False).order_by('-last_login')
 
     the_table = []
     heading = generate_heading(all_sections, all_questions, testing)
@@ -100,7 +102,7 @@ def find_the_questions(sections_in_order):
 def generate_heading(all_sections, all_questions, testing):
     result = [
         'hrsa id', 'encrypted email', 'joined', 'last login',
-        'enduring materials checkbox',
+        'est. minutes spent', 'enduring materials checkbox',
     ]
 
     if testing:
@@ -135,8 +137,9 @@ def generate_row(the_user, all_sections, all_questions, testing, cemb_pk=50):
         ])
 
     result.extend([
-        line['the_user'].date_joined,
-        line['the_user'].last_login,
+        format_timestamp (line['the_user'].date_joined),
+        format_timestamp (line['the_user'].last_login),
+        line['est_time_spent'],
         line['read_intro'],
     ])
 
@@ -150,22 +153,24 @@ def generate_row(the_user, all_sections, all_questions, testing, cemb_pk=50):
 
     result.extend(line['user_sections'])
     result.extend(line['user_questions'])
+
+    #print result
     return result
 
 
 def generate_row_info(the_user, all_sections, all_questions, cemb_pk=50):
 
     responses = responses_for(the_user)
-    timestamps = timestamps_for(the_user)
+    raw_timestamps, formatted_timestamps = timestamps_for(the_user)
 
     user_sections = []
     user_questions = []
-    section_ids = timestamps.keys()
+    section_ids = formatted_timestamps.keys()
     question_ids = responses.keys()
 
     for the_section in all_sections:
         if the_section.id in section_ids:
-            user_sections.append(timestamps[the_section.id])
+            user_sections.append(formatted_timestamps[the_section.id])
         else:
             user_sections.append(None)
 
@@ -183,11 +188,48 @@ def generate_row_info(the_user, all_sections, all_questions, cemb_pk=50):
 
     return {
         'the_user': the_user,
+
+
+        'est_time_spent' : time_spent_estimate(raw_timestamps.values()),
         'the_profile': the_profile,
         'user_questions': user_questions,
         'user_sections': user_sections,
         'read_intro': checked_enduring_materials_box(the_user, cemb_pk)
     }
+
+
+def sum_of_gaps_longer_than_x_minutes (x, list_of_timestamps):
+    """ as described in bug http://pmt.ccnmtl.columbia.edu/item/87836/
+    basically if there are gaps that are longer than x, we assume the user was not doing the activity.
+    so in that case we don't count that toward the total duration of the activity for them.
+    Returns a value in seconds.
+    """
+    threshold =  datetime.timedelta(minutes = x)
+    if len(list_of_timestamps) < 2:
+        return 0
+    list_of_timestamps.sort()
+    start_times = list_of_timestamps [  :-1]
+    end_times   = list_of_timestamps [ 1:  ]
+    gaps_longer_than_x_in_seconds = [
+        my_total_seconds(b - a)
+        for a, b in zip (start_times, end_times)
+        if (b -a > threshold)]
+    return sum(gaps_longer_than_x_in_seconds)
+
+def time_spent_estimate (list_of_timestamps):
+    """Based on a list of timestamps, make an estimate,
+    in minutes, of actual time spent paying attention
+    to the activity."""
+    if len (list_of_timestamps) == 0:
+        return 0
+    raw_estimate = my_total_seconds(max (list_of_timestamps) - min (list_of_timestamps))
+    better_estimate = raw_estimate -  sum_of_gaps_longer_than_x_minutes (70, list_of_timestamps)
+    return "%0.1f" % (better_estimate / 60,)
+
+def my_total_seconds(td):
+    """Python's timedelta did not have a 'total_seconds' method before python 2.7. I just."""
+    return td.total_seconds()
+    #return (td.microseconds + (td.seconds + td.days * 24.0 * 3600.0) * 10.0**6.0) / 10.0**6.0
 
 
 # hard-coding the section pk is still a terrible idea
@@ -198,10 +240,15 @@ def checked_enduring_materials_box(the_user, section_pk=50):
         user=the_user, section=enduring_materials_section).exists()
 
 
+def format_timestamp (ts):
+    """Easy for humans and Microsoft Excel to understand."""
+    return ts.strftime("%m/%d/%Y %I:%M:%S %p")
+
 def timestamps_for(the_user):
     the_timestamps = the_user.sectiontimestamp_set.all()
-    result = dict([(t.section.id, t.timestamp) for t in the_timestamps])
-    return result
+    formatted_timestamps = dict([(t.section.id,   format_timestamp(t.timestamp)  ) for t in the_timestamps])
+    raw_timestamps = dict([(t.section.id,   t.timestamp  ) for t in the_timestamps])
+    return (raw_timestamps, formatted_timestamps)
 
 
 def responses_for(the_user):

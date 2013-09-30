@@ -56,7 +56,9 @@
        
       {% else %}
        <!-- <a href="/accounts/password_change/" class="btn pull-right">Change Password</a> -->
+       <a href="/password_change/" class="btn pull-right">Change Password</a>
        <a href="/accounts/logout/" class="btn pull-right">Log Out</a>
+       
         {% if can_download_stats %}
             <a href="/analytics/csv/" class="btn btn-inverse pull-right">stats</a>
         {%endif %}
@@ -68,11 +70,6 @@
           {%else %}
             {{request.user}}
           {%endif %}
-    {%comment %}
-          {% if request.user.is_superuser %}
-          <a href="{% url impersonate-list %}">[impersonate]</a>
-          {% endif %}
-    {%endcomment %}
     </strong>
         </p>
       {% endif %}

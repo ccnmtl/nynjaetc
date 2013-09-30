@@ -45,6 +45,7 @@ urlpatterns = patterns(
 
     (r'^resend_activation_email/$',
      'nynjaetc.main.views.resend_activation_email'),
+    (r'^password_change/$', 'django.contrib.auth.views.password_change'),
 
     (r'^munin/', include('munin.urls')),
     (r'^stats/', direct_to_template, {'template': 'stats.html'}),
