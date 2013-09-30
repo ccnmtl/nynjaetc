@@ -69,7 +69,7 @@ class HelpersTest(TestCase):
                 self.section1.id))
 
     def test_timestamps_for(self):
-        self.assertEquals(timestamps_for(self.u), {})
+        self.assertEquals(timestamps_for(self.u), ({}, {}))
 
     def test_responses_for(self):
         self.assertEquals(responses_for(self.u), {})
@@ -88,9 +88,9 @@ class HelpersTest(TestCase):
         r = generate_row(
             self.u, [self.section1], [], False,
             cemb_pk=self.section1.id)
-        self.assertEquals(len(r), 6)
+        self.assertEquals(len(r), 7)
 
         r = generate_row(
             self.u, [self.section1], [], True,
             cemb_pk=self.section1.id)
-        self.assertEquals(len(r), 10)
+        self.assertEquals(len(r), 11)

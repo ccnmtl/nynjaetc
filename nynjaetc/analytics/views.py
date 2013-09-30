@@ -47,8 +47,13 @@ def table_to_csv(request, table):
 
 def generate_the_table(testing=False):
 
-    all_sections = [s for s in Section.objects.get(pk=1).get_tree()
-                    if s.is_leaf_or_has_content()]
+    #import pdb
+    #pdb.set_trace()
+    #assert 1 == 0
+    #print "aaa"
+    #print 
+    the_tree = [s for s in Section.objects.all()][0].get_tree()
+    all_sections = [s for s in the_tree if s.is_leaf_or_has_content()]
     all_questions = find_the_questions(all_sections)
     all_users = []
     if testing:
