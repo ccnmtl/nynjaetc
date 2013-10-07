@@ -1,18 +1,29 @@
 # -*- coding: utf-8 -*-
-from django.conf import settings
 from lettuce.django import django_url
 from lettuce import before, after, world, step
 from django.test import client
+from django.test.utils import teardown_test_environment
+from django.conf import settings
+import sys
 import os
-
 import time
+
 try:
     from lxml import html
     from selenium import webdriver
-    from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
+    #from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
+    #from selenium.common.exceptions import NoSuchElementException
+    #from selenium.webdriver.common.keys import Keys
+    #import selenium
 except:
     pass
 
+def robust_string_compare(a, b):
+    """ compare two strings but be a little flexible about it.
+
+    try to handle case and whitespace variations without blowing up.
+    this makes tests more robust in the face of template changes"""
+    return a.strip().lower() == b.strip().lower()
 
 def skip_selenium():
     return (os.environ.get('LETTUCE_SKIP_SELENIUM', False)
@@ -27,17 +38,21 @@ def setup_browser(variables):
         world.browser = None
         world.skipping = False
     else:
-        ff_profile = FirefoxProfile()
-        ff_profile.set_preference("webdriver_enable_native_events", False)
-        world.firefox = webdriver.Firefox(ff_profile)
-        world.using_selenium = False
+        browser = getattr(settings, 'BROWSER', 'Chrome')
+        if browser == 'Chrome':
+            world.browser = webdriver.Chrome()
+        elif browser == 'Headless':
+            world.browser = webdriver.PhantomJS()
+        else:
+            print "unknown browser: %s" % browser
+            exit(1)
     world.client = client.Client()
 
 
 @after.harvest
 def teardown_browser(total):
     if not skip_selenium():
-        world.firefox.quit()
+        world.browser.quit()
 
 
 @before.harvest
@@ -64,14 +79,12 @@ def using_selenium(step):
     else:
         world.using_selenium = True
 
-
 @step(u'Finished using selenium')
 def finished_selenium(step):
     if skip_selenium():
         world.skipping = False
     else:
         world.using_selenium = False
-
 
 @before.each_scenario
 def clear_selenium(step):
