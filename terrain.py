@@ -93,8 +93,6 @@ def clear_selenium(step):
 
 @step(r'I access the url "(.*)"')
 def access_url(step, url):
-    import pdb
-    pdb.set_trace()
     if world.using_selenium:
         world.browser.get(django_url(url))
     else:
