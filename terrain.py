@@ -11,7 +11,7 @@ import time
 try:
     from lxml import html
     from selenium import webdriver
-    #from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
+    #from selenium.webdriver.browser.browser_profile import browserProfile
     #from selenium.common.exceptions import NoSuchElementException
     #from selenium.webdriver.common.keys import Keys
     #import selenium
@@ -93,23 +93,31 @@ def clear_selenium(step):
 
 @step(r'I access the url "(.*)"')
 def access_url(step, url):
+    import pdb
+    pdb.set_trace()
     if world.using_selenium:
-        world.firefox.get(django_url(url))
+        world.browser.get(django_url(url))
     else:
+        
         response = world.client.get(django_url(url))
+        if 'location' in response._headers:
+            new_url = response._headers['location'][1]
+            response = world.client.get(django_url(new_url))
         world.dom = html.fromstring(response.content)
+        
 
 
 @step(u'I am not logged in')
 def i_am_not_logged_in(step):
     if world.using_selenium:
-        world.firefox.get(django_url("/accounts/logout/"))
+        world.browser.get(django_url("/accounts/logout/"))
     else:
         world.client.logout()
 
 
 @step(u'I am taken to a login screen')
 def i_am_taken_to_a_login_screen(step):
+    assert True
     assert len(world.response.redirect_chain) > 0
     (url, status) = world.response.redirect_chain[0]
     assert status == 302, status
@@ -147,17 +155,17 @@ def i_click_the_link(step, text):
         assert False, "could not find the '%s' link" % text
     else:
         try:
-            link = world.firefox.find_element_by_partial_link_text(text)
+            link = world.browser.find_element_by_partial_link_text(text)
             assert link.is_displayed()
             link.click()
         except:
             try:
                 time.sleep(1)
-                link = world.firefox.find_element_by_partial_link_text(text)
+                link = world.browser.find_element_by_partial_link_text(text)
                 assert link.is_displayed()
                 link.click()
             except:
-                world.firefox.get_screenshot_as_file("/tmp/selenium.png")
+                world.browser.get_screenshot_as_file("/tmp/selenium.png")
                 assert False, link.location
 
 
@@ -167,7 +175,7 @@ def i_fill_in_the_form_field(step, value, field_name):
     if not world.using_selenium:
         assert False, "this step not implemented for the django test client"
 
-    world.firefox.find_element_by_id(field_name).send_keys(value)
+    world.browser.find_element_by_id(field_name).send_keys(value)
 
 
 @step(u'I submit the "([^"]*)" form')
@@ -175,7 +183,7 @@ def i_submit_the_form(step, elt_id):
     if not world.using_selenium:
         assert False, "this step not implemented for the django test client"
 
-    world.firefox.find_element_by_id(elt_id).submit()
+    world.browser.find_element_by_id(elt_id).submit()
 
 
 @step('I go back')
@@ -183,7 +191,7 @@ def i_go_back(self):
     """ need to back out of games currently"""
     if not world.using_selenium:
         assert False, "this step not implemented for the django test client"
-    world.firefox.back()
+    world.browser.back()
 
 
 @step(u'I wait for (\d+) seconds')
@@ -194,11 +202,10 @@ def wait(step, seconds):
 @step(r'I see the header "(.*)"')
 def see_header(step, text):
     if world.using_selenium:
-        elt = world.firefox.find_element_by_css_selector(".hero-unit>h1")
+        elt = world.browser.find_element_by_css_selector(".hero-unit>h1")
         assert text.strip() == elt.text.strip()
     else:
-        header = world.dom.cssselect('h1')[0]
-        #header = world.dom.cssselect('.hero-unit>h1')[0]
+        header = world.dom.cssselect('h2')[0]
         assert text.strip() == header.text_content().strip()
 
 
@@ -213,6 +220,6 @@ def see_sidebar(self):
 @step(r'I see the page title "(.*)"')
 def see_title(step, text):
     if world.using_selenium:
-        assert text == world.firefox.title
+        assert text == world.browser.title
     else:
         assert text == world.dom.find(".//title").text
