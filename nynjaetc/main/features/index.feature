@@ -18,6 +18,6 @@ stuff is all hooked up properly and running.
 
     Scenario: Index Page Load With Selenium
         Using selenium
-        #When I access the url "/intro/"
-        #Then I am taken to a login screen
+        When I access the url "/intro/"
+        Then I am taken to a login screen
         Finished using selenium

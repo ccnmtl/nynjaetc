@@ -115,11 +115,7 @@ def i_am_not_logged_in(step):
 
 @step(u'I am taken to a login screen')
 def i_am_taken_to_a_login_screen(step):
-    assert True
-    assert len(world.response.redirect_chain) > 0
-    (url, status) = world.response.redirect_chain[0]
-    assert status == 302, status
-    assert "/login/" in url, "URL redirected to was %s" % url
+    assert "Log in" in world.dom.cssselect('h2')[0].text
 
 
 @step(u'there is not an? "([^"]*)" link')
