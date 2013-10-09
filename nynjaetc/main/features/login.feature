@@ -1,4 +1,4 @@
-Feature: Index Page
+Feature: Login 
 
 Just some simple sanity checks on the index page of the application
 This also serves as a good test that the lettuce and selenium
@@ -16,7 +16,16 @@ stuff is all hooked up properly and running.
         Then I see the header "Log in"
 
     Scenario: Index Page Load With Selenium
+        When I access the url "/accounts/login/"
+        Then I click "register"
+        Then I register a test user
+
+    Scenario: Index Page Load With Selenium
         Using selenium
-        When I access the url "/intro/"
-        Then I am taken to a login screen
+        Given I am registered
+        When I access the url "/accounts/login/"
+        Then I fill in "test" in the "id_username" form field
+        Then I fill in "test" in the "id_password" form field
+        Then I submit the "application-login-form" form
+        Then I verify that I am logged in
         Finished using selenium

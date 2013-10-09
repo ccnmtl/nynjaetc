@@ -4,6 +4,7 @@ from lettuce import before, after, world, step
 from django.test import client
 from django.test.utils import teardown_test_environment
 from django.conf import settings
+from django.contrib.auth.models import User
 import sys
 import os
 import time
@@ -102,7 +103,42 @@ def access_url(step, url):
             new_url = response._headers['location'][1]
             response = world.client.get(django_url(new_url))
         world.dom = html.fromstring(response.content)
-        
+
+@step(u'Then I click "([^"]*)"')
+def then_i_click_group1(step, register):
+    reg_btn = world.browser.find_element_by_link_text('Register')
+    reg_btn.click()
+    
+
+@step(u'Then I register a test user')
+def then_i_register_a_test_user(step):
+    form = world.browser.find_element_by_tag_name('form')
+    username = world.browser.find_element_by_id('id_username')
+    email = world.browser.find_element_by_id('id_email')
+    pass1 = world.browser.find_element_by_id('id_password1')
+    pass2 = world.browser.find_element_by_id('id_password2')
+    username.send_keys('test')
+    email.send_keys('t@t.com')
+    pass1.send_keys('test')
+    pass2.send_keys('test')
+    form.submit()
+    user = User.objects.get(username='test')
+    user.is_active = True
+    user.save()
+
+
+@step(u'Given I am registered')
+def given_i_am_registered(step):
+    if User.objects.get(username='test'):
+        assert True
+    else:
+        assert False, 'This step must be implemented'
+
+
+@step(u'Then I verify that I am logged in')
+def then_i_verify_that_i_am_logged_in(step):
+    logged_in = world.browser.find_elements_by_class_name('navbar-text')
+    assert logged_in[0].text == 'Logged in as test'
 
 
 @step(u'I am not logged in')
@@ -174,10 +210,10 @@ def i_fill_in_the_form_field(step, value, field_name):
 
 @step(u'I submit the "([^"]*)" form')
 def i_submit_the_form(step, elt_id):
+    form = world.browser.find_element_by_id(elt_id)
+    form.submit()
     if not world.using_selenium:
         assert False, "this step not implemented for the django test client"
-
-    world.browser.find_element_by_id(elt_id).submit()
 
 
 @step('I go back')
