@@ -17,7 +17,7 @@ stuff is all hooked up properly and running.
 
     Scenario: Index Page Load With Selenium
         When I access the url "/accounts/login/"
-        Then I click "register"
+        Then I click "Register"
         Then I register a test user
 
     Scenario: Index Page Load With Selenium

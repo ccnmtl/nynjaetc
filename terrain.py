@@ -106,7 +106,7 @@ def access_url(step, url):
 
 @step(u'Then I click "([^"]*)"')
 def then_i_click_group1(step, register):
-    reg_btn = world.browser.find_element_by_link_text('Register')
+    reg_btn = world.browser.find_element_by_link_text(register)
     reg_btn.click()
     
 
