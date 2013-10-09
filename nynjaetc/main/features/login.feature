@@ -16,6 +16,7 @@ stuff is all hooked up properly and running.
         Then I see the header "Log in"
 
     Scenario: Index Page Load With Selenium
+        Using selenium
         When I access the url "/accounts/login/"
         Then I click "Register"
         Then I register a test user
