@@ -2,12 +2,10 @@
 
 Note: this code runs on ALL non-rhetorical quizzes; e.g. the pre- and post-test
 
-
 */
   
 (function () {
 
-alert ("goat?")
 function validate_pre_and_post_test_forms (e)  {
 
 
@@ -118,9 +116,6 @@ function init_disclaimer_and_pre_and_post_tests() {
     if (jQuery('.section_id').html() == '35' || jQuery('.section_id').html() == '51') {
         jQuery ('.next').hide()
         jQuery(".quiz_feedbackbox").hide();
-        
-        
-        
         jQuery('form').submit(validate_pre_and_post_test_forms);
     
     
