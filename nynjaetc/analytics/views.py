@@ -6,7 +6,8 @@ from nynjaetc.main.models import Section, UserProfile
 from nynjaetc.main.models import SectionQuizAnsweredCorrectly
 from django.http import HttpResponse
 
-import csv, datetime
+import csv
+import datetime
 
 
 @login_required
@@ -59,7 +60,6 @@ def generate_the_table(testing=False):
     the_table = []
     heading = generate_heading(all_sections, all_questions, testing)
 
-    #the_table.append([("column %d" % (a + 1)) for a in range(len(heading))])
     the_table.append(heading)
 
     for the_user in all_users:
@@ -129,12 +129,13 @@ def generate_row(the_user, all_sections, all_questions, testing, cemb_pk=50):
             None
         ])
 
-    result.extend([
-        format_timestamp (line['the_user'].date_joined),
-        format_timestamp (line['the_user'].last_login),
-        line['est_time_spent'],
-        line['read_intro'],
-    ])
+    result.extend(
+        [
+            format_timestamp(line['the_user'].date_joined),
+            format_timestamp(line['the_user'].last_login),
+            line['est_time_spent'],
+            line['read_intro'],
+        ])
 
     if testing:
         result.extend([
@@ -181,9 +182,7 @@ def generate_row_info(the_user, all_sections, all_questions, cemb_pk=50):
 
     return {
         'the_user': the_user,
-
-
-        'est_time_spent' : time_spent_estimate(raw_timestamps.values()),
+        'est_time_spent': time_spent_estimate(raw_timestamps.values()),
         'the_profile': the_profile,
         'user_questions': user_questions,
         'user_sections': user_sections,
@@ -191,38 +190,45 @@ def generate_row_info(the_user, all_sections, all_questions, cemb_pk=50):
     }
 
 
-def sum_of_gaps_longer_than_x_minutes (x, list_of_timestamps):
+def sum_of_gaps_longer_than_x_minutes(x, list_of_timestamps):
     """ as described in bug http://pmt.ccnmtl.columbia.edu/item/87836/
-    basically if there are gaps that are longer than x, we assume the user was not doing the activity.
-    so in that case we don't count that toward the total duration of the activity for them.
+    basically if there are gaps that are longer than x,
+    we assume the user was not doing the activity.
+    so in that case we don't count that toward the total
+    duration of the activity for them.
     Returns a value in seconds.
     """
-    threshold =  datetime.timedelta(minutes = x)
+    threshold = datetime.timedelta(minutes=x)
     if len(list_of_timestamps) < 2:
         return 0
     list_of_timestamps.sort()
-    start_times = list_of_timestamps [  :-1]
-    end_times   = list_of_timestamps [ 1:  ]
+    start_times = list_of_timestamps[:-1]
+    end_times = list_of_timestamps[1:]
     gaps_longer_than_x_in_seconds = [
         my_total_seconds(b - a)
-        for a, b in zip (start_times, end_times)
-        if (b -a > threshold)]
+        for a, b in zip(start_times, end_times)
+        if (b - a > threshold)]
     return sum(gaps_longer_than_x_in_seconds)
 
-def time_spent_estimate (list_of_timestamps):
+
+def time_spent_estimate(list_of_timestamps):
     """Based on a list of timestamps, make an estimate,
     in minutes, of actual time spent paying attention
     to the activity."""
-    if len (list_of_timestamps) == 0:
+    if len(list_of_timestamps) == 0:
         return 0
-    raw_estimate = my_total_seconds(max (list_of_timestamps) - min (list_of_timestamps))
-    better_estimate = raw_estimate -  sum_of_gaps_longer_than_x_minutes (70, list_of_timestamps)
+    raw_estimate = my_total_seconds(
+        max(list_of_timestamps) - min(list_of_timestamps))
+    better_estimate = raw_estimate - sum_of_gaps_longer_than_x_minutes(
+        70,
+        list_of_timestamps)
     return "%0.1f" % (better_estimate / 60,)
 
+
 def my_total_seconds(td):
-    """Python's timedelta did not have a 'total_seconds' method before python 2.7. I just."""
+    """Python's timedelta did not have a 'total_seconds' method
+    before python 2.7. I just."""
     return td.total_seconds()
-    #return (td.microseconds + (td.seconds + td.days * 24.0 * 3600.0) * 10.0**6.0) / 10.0**6.0
 
 
 # hard-coding the section pk is still a terrible idea
@@ -233,14 +239,18 @@ def checked_enduring_materials_box(the_user, section_pk=50):
         user=the_user, section=enduring_materials_section).exists()
 
 
-def format_timestamp (ts):
+def format_timestamp(ts):
     """Easy for humans and Microsoft Excel to understand."""
     return ts.strftime("%m/%d/%Y %I:%M:%S %p")
 
+
 def timestamps_for(the_user):
     the_timestamps = the_user.sectiontimestamp_set.all()
-    formatted_timestamps = dict([(t.section.id,   format_timestamp(t.timestamp)  ) for t in the_timestamps])
-    raw_timestamps = dict([(t.section.id,   t.timestamp  ) for t in the_timestamps])
+    formatted_timestamps = dict(
+        [(t.section.id, format_timestamp(t.timestamp))
+         for t in the_timestamps])
+    raw_timestamps = dict(
+        [(t.section.id, t.timestamp) for t in the_timestamps])
     return (raw_timestamps, formatted_timestamps)
 
 
