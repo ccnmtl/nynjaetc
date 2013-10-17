@@ -43,7 +43,7 @@ def has_submitted_pretest(the_user):
     for s in Submission.objects.filter(user = the_user):
         if s.quiz.pageblock().section == the_pretest_section:
             return True
-    return false
+    return False
 
 @login_required
 @render_to('main/page.html')
