@@ -222,3 +222,8 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
 ENCRYPT_EMAIL_ADDRESSES = True
 ENCRYPT_HRSA_IDS = True
 ENCRYPT_KEY = 'DUMMY DUMMY DUMMY DUMMY.'  # overridden by local_settings.py
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+}

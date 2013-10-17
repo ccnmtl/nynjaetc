@@ -186,7 +186,7 @@
 {% endif %}
 {% if request.user.is_impersonate %}
 <div class="alert alert-error" style="position: fixed; left: 0px; top: 75px">
-You are impersonating. <a href="{% url impersonate-stop %}">stop</a>.
+You are impersonating. <a href="{% url 'impersonate-stop' %}">stop</a>.
 </div>
 {% endif %}
 
