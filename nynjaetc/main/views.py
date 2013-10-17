@@ -49,8 +49,12 @@ def has_submitted_pretest(the_user):
 @render_to('main/page.html')
 def page(request, path):
     #bypass the inital material if the user has already submitted the pretest:
-    the_pretest_section = Section.objects.get (sectionpreference__preference__slug = 'pre-test')
-    if the_pretest_section:
+    try:
+        the_pretest_section = Section.objects.get (sectionpreference__preference__slug = 'pre-test')
+    except Section.DoesNotExist:
+        the_pretest_section = None
+
+    if the_pretest_section != None:
         if path == '' and has_submitted_pretest(request.user):
             return HttpResponseRedirect(the_pretest_section.get_next().get_absolute_url())
 
