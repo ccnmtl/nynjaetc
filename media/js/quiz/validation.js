@@ -1,8 +1,15 @@
+/*
 
+Note: this code runs on ALL non-rhetorical quizzes;
+e.g. the pre- and post-test,
+as well as the disclaimer
+
+*/
   
 (function () {
 
 function validate_pre_and_post_test_forms (e)  {
+
 
     e.preventDefault(); // don't submit multiple times
     var valid = true;
@@ -64,6 +71,7 @@ function submit_quiz_via_ajax_then_go_to_next_page (){
 
 
 function go_to_next_page () {
+
     jQuery('li.next a')[0].click();    
 }
 
@@ -100,20 +108,19 @@ function record_success_on_disclaimer (){
     return false;
 }
 
-// TODO change to secitonansweredcoorrectly in the reporting pages.
-
 
 function init_disclaimer_and_pre_and_post_tests() {
     jQuery ('#quiz_general_feedback').hide()
     
+    // pre and post tests:
     if (jQuery('.section_id').html() == '35' || jQuery('.section_id').html() == '51') {
         jQuery(".quiz_feedbackbox").hide();
-        
-        
-        
         jQuery('form').submit(validate_pre_and_post_test_forms);
-    
-    
+        
+        // don't allow users to leave the page unless they submit a response.
+        if ( typeof (the_user_submitted_a_response) ==="undefined" || (!the_user_submitted_a_response) ) {
+            jQuery ('.next').hide()
+        }
     }
     // if this is the disclaimer page:
     

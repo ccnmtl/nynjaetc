@@ -47,6 +47,7 @@ def table_to_csv(request, table):
 
 
 def generate_the_table(testing=False):
+
     the_tree = [s for s in Section.objects.all()][0].get_tree()
     all_sections = [s for s in the_tree if s.is_leaf_or_has_content()]
     all_questions = find_the_questions(all_sections)
@@ -83,8 +84,7 @@ def find_the_questions(sections_in_order):
             if the_pageblock.block().__class__.display_name == 'Quiz':
                 all_questions.extend(the_pageblock.block().question_set.all())
 
-    #filter out most of the questions; re-label one of them.
-    #enduring_materials_question_id = 50
+    #filter out most of the questions
     for the_q in all_questions:
         if the_q.quiz.id in quizzes_we_want:
             result.append(the_q)

@@ -20,10 +20,21 @@
 {% block pagetitle %}<h2 class="pagetitle">{{section.label}}</h2>{% endblock %}
 
 {% block sidenav %}
+    {% if whether_to_show_nav %}
         <!-- ###### Secondary Navigation ###### -->
         {% if module.get_children %}
         {% include "main/menu.html" %}
-        {% endif %}
+        {% endif %}    
+    {% endif %}
+{% endblock %}
+
+
+{% block primarynavtabs %}aaaa
+    {% if whether_to_show_nav %}
+    {% for section in module_info %}
+        <li{% ifequal section.id module.id %} class="active"{% endifequal %}><a href="{{section.url}}">{{section.label}}</a></li>
+        {% endfor %}
+    {%endif %}
 {% endblock %}
 
 {% block navrightextra %}
