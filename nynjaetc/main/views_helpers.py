@@ -71,5 +71,3 @@ def module_info(section):
         info['url'] = '%s%s' % (prefix,  x.get_absolute_url())
         result.append(info)
     return result
-
-

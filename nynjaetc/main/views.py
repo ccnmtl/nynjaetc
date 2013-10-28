@@ -9,16 +9,14 @@ from nynjaetc.main.models import SectionPreference, UserProfile
 from nynjaetc.main.views_helpers import whether_already_visited
 from nynjaetc.main.views_helpers import self_and_descendants
 from nynjaetc.main.views_helpers import set_timestamp_for_section
-from  nynjaetc.main.views_helpers import is_in_one_of
+from nynjaetc.main.views_helpers import is_in_one_of
 from nynjaetc.main.views_helpers import module_info
 from nynjaetc.main.models import SectionTimestamp, SectionQuizAnsweredCorrectly
 from django.template import RequestContext, loader
 from django.contrib.sites.models import RequestSite
 from django.contrib.sites.models import Site
 from django.views.decorators.csrf import csrf_protect
-from nynjaetc.main.models import Preference
 from quizblock.models import Submission
-
 
 
 def background(request,  content_to_show):
@@ -38,25 +36,30 @@ def background(request,  content_to_show):
     c = RequestContext(request, {})
     return HttpResponse(t.render(c))
 
+
 def has_submitted_pretest(the_user):
-    the_pretest_section = Section.objects.get (sectionpreference__preference__slug = 'pre-test')
-    for s in Submission.objects.filter(user = the_user):
+    the_pretest_section = Section.objects.get(
+        sectionpreference__preference__slug='pre-test')
+    for s in Submission.objects.filter(user=the_user):
         if s.quiz.pageblock().section == the_pretest_section:
             return True
     return False
+
 
 @login_required
 @render_to('main/page.html')
 def page(request, path):
     #bypass the inital material if the user has already submitted the pretest:
     try:
-        the_pretest_section = Section.objects.get (sectionpreference__preference__slug = 'pre-test')
+        the_pretest_section = Section.objects.get(
+            sectionpreference__preference__slug='pre-test')
     except Section.DoesNotExist:
         the_pretest_section = None
 
-    if the_pretest_section != None:
+    if the_pretest_section is not None:
         if path == '' and has_submitted_pretest(request.user):
-            return HttpResponseRedirect(the_pretest_section.get_next().get_absolute_url())
+            return HttpResponseRedirect(
+                the_pretest_section.get_next().get_absolute_url())
 
     section = get_section_from_path(path)
     root = section.hierarchy.get_root()
@@ -67,19 +70,16 @@ def page(request, path):
     already_answered = SectionQuizAnsweredCorrectly.objects.filter(
         section=section, user=request.user).exists()
     set_timestamp_for_section(section, request.user)
-
-    
-    supress_nav_sections = Section.objects.filter (
-        sectionpreference__preference__slug =
+    supress_nav_sections = Section.objects.filter(
+        sectionpreference__preference__slug=
         'suppress_nav_until_pre_test_submitted'
     )
 
     whether_to_show_nav = True
-    if is_in_one_of (section, supress_nav_sections):
+    if is_in_one_of(section, supress_nav_sections):
         whether_to_show_nav = False
         if has_submitted_pretest(request.user):
             whether_to_show_nav = True
-
 
     # We're leaving the top level pages as blank and navigating around them.
     send_to_first_child = False
