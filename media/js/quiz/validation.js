@@ -118,7 +118,7 @@ function init_disclaimer_and_pre_and_post_tests() {
         jQuery('form').submit(validate_pre_and_post_test_forms);
         
         // don't allow users to leave the page unless they submit a response.
-        if (!the_user_submitted_a_response) {
+        if ( typeof (the_user_submitted_a_response) ==="undefined" || (!the_user_submitted_a_response) ) {
             jQuery ('.next').hide()
         }
     }

@@ -55,10 +55,8 @@
       {% endblock log_in_and_register_buttons %}   
        
       {% else %}
-       <!-- <a href="/accounts/password_change/" class="btn pull-right">Change Password</a> -->
-       <a href="/password_change/" class="btn pull-right">Change Password</a>
+       <a href="javascript:window.open('/password_change/');" class="btn pull-right">Change Password</a>
        <a href="/accounts/logout/" class="btn pull-right">Log Out</a>
-       
         {% if can_download_stats %}
             <a href="/analytics/csv/" class="btn btn-inverse pull-right">stats</a>
         {%endif %}
