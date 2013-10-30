@@ -168,8 +168,8 @@ window.ChapterMarkerPlayer = {
     // instance to a parent element.
     // This is a private method that isn't exposed via the ChapterMarkerPlayer namespace.
     function initializePlayer(containerElement, params) {
-      console.log ('params is');
-      console.log (params);
+      //console.log ('params is');
+      //console.log (params);
     
       var playerContainer = document.createElement('div');
       containerElement.appendChild(playerContainer);
@@ -177,8 +177,8 @@ window.ChapterMarkerPlayer = {
       // Attempt to use any custom player options that were passed in via params.playerOptions.
       // Fall back to reasonable defaults as needed.
       var playerOptions = params.playerOptions || {};
-      console.log ('playerOptions.playerVars are');
-      console.log (playerOptions.playerVars);
+      //console.log ('playerOptions.playerVars are');
+      //console.log (playerOptions.playerVars);
       return new YT.Player(playerContainer, {
         // Maintain a 16:9 aspect ratio for the player based on the width passed in via params.
         // Override can be done via params.playerOptions if needed

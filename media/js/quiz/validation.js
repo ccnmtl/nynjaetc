@@ -10,7 +10,6 @@ as well as the disclaimer
 
 function validate_pre_and_post_test_forms (e)  {
 
-
     e.preventDefault(); // don't submit multiple times
     var valid = true;
     jQuery(".quiz_feedbackbox").hide();
@@ -20,7 +19,7 @@ function validate_pre_and_post_test_forms (e)  {
             var hrsa_id  = jQuery("#input_for_question_17")[0].value;
             var there_are_exactly_eight_digits =  (/^[0-9]{8}$/g.test(hrsa_id));
             if (!there_are_exactly_eight_digits ) {
-            console.log ('ok there were not 8 chars');
+            //console.log ('ok there were not 8 chars');
             jQuery("#feedback_for_question_17").text("Please enter your 8-character HRSA ID.").show();
             valid = false;
             //return false;
@@ -33,7 +32,7 @@ function validate_pre_and_post_test_forms (e)  {
     // How many radio button questions are there?
     radio_button_question_count = 0;
     jQuery ('.cases').each( function (a, b) {
-            console.log (jQuery(b).find( 'input[type=radio]' ).length > 0)
+            //console.log (jQuery(b).find( 'input[type=radio]' ).length > 0)
             if (jQuery(b).find( 'input[type=radio]' ).length > 0) {
                 radio_button_question_count ++
             }
@@ -46,8 +45,8 @@ function validate_pre_and_post_test_forms (e)  {
        }
     );
     checked_radio_button_question_count = done_questions.length
-    console.log ("there are " + radio_button_question_count + "questions.");
-    console.log (" of which the user answered " + checked_radio_button_question_count);
+    //console.log ("there are " + radio_button_question_count + "questions.");
+    //console.log (" of which the user answered " + checked_radio_button_question_count);
      if  ( checked_radio_button_question_count < radio_button_question_count) {
         valid = false;
         jQuery("#quiz_general_feedback").text("Please answer all the questions.").show();
