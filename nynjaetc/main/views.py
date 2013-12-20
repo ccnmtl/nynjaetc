@@ -80,6 +80,17 @@ def whether_to_show_nav(section, user):
     return True
 
 
+def send_to_first_child(section, root):
+    is_root = (section.id == root.id)
+    is_child_of_root = (
+        section.get_parent() and section.get_parent().id == root.id)
+    if len(section.get_children()) > 0 and section.get_next():
+        # don't send to first child if there is no first child.
+        if is_root or is_child_of_root:
+            return True
+    return False
+
+
 @login_required
 @render_to('main/page.html')
 def page(request, path):
@@ -98,15 +109,7 @@ def page(request, path):
     set_timestamp_for_section(section, request.user)
 
     # We're leaving the top level pages as blank and navigating around them.
-    send_to_first_child = False
-    is_root = (section.id == root.id)
-    is_child_of_root = (
-        section.get_parent() and section.get_parent().id == root.id)
-    if len(section.get_children()) > 0 and section.get_next():
-        # don't send to first child if there is no first child.
-        if is_root or is_child_of_root:
-            send_to_first_child = True
-    if send_to_first_child:
+    if send_to_first_child(section, root):
         return HttpResponseRedirect(section.get_next().get_absolute_url())
 
     if request.method == "POST":
