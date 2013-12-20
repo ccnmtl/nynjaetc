@@ -131,13 +131,10 @@ class PageView(LoggedInMixin, View):
         self.section = section
         return None
 
-    def dispatch(self, *args, **kwargs):
-        r = self.precheck(self.request, kwargs['path'])
+    def post(self, request, path):
+        r = self.precheck(self.request, path)
         if r is not None:
             return r
-        return super(PageView, self).dispatch(*args, **kwargs)
-
-    def post(self, request, path):
         # user has submitted a form. deal with it
         if request.POST.get('action', '') == 'reset':
             return HttpResponseRedirect(self.section.get_absolute_url())
@@ -149,6 +146,9 @@ class PageView(LoggedInMixin, View):
         return HttpResponseRedirect(self.section.get_absolute_url())
 
     def get(self, request, path):
+        r = self.precheck(self.request, path)
+        if r is not None:
+            return r
         return render(request, self.template_name, self.get_context(request))
 
     def get_context(self, request):
