@@ -45,9 +45,22 @@ class BasicTest(TestCase):
         response = self.c.get("/resend_activation_email/")
         self.assertEquals(response.status_code, 200)
 
+    def test_resend_activation_email(self):
+        # empty
+        response = self.c.post("/resend_activation_email/", dict())
+        self.assertEquals(response.status_code, 200)
+        # nonexistant
+        response = self.c.post("/resend_activation_email/",
+                               dict(email='foo@bar.com'))
+        self.assertEquals(response.status_code, 200)
+
     def test_latest_page(self):
         r = self.c.get("/latest/")
         self.assertEquals(r.status_code, 200)
+
+    def test_about(self):
+        r = self.c.get("/about/")
+        self.assertEqual(r.status_code, 200)
 
 
 class StaffViewTests(TestCase):
