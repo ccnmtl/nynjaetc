@@ -123,14 +123,13 @@ def page(request, path):
         else:
             # giving them feedback before they proceed
             return HttpResponseRedirect(section.get_absolute_url())
-
     else:
-        path = list(section.get_ancestors())[1:]
-        path.append(section)
+        path_list = list(section.get_ancestors())[1:]
+        path_list.append(section)
         return dict(
             section=section,
-            path=path,
-            depth=len(path),
+            path=path_list,
+            depth=len(path_list),
             can_download_stats=(
                 'can_dowload_stats'
                 in [g.name for g in request.user.groups.all()]
