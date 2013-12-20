@@ -149,30 +149,30 @@ class PageView(LoggedInMixin, View):
         r = self.precheck(request, path)
         if r is not None:
             return r
+        return render(request, self.template_name, self.get_context(request))
+
+    def get_context(self, request):
         path_list = list(self.section.get_ancestors())[1:]
         path_list.append(self.section)
-        return render(
-            request,
-            self.template_name,
-            dict(
-                section=self.section,
-                path=path_list,
-                depth=len(path_list),
-                can_download_stats=get_can_download_stats(request.user),
-                module=get_module(self.section),
-                needs_submit=needs_submit(self.section),
-                is_submitted=submitted(self.section, request.user),
-                modules=self.section.hierarchy.get_root().get_children(),
-                root=self.section.hierarchy.get_root(),
-                section_preferences=get_section_preferences(self.section),
-                module_info=module_info(self.section),
-                already_answered=SectionQuizAnsweredCorrectly.objects.filter(
-                    section=self.section, user=request.user).exists(),
-                already_visited=whether_already_visited(
-                    self.section, request.user),
-                whether_to_show_nav=whether_to_show_nav(
-                    self.section, request.user)
-            ))
+        return dict(
+            section=self.section,
+            path=path_list,
+            depth=len(path_list),
+            can_download_stats=get_can_download_stats(request.user),
+            module=get_module(self.section),
+            needs_submit=needs_submit(self.section),
+            is_submitted=submitted(self.section, request.user),
+            modules=self.section.hierarchy.get_root().get_children(),
+            root=self.section.hierarchy.get_root(),
+            section_preferences=get_section_preferences(self.section),
+            module_info=module_info(self.section),
+            already_answered=SectionQuizAnsweredCorrectly.objects.filter(
+                section=self.section, user=request.user).exists(),
+            already_visited=whether_already_visited(
+                self.section, request.user),
+            whether_to_show_nav=whether_to_show_nav(
+                self.section, request.user)
+        )
 
 
 @login_required
