@@ -22,7 +22,6 @@ class BasicTest(TestCase):
     def test_edit(self):
         response = self.c.get("/edit/")
         self.assertEquals(response.status_code, 200)
-        self.assertEquals(response.content, "")
 
     def test_reset(self):
         response = self.c.post(
@@ -48,5 +47,18 @@ class BasicTest(TestCase):
 
     def test_latest_page(self):
         r = self.c.get("/latest/")
-        self.assertEquals(response.status_code, 200)
+        self.assertEquals(r.status_code, 200)
 
+
+class StaffViewTests(TestCase):
+    def setUp(self):
+        self.c = Client()
+        self.u = User.objects.create(username="testuser",
+                                     is_staff=True)
+        self.u.set_password("test")
+        self.u.save()
+        self.c.login(username="testuser", password="test")
+
+    def test_edit_page(self):
+        r = self.c.get("/edit/")
+        self.assertEquals(r.status_code, 200)
