@@ -56,7 +56,7 @@ class BasicTest(TestCase):
 
     def test_latest_page(self):
         r = self.c.get("/latest/")
-        self.assertEquals(r.status_code, 200)
+        self.assertEquals(r.status_code, 302)
 
     def test_about(self):
         r = self.c.get("/about/")

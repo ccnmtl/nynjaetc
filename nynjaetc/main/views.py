@@ -139,16 +139,16 @@ def latest_page(request, path):
     section = get_section_from_path(path)
     pool = self_and_descendants(section)
     if request.user.is_anonymous():
-        return page(request, section.get_path())
+        return HttpResponseRedirect(section.get_path())
     user_timestamps = SectionTimestamp.objects.filter(user=request.user)
     already_visited = [t for t in user_timestamps if t.section in pool]
     if len(already_visited) == 0:
-        return page(request, section.get_path())
+        return HttpResponseRedirect(section.get_path())
     most_recently_visited = sorted(
         already_visited, key=lambda x: x.timestamp)[-1]
     latest_section_visited = most_recently_visited.section
 
-    return page(request, latest_section_visited.get_path())
+    return HttpResponseRedirect(latest_section_visited.get_path())
 
 
 @login_required
