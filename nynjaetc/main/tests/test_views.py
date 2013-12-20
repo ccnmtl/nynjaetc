@@ -62,6 +62,10 @@ class BasicTest(TestCase):
         r = self.c.get("/about/")
         self.assertEqual(r.status_code, 200)
 
+    def test_record_section_as_answered_correctly(self):
+        r = self.c.get("/record_section_as_answered_correctly/")
+        self.assertEqual(r.status_code, 200)
+
 
 class StaffViewTests(TestCase):
     def setUp(self):
@@ -75,3 +79,12 @@ class StaffViewTests(TestCase):
     def test_edit_page(self):
         r = self.c.get("/edit/")
         self.assertEquals(r.status_code, 200)
+
+
+class AnonViewTests(TestCase):
+    def setUp(self):
+        self.c = Client()
+
+    def test_latest_page(self):
+        r = self.c.get("/latest/")
+        self.assertEquals(r.status_code, 302)
