@@ -63,10 +63,22 @@ class NullPretest(object):
 
 def get_pretest():
     try:
-        return Pretest(Section.objects.get(
+        return Pretest(
+            Section.objects.get(
                 sectionpreference__preference__slug='pre-test'))
     except Section.DoesNotExist:
         return NullPretest()
+
+
+def whether_to_show_nav(section, user):
+    suppress_nav_sections = Section.objects.filter(
+        sectionpreference__preference__slug=
+        'suppress_nav_until_pre_test_submitted'
+    )
+    if is_in_one_of(section, suppress_nav_sections):
+        return has_submitted_pretest(user)
+    return True
+
 
 @login_required
 @render_to('main/page.html')
@@ -86,16 +98,6 @@ def page(request, path):
     already_answered = SectionQuizAnsweredCorrectly.objects.filter(
         section=section, user=request.user).exists()
     set_timestamp_for_section(section, request.user)
-    supress_nav_sections = Section.objects.filter(
-        sectionpreference__preference__slug=
-        'suppress_nav_until_pre_test_submitted'
-    )
-
-    whether_to_show_nav = True
-    if is_in_one_of(section, supress_nav_sections):
-        whether_to_show_nav = False
-        if has_submitted_pretest(request.user):
-            whether_to_show_nav = True
 
     # We're leaving the top level pages as blank and navigating around them.
     send_to_first_child = False
@@ -142,7 +144,7 @@ def page(request, path):
             already_answered=already_answered,
             # in_quiz_sequence = in_quiz_sequence,
             already_visited=already_visited,
-            whether_to_show_nav=whether_to_show_nav
+            whether_to_show_nav=whether_to_show_nav(section, request.user)
         )
 
 
