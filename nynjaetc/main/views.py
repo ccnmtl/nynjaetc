@@ -97,6 +97,12 @@ def get_section_preferences(section):
         for sp in SectionPreference.objects.filter(section=section))
 
 
+def get_can_download_stats(user):
+    return (
+        'can_dowload_stats'
+        in [g.name for g in user.groups.all()])
+
+
 @login_required
 @render_to('main/page.html')
 def page(request, path):
@@ -130,14 +136,11 @@ def page(request, path):
             section=section,
             path=path_list,
             depth=len(path_list),
-            can_download_stats=(
-                'can_dowload_stats'
-                in [g.name for g in request.user.groups.all()]
-            ),
+            can_download_stats=get_can_download_stats(request.user),
             module=get_module(section),
             needs_submit=needs_submit(section),
             is_submitted=submitted(section, request.user),
-            modules=root.get_children(),
+            modules=section.hierarchy.get_root().get_children(),
             root=section.hierarchy.get_root(),
             section_preferences=get_section_preferences(section),
             module_info=module_info(section),
