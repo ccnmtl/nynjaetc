@@ -115,7 +115,6 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'tagging',
     'typogrify',
-    'munin',
     'south',
     'django_nose',
     'compressor',

@@ -22,6 +22,7 @@ class BasicTest(TestCase):
     def test_edit(self):
         response = self.c.get("/edit/")
         self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.content, "")
 
     def test_reset(self):
         response = self.c.post(
@@ -40,4 +41,12 @@ class BasicTest(TestCase):
     def test_smoketest(self):
         response = self.c.get("/smoketest/")
         self.assertEquals(response.status_code, 200)
-        assert "PASS" in response.content
+
+    def test_resend_activation_email_form(self):
+        response = self.c.get("/resend_activation_email/")
+        self.assertEquals(response.status_code, 200)
+
+    def test_latest_page(self):
+        r = self.c.get("/latest/")
+        self.assertEquals(response.status_code, 200)
+
