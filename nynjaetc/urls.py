@@ -2,6 +2,7 @@ from django.conf.urls.defaults import patterns, include, url
 from django.contrib import admin
 from django.conf import settings
 from django.views.generic import TemplateView
+import nynjaetc.main.views as views
 import os.path
 admin.autodiscover()
 import staticmedia
@@ -54,7 +55,7 @@ urlpatterns = patterns(
     (r'^uploads/(?P<path>.*)$',
      'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     # these need to be last
-    (r'^edit/(?P<path>.*)$', 'nynjaetc.main.views.edit_page',
+    (r'^edit/(?P<path>.*)$', views.EditView.as_view(),
      {}, 'edit-page'),
     (r'^latest/(?P<path>.*)$', 'nynjaetc.main.views.latest_page',
      {}, 'latest-page'),

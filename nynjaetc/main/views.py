@@ -3,8 +3,10 @@ from django.http import HttpResponseRedirect, HttpResponse
 from pagetree.models import Section
 from pagetree.helpers import get_section_from_path
 from pagetree.helpers import get_module, needs_submit, submitted
+from pagetree.generic.views import EditView as GenericEditView
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
+from django.utils.decorators import method_decorator
 from nynjaetc.main.models import SectionPreference, UserProfile
 from nynjaetc.main.views_helpers import whether_already_visited
 from nynjaetc.main.views_helpers import self_and_descendants
@@ -164,16 +166,14 @@ def record_section_as_answered_correctly(request):
     return HttpResponse('')
 
 
-@staff_member_required
-@render_to('main/edit_page.html')
-def edit_page(request, path):
-    section = get_section_from_path(path)
-    root = section.hierarchy.get_root()
+class StaffViewMixin(object):
+    @method_decorator(staff_member_required)
+    def dispatch(self, *args, **kwargs):
+        return super(StaffViewMixin, self).dispatch(*args, **kwargs)
 
-    return dict(section=section,
-                module=get_module(section),
-                modules=root.get_children(),
-                root=section.hierarchy.get_root())
+
+class EditView(StaffViewMixin, GenericEditView):
+    template_name = "main/edit_page.html"
 
 
 @csrf_protect
