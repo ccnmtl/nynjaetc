@@ -91,6 +91,12 @@ def send_to_first_child(section, root):
     return False
 
 
+def get_section_preferences(section):
+    return dict(
+        (sp.preference.slug, True)
+        for sp in SectionPreference.objects.filter(section=section))
+
+
 @login_required
 @render_to('main/page.html')
 def page(request, path):
@@ -103,9 +109,7 @@ def page(request, path):
     section = get_section_from_path(path)
     root = section.hierarchy.get_root()
     module = get_module(section)
-    section_preferences = dict(
-        (sp.preference.slug, True)
-        for sp in SectionPreference.objects.filter(section=section))
+    section_preferences = get_section_preferences(section)
     set_timestamp_for_section(section, request.user)
 
     # We're leaving the top level pages as blank and navigating around them.
