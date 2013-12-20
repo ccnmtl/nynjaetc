@@ -94,7 +94,6 @@ def page(request, path):
     module = get_module(section)
     tmp = SectionPreference.objects.filter(section=section)
     section_preferences = dict((sp.preference.slug, True) for sp in tmp)
-    already_visited = whether_already_visited(section, request.user)
     already_answered = SectionQuizAnsweredCorrectly.objects.filter(
         section=section, user=request.user).exists()
     set_timestamp_for_section(section, request.user)
@@ -114,7 +113,6 @@ def page(request, path):
     if request.method == "POST":
         # user has submitted a form. deal with it
         if request.POST.get('action', '') == 'reset':
-            # section.reset(request.user)
             return HttpResponseRedirect(section.get_absolute_url())
         proceed = section.submit(request.POST, request.user)
         if proceed and section.get_next():
@@ -142,8 +140,7 @@ def page(request, path):
             section_preferences=section_preferences,
             module_info=module_info(section),
             already_answered=already_answered,
-            # in_quiz_sequence = in_quiz_sequence,
-            already_visited=already_visited,
+            already_visited=whether_already_visited(section, request.user),
             whether_to_show_nav=whether_to_show_nav(section, request.user)
         )
 
