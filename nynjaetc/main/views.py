@@ -1,11 +1,12 @@
-from annoying.decorators import render_to
 from django.http import HttpResponseRedirect, HttpResponse
+from django.views.generic.base import View
 from pagetree.models import Section
 from pagetree.helpers import get_section_from_path
 from pagetree.helpers import get_module, needs_submit, submitted
 from pagetree.generic.views import EditView as GenericEditView
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
+from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from nynjaetc.main.models import SectionPreference, UserProfile
 from nynjaetc.main.views_helpers import whether_already_visited
@@ -103,52 +104,75 @@ def get_can_download_stats(user):
         in [g.name for g in user.groups.all()])
 
 
-@login_required
-@render_to('main/page.html')
-def page(request, path):
-    #bypass the inital material if the user has already submitted the pretest:
-    pretest = get_pretest()
-    if pretest.user_has_submitted(path, request.user):
-        return HttpResponseRedirect(
-            pretest.section.get_next().get_absolute_url())
+class LoggedInMixin(object):
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(LoggedInMixin, self).dispatch(*args, **kwargs)
 
-    section = get_section_from_path(path)
-    set_timestamp_for_section(section, request.user)
 
-    # We're leaving the top level pages as blank and navigating around them.
-    if send_to_first_child(section, section.hierarchy.get_root()):
-        return HttpResponseRedirect(section.get_next().get_absolute_url())
+class PageView(LoggedInMixin, View):
+    template_name = "main/page.html"
 
-    if request.method == "POST":
+    def precheck(self, request, path):
+        # bypass the inital material if the user has already submitted
+        # the pretest:
+        pretest = get_pretest()
+        if pretest.user_has_submitted(path, request.user):
+            return HttpResponseRedirect(
+                pretest.section.get_next().get_absolute_url())
+
+        section = get_section_from_path(path)
+        set_timestamp_for_section(section, request.user)
+
+        # We're leaving the top level pages as blank and navigating
+        # around them.
+        if send_to_first_child(section, section.hierarchy.get_root()):
+            return HttpResponseRedirect(section.get_next().get_absolute_url())
+        self.section = section
+        return None
+
+    def post(self, request, path):
+        r = self.precheck(request, path)
+        if r is not None:
+            return r
         # user has submitted a form. deal with it
         if request.POST.get('action', '') == 'reset':
-            return HttpResponseRedirect(section.get_absolute_url())
-        proceed = section.submit(request.POST, request.user)
-        if proceed and section.get_next():
-            return HttpResponseRedirect(section.get_next().get_absolute_url())
-        else:
-            # giving them feedback before they proceed
-            return HttpResponseRedirect(section.get_absolute_url())
-    else:
-        path_list = list(section.get_ancestors())[1:]
-        path_list.append(section)
-        return dict(
-            section=section,
-            path=path_list,
-            depth=len(path_list),
-            can_download_stats=get_can_download_stats(request.user),
-            module=get_module(section),
-            needs_submit=needs_submit(section),
-            is_submitted=submitted(section, request.user),
-            modules=section.hierarchy.get_root().get_children(),
-            root=section.hierarchy.get_root(),
-            section_preferences=get_section_preferences(section),
-            module_info=module_info(section),
-            already_answered=SectionQuizAnsweredCorrectly.objects.filter(
-                section=section, user=request.user).exists(),
-            already_visited=whether_already_visited(section, request.user),
-            whether_to_show_nav=whether_to_show_nav(section, request.user)
-        )
+            return HttpResponseRedirect(self.section.get_absolute_url())
+        proceed = self.section.submit(request.POST, request.user)
+        if proceed and self.section.get_next():
+            return HttpResponseRedirect(
+                self.section.get_next().get_absolute_url())
+        # giving them feedback before they proceed
+        return HttpResponseRedirect(self.section.get_absolute_url())
+
+    def get(self, request, path):
+        r = self.precheck(request, path)
+        if r is not None:
+            return r
+        path_list = list(self.section.get_ancestors())[1:]
+        path_list.append(self.section)
+        return render(
+            request,
+            self.template_name,
+            dict(
+                section=self.section,
+                path=path_list,
+                depth=len(path_list),
+                can_download_stats=get_can_download_stats(request.user),
+                module=get_module(self.section),
+                needs_submit=needs_submit(self.section),
+                is_submitted=submitted(self.section, request.user),
+                modules=self.section.hierarchy.get_root().get_children(),
+                root=self.section.hierarchy.get_root(),
+                section_preferences=get_section_preferences(self.section),
+                module_info=module_info(self.section),
+                already_answered=SectionQuizAnsweredCorrectly.objects.filter(
+                    section=self.section, user=request.user).exists(),
+                already_visited=whether_already_visited(
+                    self.section, request.user),
+                whether_to_show_nav=whether_to_show_nav(
+                    self.section, request.user)
+            ))
 
 
 @login_required

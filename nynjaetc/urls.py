@@ -62,5 +62,5 @@ urlpatterns = patterns(
     (r'^record_section_as_answered_correctly/$',
      'nynjaetc.main.views.record_section_as_answered_correctly',
      {}, 'record_section_as_answered_correctly'),
-    (r'^(?P<path>.*)$', 'nynjaetc.main.views.page'),
+    (r'^(?P<path>.*)$', views.PageView.as_view()),
 ) + staticmedia.serve()
