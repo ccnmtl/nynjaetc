@@ -107,11 +107,10 @@ def page(request, path):
             pretest.section.get_next().get_absolute_url())
 
     section = get_section_from_path(path)
-    root = section.hierarchy.get_root()
     set_timestamp_for_section(section, request.user)
 
     # We're leaving the top level pages as blank and navigating around them.
-    if send_to_first_child(section, root):
+    if send_to_first_child(section, section.hierarchy.get_root()):
         return HttpResponseRedirect(section.get_next().get_absolute_url())
 
     if request.method == "POST":
