@@ -99,7 +99,7 @@ def get_section_preferences(section):
 
 def get_can_download_stats(user):
     return (
-        'can_dowload_stats'
+        'can_download_stats'
         in [g.name for g in user.groups.all()])
 
 
