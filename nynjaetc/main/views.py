@@ -92,8 +92,9 @@ def page(request, path):
     section = get_section_from_path(path)
     root = section.hierarchy.get_root()
     module = get_module(section)
-    tmp = SectionPreference.objects.filter(section=section)
-    section_preferences = dict((sp.preference.slug, True) for sp in tmp)
+    section_preferences = dict(
+        (sp.preference.slug, True)
+        for sp in SectionPreference.objects.filter(section=section))
     set_timestamp_for_section(section, request.user)
 
     # We're leaving the top level pages as blank and navigating around them.
