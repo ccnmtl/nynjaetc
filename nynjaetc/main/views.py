@@ -109,7 +109,6 @@ def page(request, path):
     section = get_section_from_path(path)
     root = section.hierarchy.get_root()
     module = get_module(section)
-    section_preferences = get_section_preferences(section)
     set_timestamp_for_section(section, request.user)
 
     # We're leaving the top level pages as blank and navigating around them.
@@ -143,7 +142,7 @@ def page(request, path):
             is_submitted=submitted(section, request.user),
             modules=root.get_children(),
             root=section.hierarchy.get_root(),
-            section_preferences=section_preferences,
+            section_preferences=get_section_preferences(section),
             module_info=module_info(section),
             already_answered=SectionQuizAnsweredCorrectly.objects.filter(
                 section=section, user=request.user).exists(),
