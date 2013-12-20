@@ -94,8 +94,6 @@ def page(request, path):
     module = get_module(section)
     tmp = SectionPreference.objects.filter(section=section)
     section_preferences = dict((sp.preference.slug, True) for sp in tmp)
-    already_answered = SectionQuizAnsweredCorrectly.objects.filter(
-        section=section, user=request.user).exists()
     set_timestamp_for_section(section, request.user)
 
     # We're leaving the top level pages as blank and navigating around them.
@@ -139,7 +137,8 @@ def page(request, path):
             root=section.hierarchy.get_root(),
             section_preferences=section_preferences,
             module_info=module_info(section),
-            already_answered=already_answered,
+            already_answered=SectionQuizAnsweredCorrectly.objects.filter(
+                section=section, user=request.user).exists(),
             already_visited=whether_already_visited(section, request.user),
             whether_to_show_nav=whether_to_show_nav(section, request.user)
         )
