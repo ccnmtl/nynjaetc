@@ -108,7 +108,6 @@ def page(request, path):
 
     section = get_section_from_path(path)
     root = section.hierarchy.get_root()
-    module = get_module(section)
     set_timestamp_for_section(section, request.user)
 
     # We're leaving the top level pages as blank and navigating around them.
@@ -137,7 +136,7 @@ def page(request, path):
                 'can_dowload_stats'
                 in [g.name for g in request.user.groups.all()]
             ),
-            module=module,
+            module=get_module(section),
             needs_submit=needs_submit(section),
             is_submitted=submitted(section, request.user),
             modules=root.get_children(),
