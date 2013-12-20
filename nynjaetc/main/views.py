@@ -48,20 +48,34 @@ def has_submitted_pretest(the_user):
     return False
 
 
+class Pretest(object):
+    def __init__(self, section):
+        self.section = section
+
+    def user_has_submitted(self, path, user):
+        return path == '' and has_submitted_pretest(user)
+
+
+class NullPretest(object):
+    def user_has_submitted(self, path, user):
+        return False
+
+
+def get_pretest():
+    try:
+        return Pretest(Section.objects.get(
+                sectionpreference__preference__slug='pre-test'))
+    except Section.DoesNotExist:
+        return NullPretest()
+
 @login_required
 @render_to('main/page.html')
 def page(request, path):
     #bypass the inital material if the user has already submitted the pretest:
-    try:
-        the_pretest_section = Section.objects.get(
-            sectionpreference__preference__slug='pre-test')
-    except Section.DoesNotExist:
-        the_pretest_section = None
-
-    if the_pretest_section is not None:
-        if path == '' and has_submitted_pretest(request.user):
-            return HttpResponseRedirect(
-                the_pretest_section.get_next().get_absolute_url())
+    pretest = get_pretest()
+    if pretest.user_has_submitted(path, request.user):
+        return HttpResponseRedirect(
+            pretest.section.get_next().get_absolute_url())
 
     section = get_section_from_path(path)
     root = section.hierarchy.get_root()
