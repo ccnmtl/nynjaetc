@@ -54,6 +54,20 @@ urlpatterns = patterns(
      'django.views.static.serve', {'document_root': site_media_root}),
     (r'^uploads/(?P<path>.*)$',
      'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
+
+    # old cloned hierarchy
+    (r'^old/edit/(?P<path>.*)$', views.EditView.as_view(
+        hierarchy_name="old",
+        hierarchy_base="/old/"),
+     {}, 'edit-page'),
+    (r'^old/latest/(?P<path>.*)$', 'nynjaetc.main.views.latest_page',
+     {}, 'latest-page'),
+    (r'^old/record_section_as_answered_correctly/$',
+     'nynjaetc.main.views.record_section_as_answered_correctly',
+     {}, 'record_section_as_answered_correctly'),
+    (r'^old/(?P<path>.*)$', views.PageView.as_view(
+        hierarchy="old")),
+
     # these need to be last
     (r'^edit/(?P<path>.*)$', views.EditView.as_view(),
      {}, 'edit-page'),
