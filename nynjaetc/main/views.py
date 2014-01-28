@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect, HttpResponse
 from django.views.generic.base import View
 from pagetree.models import Section
-from pagetree.helpers import get_section_from_path
+from pagetree.helpers import get_section_from_path, get_hierarchy
 from pagetree.helpers import get_module, needs_submit, submitted
 from pagetree.generic.views import EditView as GenericEditView
 from django.contrib.auth.decorators import login_required
@@ -62,10 +62,12 @@ class NullPretest(object):
         return False
 
 
-def get_pretest():
+def get_pretest(hierarchy="main"):
+    h = get_hierarchy(hierarchy)
     try:
         return Pretest(
             Section.objects.get(
+                hierarchy=h,
                 sectionpreference__preference__slug='pre-test'))
     except Section.DoesNotExist:
         return NullPretest()
@@ -112,16 +114,17 @@ class LoggedInMixin(object):
 
 class PageView(LoggedInMixin, View):
     template_name = "main/page.html"
+    hierarchy = "main"
 
     def precheck(self, request, path):
         # bypass the inital material if the user has already submitted
         # the pretest:
-        pretest = get_pretest()
+        pretest = get_pretest(hierarchy=self.hierarchy)
         if pretest.user_has_submitted(path, request.user):
             return HttpResponseRedirect(
                 pretest.section.get_next().get_absolute_url())
 
-        section = get_section_from_path(path)
+        section = get_section_from_path(path, hierarchy=self.hierarchy)
         set_timestamp_for_section(section, request.user)
 
         # We're leaving the top level pages as blank and navigating
