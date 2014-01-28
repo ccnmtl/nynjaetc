@@ -61,5 +61,5 @@ django-quizblock==0.6.13
 django-pagetree_export==0.4
 django-stagingcontext==0.1.0
 django-impersonate==0.6.0
-django-registration==0.8
+django-registration==1.0
 django-fields==0.2.0
