@@ -60,10 +60,12 @@ urlpatterns = patterns(
         hierarchy_name="old",
         hierarchy_base="/old/"),
      {}, 'edit-page'),
-    (r'^old/latest/(?P<path>.*)$', 'nynjaetc.main.views.latest_page',
+    (r'^old/latest/(?P<path>.*)$', views.LatestPageView.as_view(
+        hierarchy_name="old",
+        hierarchy_base="/old/"),
      {}, 'latest-page'),
     (r'^old/record_section_as_answered_correctly/$',
-     'nynjaetc.main.views.record_section_as_answered_correctly',
+     views.RecordSectionAsAnsweredCorrectlyView.as_view(),
      {}, 'record_section_as_answered_correctly'),
     (r'^old/(?P<path>.*)$', views.PageView.as_view(
         hierarchy="old")),
@@ -71,10 +73,10 @@ urlpatterns = patterns(
     # these need to be last
     (r'^edit/(?P<path>.*)$', views.EditView.as_view(),
      {}, 'edit-page'),
-    (r'^latest/(?P<path>.*)$', 'nynjaetc.main.views.latest_page',
+    (r'^latest/(?P<path>.*)$', views.LatestPageView.as_view(),
      {}, 'latest-page'),
     (r'^record_section_as_answered_correctly/$',
-     'nynjaetc.main.views.record_section_as_answered_correctly',
+     views.RecordSectionAsAnsweredCorrectlyView.as_view(),
      {}, 'record_section_as_answered_correctly'),
     (r'^(?P<path>.*)$', views.PageView.as_view()),
 ) + staticmedia.serve()

@@ -178,38 +178,44 @@ class PageView(LoggedInMixin, View):
         )
 
 
-@login_required
-def latest_page(request, path):
+class LatestPageView(LoggedInMixin, View):
     """Returns the most recently viewed section
     BY TIMESTAMP in {the page itself or its descendants}.
     Used only for nav purposes."""
+    hierarchy_name = "main"
+    hierarchy_base = "/"
 
-    section = get_section_from_path(path)
-    pool = self_and_descendants(section)
-    if request.user.is_anonymous():
-        return HttpResponseRedirect(section.get_path())
-    user_timestamps = SectionTimestamp.objects.filter(user=request.user)
-    already_visited = [t for t in user_timestamps if t.section in pool]
-    if len(already_visited) == 0:
-        return HttpResponseRedirect(section.get_path())
-    most_recently_visited = sorted(
-        already_visited, key=lambda x: x.timestamp)[-1]
-    latest_section_visited = most_recently_visited.section
+    def get(self, request, path):
+        section = get_section_from_path(
+            path,
+            hierarchy_name=self.hierarchy_name,
+            hierarchy_base=self.hierarchy_base)
+        pool = self_and_descendants(section)
+        if request.user.is_anonymous():
+            return HttpResponseRedirect(section.get_path())
+        user_timestamps = SectionTimestamp.objects.filter(user=request.user)
+        already_visited = [t for t in user_timestamps if t.section in pool]
+        if len(already_visited) == 0:
+            return HttpResponseRedirect(section.get_path())
+        most_recently_visited = sorted(
+            already_visited, key=lambda x: x.timestamp)[-1]
+        latest_section_visited = most_recently_visited.section
 
-    return HttpResponseRedirect(latest_section_visited.get_path())
+        return HttpResponseRedirect(latest_section_visited.get_path())
 
 
-@login_required
-def record_section_as_answered_correctly(request):
-    if (request.method == "POST" and
-            request.is_ajax and
-            'section_id' in request.POST):
-        section_id = int(request.POST['section_id'])
-        section = Section.objects.get(pk=section_id)
-        SectionQuizAnsweredCorrectly.objects.create(
-            section=section, user=request.user)
-        return HttpResponse('ok')
-    return HttpResponse('')
+class RecordSectionAsAnsweredCorrectlyView(LoggedInMixin, View):
+    def post(self, request):
+        if (request.is_ajax and 'section_id' in request.POST):
+            section_id = int(request.POST['section_id'])
+            section = Section.objects.get(pk=section_id)
+            SectionQuizAnsweredCorrectly.objects.create(
+                section=section, user=request.user)
+            return HttpResponse('ok')
+        return HttpResponse('')
+
+    def get(self, request):
+        return HttpResponse('')
 
 
 class StaffViewMixin(object):
