@@ -43,9 +43,11 @@ def background(request,  content_to_show):
     return HttpResponse(t.render(c))
 
 
-def has_submitted_pretest(the_user):
+def has_submitted_pretest(the_user, hierarchy="main"):
+    h = get_hierarchy(hierarchy)
     the_pretest_section = Section.objects.get(
-        sectionpreference__preference__slug='pre-test')
+        sectionpreference__preference__slug='pre-test',
+        hierarchy=h)
     for s in Submission.objects.filter(user=the_user):
         if s.quiz.pageblock().section == the_pretest_section:
             return True
@@ -57,7 +59,8 @@ class Pretest(object):
         self.section = section
 
     def user_has_submitted(self, path, user):
-        return path == '' and has_submitted_pretest(user)
+        return path == '' and has_submitted_pretest(
+            user, hierarchy=self.section.hierarchy.name)
 
 
 class NullPretest(object):
@@ -82,7 +85,7 @@ def whether_to_show_nav(section, user):
         'suppress_nav_until_pre_test_submitted'
     )
     if is_in_one_of(section, suppress_nav_sections):
-        return has_submitted_pretest(user)
+        return has_submitted_pretest(user, hierarchy=section.hierarchy.name)
     return True
 
 
