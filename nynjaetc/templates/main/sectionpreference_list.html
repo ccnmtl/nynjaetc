@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<ul class="breadcrumb">
+  <li><a href="/manage/">manage</a></li>
+  <li class="active">section preferences</li>
+</ul>
+
+
+<table class="table table-condensed table-striped">
+	<thead>
+		<tr>
+			<th>section</th>
+			<th>preference</th>
+			<th></th>
+		</tr>
+	</thead>
+
+	<tbody>
+{% for secpref in object_list %}
+<tr>
+	<td>{{secpref.section.get_absolute_url}}</td>
+	<td>{{secpref.preference}}</td>
+	<td><a href="{{secpref.id}}/delete/" class="btn btn-danger">Delete</a></td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+<p><a href="add/" class="btn">Add New Section Preference</a></p>
+
+{% endblock %}

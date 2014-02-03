@@ -55,6 +55,11 @@ urlpatterns = patterns(
     (r'manage/altnav/add/$', views.CreateAltNavView.as_view()),
     (r'manage/altnav/(?P<pk>\d+)/delete/$', views.DeleteAltNavView.as_view()),
 
+    (r'manage/secpref/$', views.SecPrefListView.as_view()),
+    (r'manage/secpref/add/$', views.CreateSecPrefView.as_view()),
+    (r'manage/secpref/(?P<pk>\d+)/delete/$',
+     views.DeleteSecPrefView.as_view()),
+
     (r'^stats/$', TemplateView.as_view(template_name="stats.html")),
     (r'smoketest/', include('smoketest.urls')),
     (r'^site_media/(?P<path>.*)$',

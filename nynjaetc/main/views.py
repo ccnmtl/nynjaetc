@@ -246,6 +246,25 @@ class DeleteAltNavView(StaffViewMixin, DeleteView):
     success_url = "/manage/altnav/"
 
 
+class SecPrefListView(StaffViewMixin, ListView):
+    model = SectionPreference
+
+
+class DeleteSecPrefView(StaffViewMixin, DeleteView):
+    model = SectionPreference
+    success_url = "/manage/secpref/"
+
+
+class CreateSecPrefView(StaffViewMixin, CreateView):
+    model = SectionPreference
+    success_url = "/manage/secpref/"
+
+    def get_context_data(self, *args, **kwargs):
+        data = super(CreateView, self).get_context_data(*args, **kwargs)
+        data['all_sections'] = Section.objects.all()
+        return data
+
+
 class EditView(StaffViewMixin, GenericEditView):
     template_name = "main/edit_page.html"
 

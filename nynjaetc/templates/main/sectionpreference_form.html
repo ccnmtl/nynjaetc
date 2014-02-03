@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load bootstrap %}
+{% block content %}
+
+<ul class="breadcrumb">
+  <li><a href="/manage/">manage</a></li>
+  <li><a href="/manage/secpref/">section preferences</a></li>
+	<li class="active">add</li>
+</ul>
+
+
+<form action="." method="post">
+
+
+<div class="control-group">
+    
+        <label class="control-label" for="id_section">Section</label>
+
+        <div class="controls">
+
+            
+<select name="section">
+	<option value="">--------</option>
+	{% for section in all_sections %}
+	<option value="{{section.id}}">{{section.get_absolute_url}}</option>
+	{% endfor %}
+</select>
+
+            
+
+        </div>
+    
+</div>
+
+
+    
+<div class="control-group">
+    
+        <label class="control-label" for="id_preference">Preference</label>
+
+        <div class="controls">
+
+{{form.preference}}
+
+        </div>
+    
+</div>
+
+
+<input type="submit" class="btn btn-primary" value="add"/>
+</form>
+{% endblock %}
