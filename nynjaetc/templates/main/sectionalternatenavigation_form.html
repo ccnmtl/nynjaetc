@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load bootstrap %}
+
+{% block content %}
+
+<ul class="breadcrumb">
+  <li><a href="/manage/">manage</a></li>
+  <li><a href="/manage/altnav/">alt navs</a></li>
+	<li class="active">add</li>
+</ul>
+
+
+
+
+<form action="." method="post">
+
+<select name="section">
+	<option value="">--------</option>
+	{% for section in all_sections %}
+	<option value="{{section.id}}">{{section.get_absolute_url}}</option>
+	{% endfor %}
+</select>
+
+<div class="control-group">
+    
+        <label class="control-label" for="id_alternate_back">Alternate back</label>
+
+        <div class="controls">
+            <input id="id_alternate_back" maxlength="64" name="alternate_back" type="text" />
+
+            
+
+            
+            <p class="help-block">
+                An alternate back button on this section will point to this path.
+            </p>
+            
+
+        </div>
+    
+</div>
+
+
+    
+<div class="control-group">
+    
+        <label class="control-label" for="id_alternate_back_label">Alternate back label</label>
+
+        <div class="controls">
+            <input id="id_alternate_back_label" maxlength="64" name="alternate_back_label" type="text" />
+
+            
+
+            
+            <p class="help-block">
+                A label for this alternate back button, if necessary.
+            </p>
+            
+
+        </div>
+    
+</div>
+
+
+    
+<div class="control-group">
+    
+        <label class="control-label" for="id_alternate_next">Alternate next</label>
+
+        <div class="controls">
+            <input id="id_alternate_next" maxlength="64" name="alternate_next" type="text" />
+
+            
+
+            
+            <p class="help-block">
+                An alternate next button on this section will point to this path.
+            </p>
+            
+
+        </div>
+    
+</div>
+
+
+    
+<div class="control-group">
+    
+        <label class="control-label" for="id_alternate_next_label">Alternate next label</label>
+
+        <div class="controls">
+            <input id="id_alternate_next_label" maxlength="64" name="alternate_next_label" type="text" />
+
+            
+
+            
+            <p class="help-block">
+                A label for this alternate next button, if necessary.
+            </p>
+            
+
+        </div>
+    
+</div>
+
+<input type="submit" value="add" class="btn btn-primary"/>
+</form>
+
+{% endblock %}

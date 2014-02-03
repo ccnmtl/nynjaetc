@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<ul class="breadcrumb">
+  <li><a href="/manage/">manage</a></li>
+  <li class="active">alt navs</li>
+</ul>
+
+
+<table class="table table-condensed table-striped">
+	<thead>
+		<tr>
+			<th>section</th>
+			<th>alt back</th>
+			<th>alt back label</th>
+			<th>alt next</th>
+			<th>alt next label</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for san in object_list %}
+		<tr>
+			<td>{{san.section.get_absolute_url}}</td>
+			<td>{{san.alternate_back}}</td>
+			<td>{{san.alternate_back_label}}</td>
+			<td>{{san.alternate_next}}</td>
+			<td>{{san.alternate_next_label}}</td>
+			<td><a href="{{san.id}}/delete/" class="btn btn-danger">Delete</a></td>
+		</tr>
+{% endfor %}
+	</tbody>
+</table>
+
+<a href="add/">Add New Alternate Section Navigation</a>
+
+
+{% endblock %}

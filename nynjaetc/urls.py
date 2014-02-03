@@ -2,7 +2,9 @@ from django.conf.urls.defaults import patterns, include, url
 from django.contrib import admin
 from django.conf import settings
 from django.views.generic import TemplateView
+
 import nynjaetc.main.views as views
+
 import os.path
 admin.autodiscover()
 import staticmedia
@@ -47,6 +49,11 @@ urlpatterns = patterns(
     (r'^resend_activation_email/$',
      'nynjaetc.main.views.resend_activation_email'),
     (r'^password_change/$', 'django.contrib.auth.views.password_change'),
+
+    (r'manage/$', TemplateView.as_view(template_name='main/manage.html')),
+    (r'manage/altnav/$', views.AltNavListView.as_view()),
+    (r'manage/altnav/add/$', views.CreateAltNavView.as_view()),
+    (r'manage/altnav/(?P<pk>\d+)/delete/$', views.DeleteAltNavView.as_view()),
 
     (r'^stats/$', TemplateView.as_view(template_name="stats.html")),
     (r'smoketest/', include('smoketest.urls')),

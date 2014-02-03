@@ -3,6 +3,8 @@ from django.views.generic.base import View
 from pagetree.models import Section
 from pagetree.helpers import get_section_from_path, get_hierarchy
 from pagetree.helpers import get_module, needs_submit, submitted
+from django.views.generic.list import ListView
+from django.views.generic.edit import CreateView, DeleteView
 from pagetree.generic.views import EditView as GenericEditView
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
@@ -15,6 +17,7 @@ from nynjaetc.main.views_helpers import set_timestamp_for_section
 from nynjaetc.main.views_helpers import is_in_one_of
 from nynjaetc.main.views_helpers import module_info
 from nynjaetc.main.models import SectionTimestamp, SectionQuizAnsweredCorrectly
+from nynjaetc.main.models import SectionAlternateNavigation
 from django.template import RequestContext, loader
 from django.contrib.sites.models import RequestSite
 from django.contrib.sites.models import Site
@@ -222,6 +225,25 @@ class StaffViewMixin(object):
     @method_decorator(staff_member_required)
     def dispatch(self, *args, **kwargs):
         return super(StaffViewMixin, self).dispatch(*args, **kwargs)
+
+
+class AltNavListView(StaffViewMixin, ListView):
+    model = SectionAlternateNavigation
+
+
+class CreateAltNavView(StaffViewMixin, CreateView):
+    model = SectionAlternateNavigation
+    success_url = "/manage/altnav/"
+
+    def get_context_data(self, *args, **kwargs):
+        data = super(CreateView, self).get_context_data(*args, **kwargs)
+        data['all_sections'] = Section.objects.all()
+        return data
+
+
+class DeleteAltNavView(StaffViewMixin, DeleteView):
+    model = SectionAlternateNavigation
+    success_url = "/manage/altnav/"
 
 
 class EditView(StaffViewMixin, GenericEditView):
