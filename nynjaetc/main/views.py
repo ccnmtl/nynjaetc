@@ -198,16 +198,16 @@ class LatestPageView(LoggedInMixin, View):
             hierarchy_base=self.hierarchy_base)
         pool = self_and_descendants(section)
         if request.user.is_anonymous():
-            return HttpResponseRedirect(section.get_path())
+            return HttpResponseRedirect("/" + section.get_path())
         user_timestamps = SectionTimestamp.objects.filter(user=request.user)
         already_visited = [t for t in user_timestamps if t.section in pool]
         if len(already_visited) == 0:
-            return HttpResponseRedirect(section.get_path())
+            return HttpResponseRedirect("/" + section.get_path())
         most_recently_visited = sorted(
             already_visited, key=lambda x: x.timestamp)[-1]
         latest_section_visited = most_recently_visited.section
 
-        return HttpResponseRedirect(latest_section_visited.get_path())
+        return HttpResponseRedirect("/" + latest_section_visited.get_path())
 
 
 class RecordSectionAsAnsweredCorrectlyView(LoggedInMixin, View):
