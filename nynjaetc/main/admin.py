@@ -1,5 +1,6 @@
 from django.contrib import admin
-from models import Preference, SectionPreference, SectionAlternateNavigation
+from nynjaetc.main.models import (
+    Preference, SectionPreference, SectionAlternateNavigation)
 
 
 class PreferenceAdmin(admin.ModelAdmin):
