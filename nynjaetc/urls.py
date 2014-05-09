@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import patterns, include, url
+from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.conf import settings
 from django.views.generic import TemplateView
@@ -7,7 +7,6 @@ import nynjaetc.main.views as views
 
 import os.path
 admin.autodiscover()
-import staticmedia
 
 site_media_root = os.path.join(os.path.dirname(__file__), "../media")
 
@@ -76,4 +75,4 @@ urlpatterns = patterns(
      views.RecordSectionAsAnsweredCorrectlyView.as_view(),
      {}, 'record_section_as_answered_correctly'),
     (r'^(?P<path>.*)$', views.PageView.as_view()),
-) + staticmedia.serve()
+)

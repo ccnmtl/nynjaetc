@@ -8,7 +8,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
 from django_fields.fields import EncryptedEmailField, EncryptedCharField
 from quizblock.models import Quiz
-from django.contrib.auth.hashers import UNUSABLE_PASSWORD
+from django.contrib.auth.hashers import UNUSABLE_PASSWORD_PREFIX
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.forms import PasswordResetForm
 from registration.forms import RegistrationForm
@@ -271,7 +271,8 @@ def my_password_reset_form_clean_email(self):
     self.users_cache = [u.user for u in user_profiles if u.user.is_active]
     if not len(self.users_cache):
             raise forms.ValidationError(self.error_messages['unknown'])
-    if any((user.password == UNUSABLE_PASSWORD) for user in self.users_cache):
+    if any(user.password.startswith(UNUSABLE_PASSWORD_PREFIX)
+            for user in self.users_cache):
         raise forms.ValidationError(self.error_messages['unusable'])
     return plaintext_email
 PasswordResetForm.clean_email = my_password_reset_form_clean_email
