@@ -86,6 +86,9 @@ class Command(BaseCommand):
 
             self.add_children(node.childNodes, root)
 
+        self.add_treatment_paths(xmldoc)
+
+    def add_treatment_paths(self, xmldoc):
         paths = xmldoc.getElementsByTagName('TreatmentPath')
         if len(paths) > 0:
             TreatmentPath.objects.all().delete()
