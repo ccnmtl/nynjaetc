@@ -68,3 +68,4 @@ django-stagingcontext==0.1.0
 django-impersonate==0.8.0
 django-registration==1.0
 django-fields==0.2.0
+factory_boy==2.1.1
