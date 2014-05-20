@@ -63,18 +63,17 @@ def choose_treatment_path(request):
 
         return HttpResponse(simplejson.dumps(data, indent=2),
                             mimetype="application/json")
-    else:
-        try:
-            path = TreatmentPath.objects.get(cirrhosis=cirrhosis,
-                                             treatment_status=status,
-                                             drug_choice=drug)
+    try:
+        path = TreatmentPath.objects.get(cirrhosis=cirrhosis,
+                                         treatment_status=status,
+                                         drug_choice=drug)
 
-            return get_next_steps(request, path.id, path.tree.id)
+        return get_next_steps(request, path.id, path.tree.id)
 
-        except TreatmentPath.DoesNotExist:
-            msg = "Can't find a path. [cirrhosis: %s, status: %s, drug: %s]" \
-                % (cirrhosis, status, drug)
-            data = {"error": msg}
+    except TreatmentPath.DoesNotExist:
+        msg = "Can't find a path. [cirrhosis: %s, status: %s, drug: %s]" \
+            % (cirrhosis, status, drug)
+        data = {"error": msg}
 
-            return HttpResponse(simplejson.dumps(data, indent=2),
-                                mimetype="application/json")
+        return HttpResponse(simplejson.dumps(data, indent=2),
+                            mimetype="application/json")
