@@ -1,5 +1,8 @@
 from django.test import TestCase
-from .factories import (UserFactory)
+from .factories import (
+    UserFactory, SectionFactory, SectionTimestampFactory,
+    SectionAlternateNavigationFactory,
+)
 from nynjaetc.main.models import (
     UserProfile, next_with_content, prev_with_content)
 
@@ -51,3 +54,17 @@ class HelpersTest(TestCase):
         d.lohc = False
         d2 = DummySection(p=d)
         self.assertEqual(prev_with_content(d2), p)
+
+
+class SectionTimestampTest(TestCase):
+    def test_unicode(self):
+        s = SectionFactory()
+        swt = SectionTimestampFactory(section=s)
+        self.assertEqual(str(swt), "")
+
+
+class SectionAlternateNavigationTest(TestCase):
+    def test_unicode(self):
+        s = SectionFactory()
+        san = SectionAlternateNavigationFactory(section=s)
+        self.assertEqual(str(san), "Alternate nav for ")
