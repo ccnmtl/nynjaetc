@@ -74,7 +74,6 @@ def find_the_questions(sections_in_order):
     in all the quizzes,
     in the order they are presented
     in the sections."""
-    result = []
     all_questions = []
     quizzes_we_want = [25, 15]
 
@@ -85,10 +84,15 @@ def find_the_questions(sections_in_order):
                 all_questions.extend(the_pageblock.block().question_set.all())
 
     #filter out most of the questions
+    result = questions_we_want(all_questions, quizzes_we_want)
+    return result
+
+
+def questions_we_want(all_questions, quizzes_we_want):
+    result = []
     for the_q in all_questions:
         if the_q.quiz.id in quizzes_we_want:
             result.append(the_q)
-
     return result
 
 
