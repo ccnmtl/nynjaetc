@@ -45,8 +45,7 @@ urlpatterns = patterns(
 
     (r'^accounts/', include('registration.backends.default.urls')),
 
-    (r'^resend_activation_email/$',
-     'nynjaetc.main.views.resend_activation_email'),
+    (r'^resend_activation_email/$', views.ResendActivationEmailView.as_view()),
     (r'^password_change/$', 'django.contrib.auth.views.password_change'),
 
     (r'manage/$', TemplateView.as_view(template_name='main/manage.html')),
