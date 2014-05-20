@@ -53,6 +53,9 @@ class TreatmentNode(MP_Node):
             'value': self.value
         }
 
+    def is_decisionpoint(self):
+        return self.type == 'DP'
+
 
 class TreatmentPath(models.Model):
     name = models.CharField(max_length=512)

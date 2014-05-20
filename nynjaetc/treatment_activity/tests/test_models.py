@@ -20,6 +20,13 @@ class TreatmentNodeTest(TestCase):
         self.assertTrue('duration' in tn.to_json().keys())
         self.assertTrue('help' in tn.to_json().keys())
 
+    def test_is_decisionpoint(self):
+        tn = TreatmentNodeFactory(type='DP')
+        self.assertTrue(tn.is_decisionpoint())
+        tn.type = 'PR'
+        tn.save()
+        self.assertFalse(tn.is_decisionpoint())
+
 
 class TreatmentPathTest(TestCase):
     def test_unicode(self):
