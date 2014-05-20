@@ -282,13 +282,13 @@ def get_site(request):
 @csrf_protect
 def resend_activation_email(request):
     """allows you to  resent the activation email to an arbitrary address."""
-    if (request.method == "GET"):
+    if request.method == "GET":
         t = loader.get_template(
             'registration/resend_activation_email_form.html')
         c = RequestContext(request, {})
         return HttpResponse(t.render(c))
 
-    if (request.method == "POST"):
+    if request.method == "POST":
         email = request.POST.get('email', '')
         form_template = loader.get_template(
             'registration/resend_activation_email_form.html')
