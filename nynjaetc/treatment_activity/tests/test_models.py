@@ -27,6 +27,12 @@ class TreatmentNodeTest(TestCase):
         tn.save()
         self.assertFalse(tn.is_decisionpoint())
 
+    def test_child_from_decision(self):
+        tn = TreatmentNodeFactory(type='DP')
+        self.assertEqual(tn.child_from_decision(2), tn)
+        self.assertEqual(tn.child_from_decision(0), None)
+        self.assertEqual(tn.child_from_decision(1), None)
+
 
 class TreatmentPathTest(TestCase):
     def test_unicode(self):

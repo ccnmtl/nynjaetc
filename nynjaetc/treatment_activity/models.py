@@ -56,6 +56,13 @@ class TreatmentNode(MP_Node):
     def is_decisionpoint(self):
         return self.type == 'DP'
 
+    def child_from_decision(self, decision):
+        if decision == 0:
+            return self.get_first_child()
+        elif decision == 1:
+            return self.get_last_child()
+        return self
+
 
 class TreatmentPath(models.Model):
     name = models.CharField(max_length=512)

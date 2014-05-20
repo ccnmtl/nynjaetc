@@ -16,7 +16,7 @@ def get_next_steps(request, path_id, node_id):
     if node.is_decisionpoint():
         steps = simplejson.loads(request.POST.get('steps'))
         decision = steps[len(steps) - 1]['decision']
-        node = node_from_decision(decision, node)
+        node = node.child_from_decision(decision)
 
         next_steps.append(node.to_json())
         prev = node
@@ -36,14 +36,6 @@ def get_next_steps(request, path_id, node_id):
 
     return HttpResponse(simplejson.dumps(data, indent=2),
                         mimetype="application/json")
-
-
-def node_from_decision(decision, node):
-    if decision == 0:
-        return node.get_first_child()
-    elif decision == 1:
-        return node.get_last_child()
-    return node
 
 
 @login_required
