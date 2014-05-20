@@ -101,17 +101,18 @@ class Command(BaseCommand):
 
     def add_treatment_paths(self, xmldoc):
         paths = xmldoc.getElementsByTagName('TreatmentPath')
-        if len(paths) > 0:
-            TreatmentPath.objects.all().delete()
-            for p in paths:
-                new_path = TreatmentPath()
-                fields = self.get_nodes_by_name(p, 'field')
-                for f in fields:
-                    name = f.attributes.getNamedItem('name').nodeValue
-                    value = f.childNodes[0].nodeValue
-                    if name == 'tree':
-                        value = TreatmentNode.objects.get(name=value)
-                    elif name == 'cirrhosis':
-                        value = value == 'True'
-                    new_path.__setattr__(name, value)
-                new_path.save()
+        if len(paths) == 0:
+            return
+        TreatmentPath.objects.all().delete()
+        for p in paths:
+            new_path = TreatmentPath()
+            fields = self.get_nodes_by_name(p, 'field')
+            for f in fields:
+                name = f.attributes.getNamedItem('name').nodeValue
+                value = f.childNodes[0].nodeValue
+                if name == 'tree':
+                    value = TreatmentNode.objects.get(name=value)
+                elif name == 'cirrhosis':
+                    value = value == 'True'
+                new_path.__setattr__(name, value)
+            new_path.save()
