@@ -272,6 +272,13 @@ class EditView(StaffViewMixin, GenericEditView):
     template_name = "main/edit_page.html"
 
 
+def get_site(request):
+    if Site._meta.installed:
+        return Site.objects.get_current()
+    else:
+        return RequestSite(request)
+
+
 @csrf_protect
 def resend_activation_email(request):
     """allows you to  resent the activation email to an arbitrary address."""
@@ -311,10 +318,7 @@ def resend_activation_email(request):
             return HttpResponse(form_template.render(c))
 
         #ok success.
-        if Site._meta.installed:
-            site = Site.objects.get_current()
-        else:
-            site = RequestSite(request)
+        site = get_site(request)
 
         reg_profile.send_activation_email(site)
         c = RequestContext(request,
