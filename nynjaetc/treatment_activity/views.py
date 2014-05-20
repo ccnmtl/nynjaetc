@@ -52,9 +52,9 @@ def choose_treatment_path(request):
         return HttpResponseForbidden()
 
     params = simplejson.loads(request.POST.get('state'))
-    cirrhosis = params['cirrhosis'] if 'cirrhosis' in params else None
-    status = params['status'] if 'status' in params else None
-    drug = params['drug'] if 'drug' in params else None
+    cirrhosis = params.get('cirrhosis', None)
+    status = params.get('status', None)
+    drug = params.get('drug', None)
 
     data = {}
 
