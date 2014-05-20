@@ -16,11 +16,7 @@ def get_next_steps(request, path_id, node_id):
     if node.type == 'DP':
         steps = simplejson.loads(request.POST.get('steps'))
         decision = steps[len(steps) - 1]['decision']
-
-        if decision == 0:
-            node = node.get_first_child()
-        elif decision == 1:
-            node = node.get_last_child()
+        node = node_from_decision(decision, node)
 
         next_steps.append(node.to_json())
         prev = node
@@ -33,12 +29,21 @@ def get_next_steps(request, path_id, node_id):
             prev = node
 
     data = {'steps': next_steps,
-            'node': prev.id,
             'path': path_id,
             'can_edit': request.user.is_superuser}
+    if prev:
+        data['node'] = prev.id
 
     return HttpResponse(simplejson.dumps(data, indent=2),
                         mimetype="application/json")
+
+
+def node_from_decision(decision, node):
+    if decision == 0:
+        return node.get_first_child()
+    elif decision == 1:
+        return node.get_last_child()
+    return node
 
 
 @login_required
