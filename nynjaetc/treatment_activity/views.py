@@ -11,10 +11,23 @@ def get_next_steps(request, path_id, node_id):
 
     node = TreatmentNode.objects.get(id=node_id)
 
+    prev, node, next_steps = get_to_decision_point(
+        node, request.POST.get('steps'))
+    data = {'steps': next_steps,
+            'path': path_id,
+            'can_edit': request.user.is_superuser}
+    if prev:
+        data['node'] = prev.id
+
+    return HttpResponse(simplejson.dumps(data, indent=2),
+                        mimetype="application/json")
+
+
+def get_to_decision_point(node, steps_json):
     next_steps = []
     prev = None
     if node.is_decisionpoint():
-        steps = simplejson.loads(request.POST.get('steps'))
+        steps = simplejson.loads(steps_json)
         decision = steps[len(steps) - 1]['decision']
         node = node.child_from_decision(decision)
 
@@ -27,15 +40,7 @@ def get_next_steps(request, path_id, node_id):
         else:
             next_steps.append(node.to_json())
             prev = node
-
-    data = {'steps': next_steps,
-            'path': path_id,
-            'can_edit': request.user.is_superuser}
-    if prev:
-        data['node'] = prev.id
-
-    return HttpResponse(simplejson.dumps(data, indent=2),
-                        mimetype="application/json")
+    return prev, node, next_steps
 
 
 @login_required
