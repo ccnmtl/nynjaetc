@@ -14,6 +14,30 @@ class Command(BaseCommand):
 
     choices = dict(NODE_CHOICES)
 
+    def set_child_duration(self, node, child):
+        duration = node.attributes.getNamedItem('Duration')
+        if duration:
+            child.duration = duration.nodeValue
+        return child
+
+    def set_child_value(self, node, child):
+        value = node.attributes.getNamedItem('Value')
+        if value:
+            child.value = value.nodeValue
+        return child
+
+    def set_child_text(self, node, child):
+        text = node.attributes.getNamedItem('Text')
+        if text:
+            child.text = text.nodeValue
+        return child
+
+    def set_child_help(self, node, child):
+        help_text = node.attributes.getNamedItem('Help')
+        if help_text:
+            child.help = help_text.nodeValue
+        return child
+
     def add_child_node(self, node, parent):
         if node.nodeType == node.TEXT_NODE:
             return
@@ -22,23 +46,10 @@ class Command(BaseCommand):
         child = parent.add_child(
             name=label.nodeValue,
             type=self.get_activity_type(node))
-
-        duration = node.attributes.getNamedItem('Duration')
-        if duration:
-            child.duration = duration.nodeValue
-
-        value = node.attributes.getNamedItem('Value')
-        if value:
-            child.value = value.nodeValue
-
-        text = node.attributes.getNamedItem('Text')
-        if text:
-            child.text = text.nodeValue
-
-        help_text = node.attributes.getNamedItem('Help')
-        if help_text:
-            child.help = help_text.nodeValue
-
+        child = self.set_child_duration(node, child)
+        child = self.set_child_value(node, child)
+        child = self.set_child_text(node, child)
+        child = self.set_child_help(node, child)
         child.save()
 
         if node.hasChildNodes():
