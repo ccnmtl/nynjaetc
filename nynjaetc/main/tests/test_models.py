@@ -99,3 +99,15 @@ class MyQuizSubmitTest(TestCase):
         the_profile, created = UserProfile.objects.get_or_create(user=u)
         self.assertEqual(created, False)
         self.assertEqual(the_profile.hrsa_id, "foo")
+
+    @override_settings(HRSA_ID_FIELD='something_else_altogether')
+    def test_my_quiz_submit_with_different_hrsa_id(self):
+        d = MockQuiz()
+        u = UserFactory()
+        my_quiz_submit(d, u, dict(something_else_altogether="foo"))
+        # it needs to scrub it from the data dictionary that it passes along
+        self.assertEqual(d.data, dict(something_else_altogether="*****"))
+        # then it sets it on the user profile instead
+        the_profile, created = UserProfile.objects.get_or_create(user=u)
+        self.assertEqual(created, False)
+        self.assertEqual(the_profile.hrsa_id, "foo")
