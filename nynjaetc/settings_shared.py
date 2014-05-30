@@ -228,6 +228,8 @@ ENCRYPT_EMAIL_ADDRESSES = True
 ENCRYPT_HRSA_IDS = True
 ENCRYPT_KEY = 'DUMMY DUMMY DUMMY DUMMY.'  # overridden by local_settings.py
 
+HRSA_ID_FIELD = 'question17'
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,

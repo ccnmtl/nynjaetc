@@ -15,6 +15,7 @@ from registration.forms import RegistrationForm
 from django.core.exceptions import ImproperlyConfigured
 from django.utils.encoding import DjangoUnicodeDecodeError
 from django import forms
+from django.conf import settings
 
 
 def is_leaf_or_has_content(self):
@@ -219,8 +220,7 @@ Quiz.original_submit = Quiz.submit
 
 
 def my_quiz_submit(self, user, data):
-    hrsa_question_id = 17  # get_from_settings ?
-    hrsa_question_key = 'question%d' % hrsa_question_id
+    hrsa_question_key = settings.HRSA_ID_FIELD
 
     try:
         hrsa_id = data[hrsa_question_key]
