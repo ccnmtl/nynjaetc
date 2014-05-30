@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.test.utils import override_settings
 from .factories import (
     UserFactory, SectionFactory, SectionTimestampFactory,
     SectionAlternateNavigationFactory,
@@ -87,10 +88,10 @@ class MyQuizSubmitTest(TestCase):
         self.assertEqual(d.user, u)
         self.assertEqual(d.data, dict())
 
+    @override_settings(HRSA_ID_FIELD='question17')
     def test_my_quiz_submit_with_hrsa_id(self):
         d = MockQuiz()
         u = UserFactory()
-        # magic field is 'question17'
         my_quiz_submit(d, u, dict(question17="foo"))
         # it needs to scrub it from the data dictionary that it passes along
         self.assertEqual(d.data, dict(question17="*****"))
