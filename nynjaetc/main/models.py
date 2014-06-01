@@ -222,10 +222,7 @@ Quiz.original_submit = Quiz.submit
 def my_quiz_submit(self, user, data):
     hrsa_question_key = settings.HRSA_ID_FIELD
 
-    try:
-        hrsa_id = data[hrsa_question_key]
-    except KeyError:
-        hrsa_id = None
+    hrsa_id = data.get(hrsa_question_key, None)
 
     if hrsa_id is not None:
         hrsa_id = data[hrsa_question_key]
