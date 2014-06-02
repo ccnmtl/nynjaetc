@@ -3,7 +3,7 @@ from django.test.utils import override_settings
 from .factories import (
     UserFactory, SectionFactory, SectionTimestampFactory,
     SectionAlternateNavigationFactory, SectionQuizAnsweredCorrectlyFactory,
-    PreferenceFactory,
+    PreferenceFactory, SectionPreferenceFactory,
 )
 from nynjaetc.main.models import (
     UserProfile, next_with_content, prev_with_content,
@@ -131,3 +131,11 @@ class PreferenceTest(TestCase):
     def test_sections(self):
         p = PreferenceFactory()
         self.assertEqual(p.sections(), [])
+
+
+class SectionPreferenceTest(TestCase):
+    def test_unicode(self):
+        h = Hierarchy.objects.create(name="main")
+        root = h.get_root()
+        sp = SectionPreferenceFactory(section=root)
+        self.assertTrue(" has " in str(sp))

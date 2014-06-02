@@ -2,7 +2,7 @@ import factory
 from django.contrib.auth.models import User
 from nynjaetc.main.models import (
     UserProfile, SectionTimestamp, SectionAlternateNavigation,
-    SectionQuizAnsweredCorrectly, Preference,
+    SectionQuizAnsweredCorrectly, Preference, SectionPreference,
 )
 from pagetree.models import Hierarchy, Section
 from datetime import datetime
@@ -52,3 +52,8 @@ class SectionQuizAnsweredCorrectlyFactory(factory.DjangoModelFactory):
 class PreferenceFactory(factory.DjangoModelFactory):
     FACTORY_FOR = Preference
     slug = factory.Sequence(lambda x: "pref%d" % x)
+
+
+class SectionPreferenceFactory(factory.DjangoModelFactory):
+    FACTORY_FOR = SectionPreference
+    preference = factory.SubFactory(PreferenceFactory)
