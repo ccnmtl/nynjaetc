@@ -8,6 +8,7 @@ from .factories import (
 from nynjaetc.main.models import (
     UserProfile, next_with_content, prev_with_content,
     my_quiz_submit, my_email_user, store_encrypted_email,
+    my_password_reset_form_save,
 )
 from pagetree.models import Hierarchy
 
@@ -170,3 +171,23 @@ class TestStoreEncryptedEmail(TestCase):
         except ValueError:
             raised = True
         self.assertTrue(raised)
+
+
+class DummyPasswordResetForm(object):
+    users_cache = []
+
+    def original_save(self, *args):
+        pass
+
+
+class TestMyPasswordResetFormSave(TestCase):
+    def test_empty_users_cache(self):
+        dpr = DummyPasswordResetForm()
+        my_password_reset_form_save(dpr)
+
+    def test_with_users(self):
+        u = UserFactory()
+        dpr = DummyPasswordResetForm()
+        dpr.users_cache = [u]
+        my_password_reset_form_save(dpr)
+        self.assertEqual(u.email, "*****")
