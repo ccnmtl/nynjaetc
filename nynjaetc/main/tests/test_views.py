@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.test.client import Client
 from django.contrib.auth.models import User
+from nynjaetc.main.views import background
 
 
 class BasicTest(TestCase):
@@ -87,4 +88,14 @@ class AnonViewTests(TestCase):
 
     def test_latest_page(self):
         r = self.c.get("/latest/")
+        self.assertEquals(r.status_code, 302)
+
+
+class DummyRequest(object):
+    path = "/foo/"
+
+
+class BackgroundTest(TestCase):
+    def test_nonexistant(self):
+        r = background(DummyRequest(), "not in there")
         self.assertEquals(r.status_code, 302)
