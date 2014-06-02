@@ -11,6 +11,7 @@ from nynjaetc.main.models import (
     UserProfile, next_with_content, prev_with_content,
     my_quiz_submit, my_email_user, store_encrypted_email,
     my_password_reset_form_save, my_password_reset_form_clean_email,
+    my_clean,
 )
 from pagetree.models import Hierarchy
 
@@ -184,6 +185,9 @@ class DummyPasswordResetForm(object):
     def original_save(self, *args):
         pass
 
+    def original_clean(self, *args):
+        pass
+
 
 class TestMyPasswordResetFormSave(TestCase):
     def test_empty_users_cache(self):
@@ -227,6 +231,29 @@ class TestMyPasswordResetFormCleanEmail(TestCase):
         raised = False
         try:
             my_password_reset_form_clean_email(dpr)
+        except forms.ValidationError:
+            raised = True
+        self.assertTrue(raised)
+
+
+class TestMyClean(TestCase):
+    def test_no_email(self):
+        dpr = DummyPasswordResetForm()
+        my_clean(dpr)
+
+    def test_with_email_but_no_existing(self):
+        dpr = DummyPasswordResetForm()
+        dpr.cleaned_data['email'] = "foo@example.com"
+        my_clean(dpr)
+
+    def test_with_existing_user(self):
+        u = UserFactory(is_active=True, email="foo@example.com")
+        up, _created = UserProfile.objects.get_or_create(user=u)
+        dpr = DummyPasswordResetForm()
+        dpr.cleaned_data['email'] = "foo@example.com"
+        raised = False
+        try:
+            my_clean(dpr)
         except forms.ValidationError:
             raised = True
         self.assertTrue(raised)
