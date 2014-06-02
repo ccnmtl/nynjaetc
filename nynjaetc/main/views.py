@@ -198,8 +198,6 @@ class LatestPageView(LoggedInMixin, View):
             hierarchy_name=self.hierarchy_name,
             hierarchy_base=self.hierarchy_base)
         pool = self_and_descendants(section)
-        if request.user.is_anonymous():
-            return HttpResponseRedirect("/" + section.get_path())
         user_timestamps = SectionTimestamp.objects.filter(user=request.user)
         already_visited = [t for t in user_timestamps if t.section in pool]
         if len(already_visited) == 0:
