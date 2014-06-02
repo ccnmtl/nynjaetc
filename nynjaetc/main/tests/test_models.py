@@ -7,7 +7,7 @@ from .factories import (
 )
 from nynjaetc.main.models import (
     UserProfile, next_with_content, prev_with_content,
-    my_quiz_submit,
+    my_quiz_submit, my_email_user,
 )
 from pagetree.models import Hierarchy
 
@@ -139,3 +139,24 @@ class SectionPreferenceTest(TestCase):
         root = h.get_root()
         sp = SectionPreferenceFactory(section=root)
         self.assertTrue(" has " in str(sp))
+
+# tests on User monkey patching
+# if we remove the whole encrypted email thing, we will
+# want to remove these as well
+
+
+class DummyUser(object):
+    def original_email_user(self, *args):
+        pass
+
+    def get_profile(self):
+        class D(object):
+            encrypted_email = "foo"
+        return D()
+
+
+class TestMyEmailUser(TestCase):
+    def test_my_email_user(self):
+        du = DummyUser()
+        my_email_user(du, "subject", "message")
+        self.assertEqual(du.email, "*****")
