@@ -1,5 +1,7 @@
 from django.test import TestCase
 from django.test.utils import override_settings
+from django.contrib.auth.hashers import UNUSABLE_PASSWORD_PREFIX
+from django import forms
 from .factories import (
     UserFactory, SectionFactory, SectionTimestampFactory,
     SectionAlternateNavigationFactory, SectionQuizAnsweredCorrectlyFactory,
@@ -8,7 +10,7 @@ from .factories import (
 from nynjaetc.main.models import (
     UserProfile, next_with_content, prev_with_content,
     my_quiz_submit, my_email_user, store_encrypted_email,
-    my_password_reset_form_save,
+    my_password_reset_form_save, my_password_reset_form_clean_email,
 )
 from pagetree.models import Hierarchy
 
@@ -175,6 +177,9 @@ class TestStoreEncryptedEmail(TestCase):
 
 class DummyPasswordResetForm(object):
     users_cache = []
+    cleaned_data = dict()
+    error_messages = dict(unknown="foo",
+                          unusable="unusable")
 
     def original_save(self, *args):
         pass
@@ -191,3 +196,37 @@ class TestMyPasswordResetFormSave(TestCase):
         dpr.users_cache = [u]
         my_password_reset_form_save(dpr)
         self.assertEqual(u.email, "*****")
+
+
+class TestMyPasswordResetFormCleanEmail(TestCase):
+    def test_empty_users_cache(self):
+        u = UserFactory(is_active=False)
+        dpr = DummyPasswordResetForm()
+        dpr.cleaned_data['email'] = u.email
+        raised = False
+        try:
+            my_password_reset_form_clean_email(dpr)
+        except forms.ValidationError:
+            raised = True
+        self.assertTrue(raised)
+
+    def test_with_active_user(self):
+        u = UserFactory(is_active=True, email="foo@example.com")
+        up, _created = UserProfile.objects.get_or_create(user=u)
+        dpr = DummyPasswordResetForm()
+        dpr.cleaned_data['email'] = "foo@example.com"
+        email = my_password_reset_form_clean_email(dpr)
+        self.assertEqual(email, "foo@example.com")
+
+    def test_with_unusable_user(self):
+        u = UserFactory(is_active=True, email="foo@example.com",
+                        password=UNUSABLE_PASSWORD_PREFIX)
+        up, _created = UserProfile.objects.get_or_create(user=u)
+        dpr = DummyPasswordResetForm()
+        dpr.cleaned_data['email'] = "foo@example.com"
+        raised = False
+        try:
+            my_password_reset_form_clean_email(dpr)
+        except forms.ValidationError:
+            raised = True
+        self.assertTrue(raised)
