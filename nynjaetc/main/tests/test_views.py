@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.test.client import Client
 from django.contrib.auth.models import User
+from django.conf import settings
 from pagetree.models import Hierarchy, PageBlock
 from nynjaetc.main.views import background, has_submitted_pretest
 from .factories import (
@@ -117,7 +118,7 @@ class HasSubmittedPretest(TestCase):
                 'children': [],
             })
         self.section1 = self.root.get_children()[0]
-        self.p = PreferenceFactory(slug='pre-test')
+        self.p = PreferenceFactory(slug=settings.PRETEST_PREF_SLUG)
         self.sp = SectionPreferenceFactory(section=self.section1,
                                            preference=self.p)
         self.u = UserFactory()
