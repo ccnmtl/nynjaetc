@@ -2,12 +2,13 @@ from django.test import TestCase
 from django.test.utils import override_settings
 from .factories import (
     UserFactory, SectionFactory, SectionTimestampFactory,
-    SectionAlternateNavigationFactory,
+    SectionAlternateNavigationFactory, SectionQuizAnsweredCorrectlyFactory,
 )
 from nynjaetc.main.models import (
     UserProfile, next_with_content, prev_with_content,
     my_quiz_submit,
 )
+from pagetree.models import Hierarchy
 
 
 class UserProfileTest(TestCase):
@@ -111,3 +112,11 @@ class MyQuizSubmitTest(TestCase):
         the_profile, created = UserProfile.objects.get_or_create(user=u)
         self.assertEqual(created, False)
         self.assertEqual(the_profile.hrsa_id, "foo")
+
+
+class SectionQuizAnsweredCorrectlyTest(TestCase):
+    def test_unicode(self):
+        h = Hierarchy.objects.create(name="main")
+        root = h.get_root()
+        sq = SectionQuizAnsweredCorrectlyFactory(section=root)
+        self.assertEqual(str(sq), root.get_path())
