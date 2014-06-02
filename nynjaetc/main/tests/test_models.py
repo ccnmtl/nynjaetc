@@ -3,6 +3,7 @@ from django.test.utils import override_settings
 from .factories import (
     UserFactory, SectionFactory, SectionTimestampFactory,
     SectionAlternateNavigationFactory, SectionQuizAnsweredCorrectlyFactory,
+    PreferenceFactory,
 )
 from nynjaetc.main.models import (
     UserProfile, next_with_content, prev_with_content,
@@ -120,3 +121,13 @@ class SectionQuizAnsweredCorrectlyTest(TestCase):
         root = h.get_root()
         sq = SectionQuizAnsweredCorrectlyFactory(section=root)
         self.assertEqual(str(sq), root.get_path())
+
+
+class PreferenceTest(TestCase):
+    def test_unicode(self):
+        p = PreferenceFactory()
+        self.assertTrue(str(p).startswith("pref"))
+
+    def test_sections(self):
+        p = PreferenceFactory()
+        self.assertEqual(p.sections(), [])
