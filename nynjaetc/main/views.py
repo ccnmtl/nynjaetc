@@ -1,5 +1,6 @@
 from django.http import HttpResponseRedirect, HttpResponse
 from django.views.generic.base import View
+from django.conf import settings
 from pagetree.models import Section
 from pagetree.helpers import get_section_from_path, get_hierarchy
 from pagetree.helpers import get_module, needs_submit, submitted
@@ -46,7 +47,7 @@ def background(request,  content_to_show):
 def has_submitted_pretest(the_user, hierarchy="main"):
     h = get_hierarchy(hierarchy)
     the_pretest_section = Section.objects.get(
-        sectionpreference__preference__slug='pre-test',
+        sectionpreference__preference__slug=settings.PRETEST_PREF_SLUG,
         hierarchy=h)
     for s in Submission.objects.filter(user=the_user):
         if s.quiz.pageblock().section == the_pretest_section:

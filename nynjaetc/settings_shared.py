@@ -229,6 +229,7 @@ ENCRYPT_HRSA_IDS = True
 ENCRYPT_KEY = 'DUMMY DUMMY DUMMY DUMMY.'  # overridden by local_settings.py
 
 HRSA_ID_FIELD = 'question17'
+PRETEST_PREF_SLUG = 'pre-test'
 
 LOGGING = {
     'version': 1,
