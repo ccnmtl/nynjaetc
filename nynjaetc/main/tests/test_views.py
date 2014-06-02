@@ -3,7 +3,7 @@ from django.test.client import Client
 from django.contrib.auth.models import User
 from django.conf import settings
 from pagetree.models import Hierarchy, PageBlock
-from nynjaetc.main.views import background, has_submitted_pretest
+from nynjaetc.main.views import background, has_submitted_pretest, Pretest
 from .factories import (
     SectionPreferenceFactory, PreferenceFactory,
     UserFactory, QuizFactory, SubmissionFactory)
@@ -152,3 +152,7 @@ class HasSubmittedPretest(TestCase):
             content_object=q)
         SubmissionFactory(quiz=q, user=self.u)
         self.assertFalse(has_submitted_pretest(self.u, self.h))
+
+    def test_pretest(self):
+        p = Pretest(self.section1)
+        self.assertFalse(p.user_has_submitted('', self.u))
