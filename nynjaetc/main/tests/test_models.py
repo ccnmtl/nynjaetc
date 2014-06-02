@@ -11,7 +11,7 @@ from nynjaetc.main.models import (
     UserProfile, next_with_content, prev_with_content,
     my_quiz_submit, my_email_user, store_encrypted_email,
     my_password_reset_form_save, my_password_reset_form_clean_email,
-    my_clean,
+    my_clean, my_clean_username
 )
 from pagetree.models import Hierarchy
 
@@ -254,6 +254,24 @@ class TestMyClean(TestCase):
         raised = False
         try:
             my_clean(dpr)
+        except forms.ValidationError:
+            raised = True
+        self.assertTrue(raised)
+
+
+class TestMyCleanUsername(TestCase):
+    def test_no_matching_user(self):
+        dpr = DummyPasswordResetForm()
+        dpr.cleaned_data['username'] = "foo"
+        self.assertEqual(my_clean_username(dpr), "foo")
+
+    def test_with_existing_user(self):
+        u = UserFactory()
+        dpr = DummyPasswordResetForm()
+        dpr.cleaned_data['username'] = u.username
+        raised = False
+        try:
+            my_clean_username(dpr)
         except forms.ValidationError:
             raised = True
         self.assertTrue(raised)
