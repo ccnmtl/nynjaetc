@@ -7,7 +7,7 @@ from .factories import (
 )
 from nynjaetc.main.models import (
     UserProfile, next_with_content, prev_with_content,
-    my_quiz_submit, my_email_user,
+    my_quiz_submit, my_email_user, store_encrypted_email,
 )
 from pagetree.models import Hierarchy
 
@@ -160,3 +160,13 @@ class TestMyEmailUser(TestCase):
         du = DummyUser()
         my_email_user(du, "subject", "message")
         self.assertEqual(du.email, "*****")
+
+
+class TestStoreEncryptedEmail(TestCase):
+    def test_store_encrypted_email_blank(self):
+        raised = False
+        try:
+            store_encrypted_email(None)
+        except ValueError:
+            raised = True
+        self.assertTrue(raised)
