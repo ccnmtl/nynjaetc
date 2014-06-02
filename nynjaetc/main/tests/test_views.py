@@ -1,7 +1,11 @@
 from django.test import TestCase
 from django.test.client import Client
 from django.contrib.auth.models import User
-from nynjaetc.main.views import background
+from pagetree.models import Hierarchy, PageBlock
+from nynjaetc.main.views import background, has_submitted_pretest
+from .factories import (
+    SectionPreferenceFactory, PreferenceFactory,
+    UserFactory, QuizFactory, SubmissionFactory)
 
 
 class BasicTest(TestCase):
@@ -99,3 +103,51 @@ class BackgroundTest(TestCase):
     def test_nonexistant(self):
         r = background(DummyRequest(), "not in there")
         self.assertEquals(r.status_code, 302)
+
+
+class HasSubmittedPretest(TestCase):
+    def setUp(self):
+        self.h = Hierarchy.objects.create(name="main")
+        self.root = self.h.get_root()
+        self.root.add_child_section_from_dict(
+            {
+                'label': 'Section 1',
+                'slug': 'section-1',
+                'pageblocks': [],
+                'children': [],
+            })
+        self.section1 = self.root.get_children()[0]
+        self.p = PreferenceFactory(slug='pre-test')
+        self.sp = SectionPreferenceFactory(section=self.section1,
+                                           preference=self.p)
+        self.u = UserFactory()
+
+    def test_no_submissions(self):
+        self.assertFalse(has_submitted_pretest(self.u, self.h))
+
+    def test_with_submissions(self):
+        q = QuizFactory()
+        PageBlock.objects.create(
+            section=self.section1,
+            content_object=q)
+        SubmissionFactory(quiz=q, user=self.u)
+        self.assertTrue(has_submitted_pretest(self.u, self.h))
+
+    def test_with_other_submissions(self):
+        # make another section, that has submissions from this
+        # user, but is not the pre-test section
+        q = QuizFactory()
+        self.root.add_child_section_from_dict(
+            {
+                'label': 'Section 2',
+                'slug': 'section-2',
+                'pageblocks': [],
+                'children': [],
+            }
+        )
+        section2 = self.root.get_children()[1]
+        PageBlock.objects.create(
+            section=section2,
+            content_object=q)
+        SubmissionFactory(quiz=q, user=self.u)
+        self.assertFalse(has_submitted_pretest(self.u, self.h))

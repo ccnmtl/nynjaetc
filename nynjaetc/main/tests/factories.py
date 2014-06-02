@@ -5,6 +5,7 @@ from nynjaetc.main.models import (
     SectionQuizAnsweredCorrectly, Preference, SectionPreference,
 )
 from pagetree.models import Hierarchy, Section
+from quizblock.models import Quiz, Submission
 from datetime import datetime
 
 
@@ -57,3 +58,13 @@ class PreferenceFactory(factory.DjangoModelFactory):
 class SectionPreferenceFactory(factory.DjangoModelFactory):
     FACTORY_FOR = SectionPreference
     preference = factory.SubFactory(PreferenceFactory)
+
+
+class QuizFactory(factory.DjangoModelFactory):
+    FACTORY_FOR = Quiz
+
+
+class SubmissionFactory(factory.DjangoModelFactory):
+    FACTORY_FOR = Submission
+    quiz = factory.SubFactory(QuizFactory)
+    user = factory.SubFactory(UserFactory)
