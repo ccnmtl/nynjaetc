@@ -148,8 +148,17 @@ def generate_row(the_user, all_sections, all_questions, testing):
     result.extend(line['user_sections'])
     result.extend(line['user_questions'])
 
-    #print result
     return result
+
+
+def make_user_sections(all_sections, section_ids, formatted_timestamps):
+    user_sections = []
+    for the_section in all_sections:
+        if the_section.id in section_ids:
+            user_sections.append(formatted_timestamps[the_section.id])
+        else:
+            user_sections.append(None)
+    return user_sections
 
 
 def generate_row_info(the_user, all_sections, all_questions):
@@ -157,17 +166,12 @@ def generate_row_info(the_user, all_sections, all_questions):
     responses = responses_for(the_user)
     raw_timestamps, formatted_timestamps = timestamps_for(the_user)
 
-    user_sections = []
     user_questions = []
     section_ids = formatted_timestamps.keys()
     question_ids = responses.keys()
 
-    for the_section in all_sections:
-        if the_section.id in section_ids:
-            user_sections.append(formatted_timestamps[the_section.id])
-        else:
-            user_sections.append(None)
-
+    user_sections = make_user_sections(
+        all_sections, section_ids, formatted_timestamps)
     for the_question in all_questions:
         if the_question.id in question_ids:
             user_questions.append(responses[the_question.id])
