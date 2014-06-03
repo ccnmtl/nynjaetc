@@ -76,7 +76,7 @@ def find_the_questions(sections_in_order):
     in the order they are presented
     in the sections."""
     all_questions = []
-    quizzes_we_want = [25, 15]
+    quizzes_we_want = settings.QUIZZES_TO_REPORT
 
     #first get all the questions in pagetree order:
     for the_section in sections_in_order:
