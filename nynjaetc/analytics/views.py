@@ -160,10 +160,7 @@ def make_user_questions(all_questions, responses):
 
 
 def item_or_none_in_dict(all_items, the_dict):
-    output = []
-    for item in all_items:
-        output.append(the_dict.get(item.id, None))
-    return output
+    return [the_dict.get(item.id, None) for item in all_items]
 
 
 def generate_row_info(the_user, all_sections, all_questions):
