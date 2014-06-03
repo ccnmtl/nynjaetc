@@ -152,23 +152,21 @@ def generate_row(the_user, all_sections, all_questions, testing):
 
 
 def make_user_sections(all_sections, formatted_timestamps):
-    user_sections = []
-    for the_section in all_sections:
-        if the_section.id in formatted_timestamps.keys():
-            user_sections.append(formatted_timestamps[the_section.id])
-        else:
-            user_sections.append(None)
-    return user_sections
+    return item_or_none_in_dict(all_sections, formatted_timestamps)
 
 
 def make_user_questions(all_questions, responses):
-    user_questions = []
-    for the_question in all_questions:
-        if the_question.id in responses.keys():
-            user_questions.append(responses[the_question.id])
+    return item_or_none_in_dict(all_questions, responses)
+
+
+def item_or_none_in_dict(all_items, the_dict):
+    output = []
+    for item in all_items:
+        if item.id in the_dict.keys():
+            output.append(the_dict[item.id])
         else:
-            user_questions.append(None)
-    return user_questions
+            output.append(None)
+    return output
 
 
 def generate_row_info(the_user, all_sections, all_questions):
