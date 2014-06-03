@@ -41,6 +41,11 @@ class SimpleViewsTest(TestCase):
         response = self.c.get("/analytics/")
         self.assertEquals(response.status_code, 200)
 
+    def test_analytics_table_testing(self):
+        with self.settings(ENDURING_MATERIALS_SECTION_ID=self.section1.id):
+            response = self.c.get("/analytics/testing/")
+            self.assertEquals(response.status_code, 200)
+
 
 class HelpersTest(TestCase):
     def setUp(self):
@@ -63,10 +68,9 @@ class HelpersTest(TestCase):
         self.h.delete()
 
     def test_checked_enduring_materials_box(self):
-        self.assertFalse(
-            checked_enduring_materials_box(
-                self.u,
-                self.section1.id))
+        with self.settings(ENDURING_MATERIALS_SECTION_ID=self.section1.id):
+            self.assertFalse(
+                checked_enduring_materials_box(self.u))
 
     def test_timestamps_for(self):
         self.assertEquals(timestamps_for(self.u), ({}, {}))
@@ -75,22 +79,21 @@ class HelpersTest(TestCase):
         self.assertEquals(responses_for(self.u), {})
 
     def test_generate_row_info(self):
-        r = generate_row_info(
-            self.u, [self.section1], [],
-            cemb_pk=self.section1.id)
-        self.assertEquals(r['the_user'], self.u)
-        self.assertEquals(r['the_profile'].user, self.u)
-        self.assertEquals(r['user_questions'], [])
-        self.assertEquals(r['user_sections'], [None])
-        self.assertEquals(r['read_intro'], False)
+        with self.settings(ENDURING_MATERIALS_SECTION_ID=self.section1.id):
+            r = generate_row_info(
+                self.u, [self.section1], [])
+            self.assertEquals(r['the_user'], self.u)
+            self.assertEquals(r['the_profile'].user, self.u)
+            self.assertEquals(r['user_questions'], [])
+            self.assertEquals(r['user_sections'], [None])
+            self.assertEquals(r['read_intro'], False)
 
     def test_generate_row(self):
-        r = generate_row(
-            self.u, [self.section1], [], False,
-            cemb_pk=self.section1.id)
-        self.assertEquals(len(r), 7)
+        with self.settings(ENDURING_MATERIALS_SECTION_ID=self.section1.id):
+            r = generate_row(
+                self.u, [self.section1], [], False)
+            self.assertEquals(len(r), 7)
 
-        r = generate_row(
-            self.u, [self.section1], [], True,
-            cemb_pk=self.section1.id)
+            r = generate_row(
+                self.u, [self.section1], [], True)
         self.assertEquals(len(r), 11)

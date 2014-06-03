@@ -228,8 +228,10 @@ ENCRYPT_EMAIL_ADDRESSES = True
 ENCRYPT_HRSA_IDS = True
 ENCRYPT_KEY = 'DUMMY DUMMY DUMMY DUMMY.'  # overridden by local_settings.py
 
+# nasty hard-coded ids and slugs
 HRSA_ID_FIELD = 'question17'
 PRETEST_PREF_SLUG = 'pre-test'
+ENDURING_MATERIALS_SECTION_ID = 50
 
 LOGGING = {
     'version': 1,

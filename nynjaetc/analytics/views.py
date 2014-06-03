@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from nynjaetc.main.models import Section, UserProfile
 from nynjaetc.main.models import SectionQuizAnsweredCorrectly
 from django.http import HttpResponse
+from django.conf import settings
 
 import csv
 import datetime
@@ -110,9 +111,8 @@ def generate_heading(all_sections, all_questions, testing):
     return result
 
 
-def generate_row(the_user, all_sections, all_questions, testing, cemb_pk=50):
-    line = generate_row_info(the_user, all_sections, all_questions,
-                             cemb_pk=cemb_pk)
+def generate_row(the_user, all_sections, all_questions, testing):
+    line = generate_row_info(the_user, all_sections, all_questions)
 
     the_profile = line['the_profile']
 
@@ -152,7 +152,7 @@ def generate_row(the_user, all_sections, all_questions, testing, cemb_pk=50):
     return result
 
 
-def generate_row_info(the_user, all_sections, all_questions, cemb_pk=50):
+def generate_row_info(the_user, all_sections, all_questions):
 
     responses = responses_for(the_user)
     raw_timestamps, formatted_timestamps = timestamps_for(the_user)
@@ -186,7 +186,7 @@ def generate_row_info(the_user, all_sections, all_questions, cemb_pk=50):
         'the_profile': the_profile,
         'user_questions': user_questions,
         'user_sections': user_sections,
-        'read_intro': checked_enduring_materials_box(the_user, cemb_pk)
+        'read_intro': checked_enduring_materials_box(the_user)
     }
 
 
@@ -233,7 +233,8 @@ def my_total_seconds(td):
 
 # hard-coding the section pk is still a terrible idea
 # but at least now it's injectable for testing
-def checked_enduring_materials_box(the_user, section_pk=50):
+def checked_enduring_materials_box(the_user):
+    section_pk = settings.ENDURING_MATERIALS_SECTION_ID
     enduring_materials_section = Section.objects.get(pk=section_pk)
     return SectionQuizAnsweredCorrectly.objects.filter(
         user=the_user, section=enduring_materials_section).exists()
