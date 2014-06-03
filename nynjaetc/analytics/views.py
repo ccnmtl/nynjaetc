@@ -205,7 +205,7 @@ def sum_of_gaps_longer_than_x_minutes(x, list_of_timestamps):
     start_times = list_of_timestamps[:-1]
     end_times = list_of_timestamps[1:]
     gaps_longer_than_x_in_seconds = [
-        my_total_seconds(b - a)
+        (b - a).total_seconds()
         for a, b in zip(start_times, end_times)
         if (b - a > threshold)]
     return sum(gaps_longer_than_x_in_seconds)
@@ -217,18 +217,12 @@ def time_spent_estimate(list_of_timestamps):
     to the activity."""
     if len(list_of_timestamps) == 0:
         return 0
-    raw_estimate = my_total_seconds(
-        max(list_of_timestamps) - min(list_of_timestamps))
+    raw_estimate = (
+        max(list_of_timestamps) - min(list_of_timestamps)).total_seconds()
     better_estimate = raw_estimate - sum_of_gaps_longer_than_x_minutes(
         70,
         list_of_timestamps)
     return "%0.1f" % (better_estimate / 60,)
-
-
-def my_total_seconds(td):
-    """Python's timedelta did not have a 'total_seconds' method
-    before python 2.7. I just."""
-    return td.total_seconds()
 
 
 # hard-coding the section pk is still a terrible idea
