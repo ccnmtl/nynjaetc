@@ -6,7 +6,9 @@ from pagetree.models import Hierarchy, PageBlock
 from nynjaetc.main.views import background, has_submitted_pretest, Pretest
 from .factories import (
     SectionPreferenceFactory, PreferenceFactory,
-    UserFactory, QuizFactory, SubmissionFactory)
+    UserFactory, QuizFactory, SubmissionFactory,
+    SectionTimestampFactory,
+)
 
 
 class BasicTest(TestCase):
@@ -156,3 +158,39 @@ class HasSubmittedPretest(TestCase):
     def test_pretest(self):
         p = Pretest(self.section1)
         self.assertFalse(p.user_has_submitted('', self.u))
+
+
+class LoggedInAndHasSectionTest(TestCase):
+    def setUp(self):
+        self.h = Hierarchy.objects.create(name="main")
+        self.root = self.h.get_root()
+        self.root.add_child_section_from_dict(
+            {
+                'label': 'Section 1',
+                'slug': 'section-1',
+                'pageblocks': [],
+                'children': [],
+            })
+        self.section1 = self.root.get_children()[0]
+        self.c = Client()
+        self.u = User.objects.create(username="testuser")
+        self.u.set_password("test")
+        self.u.save()
+        self.c.login(username="testuser", password="test")
+
+    def test_latest_page_visited(self):
+        SectionTimestampFactory(user=self.u, section=self.section1)
+        r = self.c.get("/latest/section-1/")
+        self.assertEqual(r.status_code, 302)
+
+    def record_answered_correctly_post_null(self):
+        r = self.c.post("/record_section_as_answered_correctly/", dict())
+        self.assertEqual(r.content, '')
+
+    def record_answered_correctly_post(self):
+        r = self.c.post("/record_section_as_answered_correctly/",
+                        dict(
+                            section_id=self.section1.id,
+                        ),
+                        HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.assertEqual(r.content, 'ok')
