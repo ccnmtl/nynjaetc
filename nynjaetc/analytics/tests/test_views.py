@@ -1,12 +1,13 @@
+from datetime import datetime
 from django.test import TestCase
 from django.test.client import Client
 from django.contrib.auth.models import User
 from pagetree.models import Hierarchy
-from nynjaetc.analytics.views import checked_enduring_materials_box
-from nynjaetc.analytics.views import timestamps_for
-from nynjaetc.analytics.views import responses_for
-from nynjaetc.analytics.views import generate_row_info
-from nynjaetc.analytics.views import generate_row
+from nynjaetc.analytics.views import (
+    checked_enduring_materials_box,
+    timestamps_for, responses_for, generate_row_info, generate_row,
+    sum_of_gaps_longer_than_x_minutes, time_spent_estimate,
+)
 
 
 class SimpleViewsTest(TestCase):
@@ -97,3 +98,17 @@ class HelpersTest(TestCase):
             r = generate_row(
                 self.u, [self.section1], [], True)
         self.assertEquals(len(r), 11)
+
+    def test_sum_of_gaps_longer_than_x(self):
+        timestamps = [datetime.now(), datetime.now()]
+        self.assertEqual(sum_of_gaps_longer_than_x_minutes(1, timestamps), 0)
+
+    def test_sum_of_gaps_longer_than_x_empty(self):
+        self.assertEqual(sum_of_gaps_longer_than_x_minutes(1, []), 0)
+
+    def test_time_spent_estimate_empty(self):
+        self.assertEqual(time_spent_estimate([]), 0)
+
+    def test_time_spent_estimate(self):
+        timestamps = [datetime.now(), datetime.now()]
+        self.assertEqual(time_spent_estimate(timestamps), "0.0")
