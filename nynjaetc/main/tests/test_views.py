@@ -194,3 +194,20 @@ class LoggedInAndHasSectionTest(TestCase):
                         ),
                         HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         self.assertEqual(r.content, 'ok')
+
+
+class AltNavTest(TestCase):
+    def setUp(self):
+        self.c = Client()
+        self.u = User.objects.create(username="testuser")
+        self.u.set_password("test")
+        self.u.save()
+        self.c.login(username="testuser", password="test")
+
+    def test_create_altnav(self):
+        r = self.c.get("/manage/altnav/add/")
+        self.assertTrue(r.status_code, 200)
+
+    def test_create_secprof(self):
+        r = self.c.get("/manage/secprof/add/")
+        self.assertTrue(r.status_code, 200)
