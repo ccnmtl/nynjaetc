@@ -24,12 +24,9 @@ def is_in_one_of(section, set_of_parents):
     """Whether a section is either one of,
     or the descendant of one of,
     a set of possible parent sections."""
-    result = False
-    if section in set_of_parents:
-        result = True
-    for q in set_of_parents:
-        if is_descendant_of(section, q):
-            result = True
+    result = (
+        section in set_of_parents
+        or any([is_descendant_of(section, q) for q in set_of_parents]))
     return result
 
 

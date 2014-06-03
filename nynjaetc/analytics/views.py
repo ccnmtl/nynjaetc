@@ -80,7 +80,8 @@ def get_all_questions_in_section(the_section, all_questions):
 def get_questions_in_pagetree_order(sections_in_order):
     all_questions = []
     for the_section in sections_in_order:
-        all_questions = get_all_questions_in_section(the_section)
+        all_questions = get_all_questions_in_section(the_section,
+                                                     all_questions)
     return all_questions
 
 
