@@ -164,14 +164,11 @@ def item_or_none_in_dict(all_items, the_dict):
 
 
 def generate_row_info(the_user, all_sections, all_questions):
-
     responses = responses_for(the_user)
     raw_timestamps, formatted_timestamps = timestamps_for(the_user)
 
-    user_sections = make_user_sections(
-        all_sections, formatted_timestamps)
-    user_questions = make_user_questions(
-        all_questions, responses)
+    user_sections = make_user_sections(all_sections, formatted_timestamps)
+    user_questions = make_user_questions(all_questions, responses)
 
     the_profile = None
     try:
