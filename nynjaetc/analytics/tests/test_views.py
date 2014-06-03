@@ -7,6 +7,7 @@ from nynjaetc.analytics.views import (
     checked_enduring_materials_box,
     timestamps_for, responses_for, generate_row_info, generate_row,
     sum_of_gaps_longer_than_x_minutes, time_spent_estimate,
+    ProfileHeaderMaker,
 )
 
 
@@ -112,3 +113,7 @@ class HelpersTest(TestCase):
     def test_time_spent_estimate(self):
         timestamps = [datetime.now(), datetime.now()]
         self.assertEqual(time_spent_estimate(timestamps), "0.0")
+
+    def test_profile_header_maker(self):
+        phm = ProfileHeaderMaker(None)
+        self.assertEqual(phm.header(), [None, None])

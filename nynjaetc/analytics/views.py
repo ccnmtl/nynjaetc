@@ -111,32 +111,30 @@ def generate_heading(all_sections, all_questions, testing):
     return result
 
 
+class ProfileHeaderMaker(object):
+    def __init__(self, the_profile):
+        self.the_profile = the_profile
+
+    def header(self):
+        if self.the_profile:
+            return [
+                self.the_profile.hrsa_id,
+                self.the_profile.encrypted_email]
+        else:
+            return [None, None]
+
+
 def generate_row(the_user, all_sections, all_questions, testing):
     line = generate_row_info(the_user, all_sections, all_questions)
-
-    the_profile = line['the_profile']
-
     result = []
-
-    if the_profile:
-        result.extend([
-            the_profile.hrsa_id,
-            the_profile.encrypted_email
-        ])
-    else:
-        result.extend([
-            None,
-            None
-        ])
-
-    result.extend(
-        [
-            format_timestamp(line['the_user'].date_joined),
-            format_timestamp(line['the_user'].last_login),
-            line['est_time_spent'],
-            line['read_intro'],
-        ])
-
+    phm = ProfileHeaderMaker(line['the_profile'])
+    result.extend(phm.header())
+    result.extend([
+        format_timestamp(line['the_user'].date_joined),
+        format_timestamp(line['the_user'].last_login),
+        line['est_time_spent'],
+        line['read_intro'],
+    ])
     if testing:
         result.extend([
             line['the_user'].id,
@@ -144,10 +142,8 @@ def generate_row(the_user, all_sections, all_questions, testing):
             line['the_user'].email,
             line['the_user'].is_staff
         ])
-
     result.extend(line['user_sections'])
     result.extend(line['user_questions'])
-
     return result
 
 
