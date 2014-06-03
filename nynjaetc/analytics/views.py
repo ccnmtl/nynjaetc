@@ -70,19 +70,29 @@ def generate_the_table(testing=False):
     return the_table
 
 
+def get_all_questions_in_section(the_section, all_questions):
+    for the_pageblock in the_section.pageblock_set.all():
+        if the_pageblock.block().__class__.display_name == 'Quiz':
+            all_questions.extend(the_pageblock.block().question_set.all())
+    return all_questions
+
+
+def get_questions_in_pagetree_order(sections_in_order):
+    all_questions = []
+    for the_section in sections_in_order:
+        all_questions = get_all_questions_in_section(the_section)
+    return all_questions
+
+
 def find_the_questions(sections_in_order):
     """ returns all the questions,
     in all the quizzes,
     in the order they are presented
     in the sections."""
-    all_questions = []
     quizzes_we_want = settings.QUIZZES_TO_REPORT
 
     #first get all the questions in pagetree order:
-    for the_section in sections_in_order:
-        for the_pageblock in the_section.pageblock_set.all():
-            if the_pageblock.block().__class__.display_name == 'Quiz':
-                all_questions.extend(the_pageblock.block().question_set.all())
+    all_questions = get_questions_in_pagetree_order(sections_in_order)
 
     #filter out most of the questions
     result = questions_we_want(all_questions, quizzes_we_want)
