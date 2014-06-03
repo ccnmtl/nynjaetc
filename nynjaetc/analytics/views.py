@@ -161,22 +161,28 @@ def make_user_sections(all_sections, section_ids, formatted_timestamps):
     return user_sections
 
 
-def generate_row_info(the_user, all_sections, all_questions):
-
-    responses = responses_for(the_user)
-    raw_timestamps, formatted_timestamps = timestamps_for(the_user)
-
+def make_user_questions(all_questions, question_ids, responses):
     user_questions = []
-    section_ids = formatted_timestamps.keys()
-    question_ids = responses.keys()
-
-    user_sections = make_user_sections(
-        all_sections, section_ids, formatted_timestamps)
     for the_question in all_questions:
         if the_question.id in question_ids:
             user_questions.append(responses[the_question.id])
         else:
             user_questions.append(None)
+    return user_questions
+
+
+def generate_row_info(the_user, all_sections, all_questions):
+
+    responses = responses_for(the_user)
+    raw_timestamps, formatted_timestamps = timestamps_for(the_user)
+
+    section_ids = formatted_timestamps.keys()
+    question_ids = responses.keys()
+
+    user_sections = make_user_sections(
+        all_sections, section_ids, formatted_timestamps)
+    user_questions = make_user_questions(
+        all_questions, question_ids, responses)
 
     the_profile = None
     try:
