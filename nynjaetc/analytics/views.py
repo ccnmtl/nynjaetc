@@ -162,10 +162,7 @@ def make_user_questions(all_questions, responses):
 def item_or_none_in_dict(all_items, the_dict):
     output = []
     for item in all_items:
-        if item.id in the_dict.keys():
-            output.append(the_dict[item.id])
-        else:
-            output.append(None)
+        output.append(the_dict.get(item.id, None))
     return output
 
 
