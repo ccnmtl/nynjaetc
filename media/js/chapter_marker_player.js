@@ -30,7 +30,7 @@ Part 2
 
 
     video_1_id = 'APsV5aFubCM';
-    video_2_id = 'MOL6VK0vCTc';
+    video_2_id = 'M1UKzxYJUJY';
 
     if (jQuery ('#video_1_container').length > 0) {
         window.ChapterMarkerPlayer.insert({
@@ -63,18 +63,19 @@ Part 2
           videoId: video_2_id,
           width: 600,
           chapters: {
-                4	:'Part 2: Title Slide',
-                22	:'Of People Living with HIV in the US (Co-Infections)',
-                37	:'Causes of Death: D:A:D Study Liver #1 Non-AIDS',
-                58	:'TEL improves SVR in HIV/HCV G1 co-infected subjects',
-                103	:'BOC improves SVR in HIV/HCV G1 co-infected subjects',
-                158	:'Tolerability of PIs in HIV/HVC',
-                175	:'HCV PIs and ARV Interactions',
-                218	:'NY & NJ AETC Quick Guide for Clinicians (Medications)',
-                229	:'HIV/HCVg1 Recommendations: Peg/R + BOC or TEL',
-                257	:'Know what you don\'t know',
-                289	:'HIV/HCV: Treat now or later?',
-                349	:'Consider a well designed trial'
+							0: 'Title Slide',
+							10: 'HIV G1 treatment evolution',
+							36: 'Genotype 1 SVR data',
+							84: 'Predictors of failure',
+							125: 'Safety',
+							159: 'Definition of IFN ineligible',
+							184: 'G1 IFN Free DAA data',
+							302: 'Virologic Failure=Relapse',
+							330: 'Adverse events and dose modifications',
+							345: 'SVR rates in patients with cirrhosis',
+							396: 'Other factors that affect response',
+							434: 'Simeprevir and drug interactions',
+							462: 'Simeprevir and HIV medications'
           }
         });
     }
