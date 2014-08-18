@@ -10,3 +10,4 @@ x
 .project
 .pydevproject
 .settings/
+node_modules/
