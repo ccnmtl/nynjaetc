@@ -29,7 +29,7 @@ Part 2
 
 
 
-    video_1_id = 'LIc5V4zGR2E';
+    video_1_id = 'APsV5aFubCM';
     video_2_id = 'MOL6VK0vCTc';
 
     if (jQuery ('#video_1_container').length > 0) {
@@ -39,21 +39,19 @@ Part 2
           videoId: video_1_id,
           width: 600,
           chapters: {
-                13	:'Part 1: Title Slide',
-                27	:'Clinical Features Associated with SVR to PegIFN+RBV treatment',
-                71	:'New Strategy for HCV Therapy',
-                154	:'PegIFN+RBV+PI phase 3 results: HCV G1 treatment-naive',
-                193	:'PegIFN+RBV+PI vs PegIFN+RBV "traditional" predictors',
-                213	:'Response-guided therapy',
-                247	:'Prior response to IFN-based treatment predicts future response',
-                292	:'PegIFN+RBV+TEL: SVR rates in treatment-experienced HCV G1',
-                307	:'PegIFN+RBV+BOC: SVR rates in treatment-experienced HCV G1',
-                334	:'PegIFN+RBV+PI vs. PegIFN+RBV: Side effects more common w/ triple therapy',
-                381	:'PegIFN+RBV+PI: Wk 16 safety in cirrhotic patients with prior NR to PegIFN+RBV',
-                417	:'Predictors of severe complications and severe anemia',
-                434	:'Increased potential for significant drug-drug interactions',
-                460	:'Drug Interactions Self-Study Module Text (NY & NJ AETC)',
-                468	:'Lessons learned with BOC and TEL'
+							0: 'Title Slide',
+							31: 'Direct Acting Antivirals',
+							89: 'Minimum to know pre-treatment',
+							132: 'IDSA and AASID guidelines',
+							165: 'Part 1: HCV G2 and G3 treatment',
+							174: 'Genotype 2 SVR data',
+							223: 'Genotype 2 SRV data for cirrhotic patients',
+							279: 'Genotype 3 SVR data',
+							352: 'Genotype 3 SVR data for cirrhotic patients',
+							414: 'No role for response guided therapy',
+							484: 'Safety',
+							518: 'Sofosbuvir and drug interactions',
+							565: 'Sofosbuvir and HIV Medications'
           }
         });
     }
