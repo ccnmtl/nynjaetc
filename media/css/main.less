@@ -669,7 +669,12 @@ body {
    display: block;
 }
  
-/*RGT Activity */
+/*RGT Activities */
+.module-genotype-activity {
+    float: none !important;
+}
+
+.module-genotype-activity,
 .module-rgt-activity {
   #sidebar {
     display: none;
@@ -696,6 +701,7 @@ body {
     margin-bottom: 0;
 }
 
+.genotype-activity-container,
 .treatment-activity-view {
   
   .factors-choice {
@@ -714,6 +720,15 @@ body {
       }
     }
   }
+}
+
+.genotype-activity-container {
+    div.decision_buttons {
+        button {
+            width: 45px;
+            margin: 7px;
+        }
+    }
 }
 
 

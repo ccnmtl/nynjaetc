@@ -1,0 +1,58 @@
+<script src="/site_media/js/underscore-min.js" type="text/javascript" ></script>
+<script src="/site_media/js/backbone-min.js" type="text/javascript" ></script>
+
+<script type="text/javascript">
+    function capitalizeFirstLetter(string)
+    {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+    
+    function showGenotypeTreatment() {
+        var path = jQuery('.hcv-genotype.btn-success').data('path');
+        jQuery('span.genotype-label').html(path);
+        
+        var cirrhosis = jQuery('.cirrhosis.btn-success').data('cirrhosis');
+        
+        var result = jQuery("div[data-path='" + path + "']");
+        result = result.filter("div[data-cirrhosis='" + cirrhosis + "']")
+        if (cirrhosis === 'yes') {
+            jQuery('span.cirrhosis-label').html("with cirrhosis");
+        } else {
+            jQuery('span.cirrhosis-label').html("without cirrhosis");
+        }
+        jQuery('.genotype-treatment-label').show();
+        jQuery(result).fadeIn();
+    }
+    
+    jQuery(document).ready(function () {
+        jQuery('.hcv-genotype').click(function() {
+            jQuery('.genotype-treatment-label').hide();
+            jQuery(".genotype-treatment-view").hide();
+            jQuery('.hcv-genotype').removeClass('btn-success');
+            jQuery(this).addClass('btn-success');
+            
+            var path = jQuery(this).data('path');
+            if (path === 4 || path === 5 || path === 6) {
+                jQuery('#patient-factor-cirrhosis').hide();
+                jQuery('span.cirrhosis-label').html("with or without cirrhosis");
+                jQuery('span.genotype-label').html(path);
+                
+                jQuery('.genotype-treatment-label').show();
+                jQuery('div[data-path=na]').fadeIn();
+            } else if (jQuery("#patient-factor-cirrhosis").is(":visible")) {
+                showGenotypeTreatment();
+            } else {
+                jQuery('.cirrhosis').removeClass('btn-success');
+                jQuery('#patient-factor-cirrhosis').fadeIn();
+            }
+        });
+        
+        jQuery('.cirrhosis').click(function() {
+            jQuery(".genotype-treatment-view:visible").hide();
+            jQuery('.cirrhosis').removeClass('btn-success');
+            jQuery(this).addClass('btn-success');
+            
+            showGenotypeTreatment();
+        });
+    });
+</script>

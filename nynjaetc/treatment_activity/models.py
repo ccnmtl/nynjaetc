@@ -120,3 +120,47 @@ class TreatmentActivityBlock(models.Model):
 class TreatmentActivityBlockForm(forms.ModelForm):
     class Meta:
         model = TreatmentActivityBlock
+
+
+class GenotypeActivityBlock(models.Model):
+    pageblocks = generic.GenericRelation(PageBlock)
+    template_file = "treatment_activity/genotype_activity.html"
+    js_template_file = "treatment_activity/genotype_js.html"
+    css_template_file = "treatment_activity/block_css.html"
+    display_name = "Genotype Activity"
+
+    def pageblock(self):
+        return self.pageblocks.all()[0]
+
+    def __unicode__(self):
+        return unicode(self.pageblock())
+
+    def needs_submit(self):
+        return False
+
+    @classmethod
+    def add_form(self):
+        return GenotypeActivityBlockForm()
+
+    def edit_form(self):
+        return GenotypeActivityBlockForm(instance=self)
+
+    @classmethod
+    def create(self, request):
+        form = GenotypeActivityBlockForm(request.POST)
+        return form.save()
+
+    def edit(self, vals, files):
+        form = GenotypeActivityBlockForm(data=vals,
+                                         files=files,
+                                         instance=self)
+        if form.is_valid():
+            form.save()
+
+    def unlocked(self, user):
+        return True
+
+
+class GenotypeActivityBlockForm(forms.ModelForm):
+    class Meta:
+        model = GenotypeActivityBlock
