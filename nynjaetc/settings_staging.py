@@ -29,6 +29,7 @@ TEMPLATE_DEBUG = DEBUG
 STAGING_ENV = True
 
 STATSD_PREFIX = 'nynjaetc-staging'
+HRSA_ID_FIELD = 'question17'
 
 if 'migrate' not in sys.argv:
     INSTALLED_APPS.append('raven.contrib.django.raven_compat')
