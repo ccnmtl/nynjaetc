@@ -19,7 +19,7 @@ var CHECKBOX_SELECTOR = 'input[name=pageblock-212-question87]';
 var HRSA_ID = '#input_for_question_88';
 var HRSA_FEEDBACK = '#feedback_for_question_88'; 
 var PRETEST_SECTION_ID = '113';
-var POSTTEST_SECTION_ID = '51';
+var POSTTEST_SECTION_ID = '151';
 
 function validate_pre_and_post_test_forms (e)  {
 
