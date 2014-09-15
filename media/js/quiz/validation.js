@@ -8,7 +8,18 @@ as well as the disclaimer
   
 (function () {
 
+/* horrible hard-coded ids
+
+These need to be updated any time the site content changes.
+
+Must fix this.
+*/
+
 var CHECKBOX_SELECTOR = 'input[name=pageblock-212-question87]';
+var HRSA_ID = '#input_for_question_88';
+var HRSA_FEEDBACK = '#feedback_for_question_88'; 
+var PRETEST_SECTION_ID = '113';
+var POSTTEST_SECTION_ID = '51';
 
 function validate_pre_and_post_test_forms (e)  {
 
@@ -18,11 +29,11 @@ function validate_pre_and_post_test_forms (e)  {
     
     if (jQuery("#input_for_question_17").length > 0 ) {
             // special hrsa ID validation.
-            var hrsa_id  = jQuery("#input_for_question_17")[0].value;
+            var hrsa_id  = jQuery(HRSA_ID)[0].value;
             var there_are_exactly_eight_digits =  (/^[0-9]{8}$/g.test(hrsa_id));
             if (!there_are_exactly_eight_digits ) {
             //console.log ('ok there were not 8 chars');
-            jQuery("#feedback_for_question_17").text("Please enter your 8-character HRSA ID.").show();
+            jQuery(HRSA_FEEDBACK).text("Please enter your 8-character HRSA ID.").show();
             valid = false;
             //return false;
           }
@@ -114,7 +125,7 @@ function init_disclaimer_and_pre_and_post_tests() {
     jQuery ('#quiz_general_feedback').hide()
     
     // pre and post tests:
-    if (jQuery('.section_id').html() == '35' || jQuery('.section_id').html() == '51') {
+    if (jQuery('.section_id').html() == PRETEST_SECTION_ID || jQuery('.section_id').html() == POSTTEST_SECTION_ID) {
         jQuery(".quiz_feedbackbox").hide();
         jQuery('form').submit(validate_pre_and_post_test_forms);
         
