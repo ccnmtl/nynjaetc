@@ -8,6 +8,9 @@ as well as the disclaimer
   
 (function () {
 
+
+var CHECKBOX_SELECTOR = 'input[name=pageblock-212-question87]';
+
 function validate_pre_and_post_test_forms (e)  {
 
     e.preventDefault(); // don't submit multiple times
@@ -88,7 +91,7 @@ function checkbox_changed() {
 function init_disclaimer () {
     jQuery('#primarynav').hide();
     jQuery ('#continue_button').hide();
-    the_checkbox = jQuery('input[name=pageblock-116-question50]');
+    the_checkbox = jQuery(CHECKBOX_SELECTOR);
     the_checkbox.change (checkbox_changed);
     jQuery('input[type=submit]').hide()
 }
