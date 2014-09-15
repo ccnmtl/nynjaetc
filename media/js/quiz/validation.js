@@ -8,7 +8,6 @@ as well as the disclaimer
   
 (function () {
 
-
 var CHECKBOX_SELECTOR = 'input[name=pageblock-212-question87]';
 
 function validate_pre_and_post_test_forms (e)  {
@@ -126,7 +125,7 @@ function init_disclaimer_and_pre_and_post_tests() {
     }
     // if this is the disclaimer page:
     
-    if (jQuery('input[name=pageblock-116-question50]').length) {
+    if (jQuery(CHECKBOX_SELECTOR).length) {
         init_disclaimer();
     }
     
