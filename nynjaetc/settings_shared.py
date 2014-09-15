@@ -232,8 +232,8 @@ ENCRYPT_KEY = 'DUMMY DUMMY DUMMY DUMMY.'  # overridden by local_settings.py
 # nasty hard-coded ids and slugs
 HRSA_ID_FIELD = 'question88'
 PRETEST_PREF_SLUG = 'pre-test'
-ENDURING_MATERIALS_SECTION_ID = 50
-QUIZZES_TO_REPORT = [25, 15]
+ENDURING_MATERIALS_SECTION_ID = 110
+QUIZZES_TO_REPORT = [61, 46]
 
 LOGGING = {
     'version': 1,
