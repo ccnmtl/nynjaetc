@@ -38,7 +38,7 @@ cssselect==0.8
 BeautifulSoup==3.2.1
 sqlparse==0.1.11
 
-djangowind==0.12.2
+djangowind==0.13.2
 sorl==3.1
 tagging==0.3-pre
 typogrify==1.0
