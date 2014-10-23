@@ -16,6 +16,7 @@ class BasicTest(TestCase):
     def setUp(self):
         self.c = Client()
         self.u = User.objects.create(username="testuser")
+        self.u.is_staff = True
         self.u.set_password("test")
         self.u.save()
         self.c.login(username="testuser", password="test")

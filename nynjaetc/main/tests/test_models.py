@@ -21,6 +21,8 @@ class UserProfileTest(TestCase):
         u = UserFactory()
         up, _created = UserProfile.objects.get_or_create(user=u)
         self.assertTrue(str(up).startswith("Encrypted email and"))
+        u = up.user
+        self.assertTrue(hasattr(u, 'userprofile'))
 
 
 class DummySection(object):
@@ -69,14 +71,14 @@ class SectionTimestampTest(TestCase):
     def test_unicode(self):
         s = SectionFactory()
         swt = SectionTimestampFactory(section=s)
-        self.assertEqual(str(swt), "")
+        self.assertEqual(str(swt), "a-section/")
 
 
 class SectionAlternateNavigationTest(TestCase):
     def test_unicode(self):
         s = SectionFactory()
         san = SectionAlternateNavigationFactory(section=s)
-        self.assertEqual(str(san), "Alternate nav for ")
+        self.assertEqual(str(san), "Alternate nav for a-section/")
 
 
 # first, we mock up a "Quiz" object
@@ -150,13 +152,13 @@ class SectionPreferenceTest(TestCase):
 
 
 class DummyUser(object):
-    def original_email_user(self, *args):
-        pass
-
-    def get_profile(self):
+    def __init__(self):
         class D(object):
             encrypted_email = "foo"
-        return D()
+        self.userprofile = D()
+
+    def original_email_user(self, *args):
+        pass
 
 
 class TestMyEmailUser(TestCase):

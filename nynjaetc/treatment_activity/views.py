@@ -20,7 +20,7 @@ def get_next_steps(request, path_id, node_id):
         data['node'] = prev.id
 
     return HttpResponse(simplejson.dumps(data, indent=2),
-                        mimetype="application/json")
+                        content_type="application/json")
 
 
 def get_to_decision_point(node, steps_json):
@@ -59,7 +59,7 @@ def choose_treatment_path(request):
         data = {"error": "Missing required parameters"}
 
         return HttpResponse(simplejson.dumps(data, indent=2),
-                            mimetype="application/json")
+                            content_type="application/json")
     try:
         path = TreatmentPath.objects.get(cirrhosis=cirrhosis,
                                          treatment_status=status,
@@ -73,4 +73,4 @@ def choose_treatment_path(request):
         data = {"error": msg}
 
         return HttpResponse(simplejson.dumps(data, indent=2),
-                            mimetype="application/json")
+                            content_type="application/json")

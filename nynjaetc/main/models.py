@@ -4,8 +4,6 @@ from django.contrib.auth.models import User
 from datetime import datetime
 from django.utils.timezone import utc
 from django.db.models import signals
-from django.contrib.auth.admin import UserAdmin
-from django.contrib import admin
 from django_fields.fields import EncryptedEmailField, EncryptedCharField
 from quizblock.models import Quiz
 from django.contrib.auth.hashers import UNUSABLE_PASSWORD_PREFIX
@@ -45,17 +43,6 @@ def prev_with_content(self):
 Section.prev_with_content = prev_with_content
 
 
-#"""Let's turn off the ability to *change* email from the admin tool.
-# (We can build a new version of this form later if it's needed.
-# note -- if you need a *new* email address, just re-register.
-
-admin.site.unregister(User)
-old_personal_fields = UserAdmin.fieldsets[1][1]['fields']
-new_personal_fields = tuple(x for x in old_personal_fields if x != 'email')
-UserAdmin.fieldsets[1][1]['fields'] = new_personal_fields
-admin.site.register(User, UserAdmin)
-
-
 class UserProfile(models.Model):
 
     class Meta:
@@ -63,7 +50,7 @@ class UserProfile(models.Model):
 
     def __unicode__(self):
         return "Encrypted email and HRSA ID for user %d" % self.user.id
-    user = models.ForeignKey(User, unique=True, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, unique=True, on_delete=models.CASCADE)
     encrypted_email = EncryptedEmailField()
     hrsa_id = EncryptedCharField()
 
@@ -176,7 +163,7 @@ def my_email_user(self, subject, message, from_email=None):
     """
     Sends an email to this user's encrypted email, if there is one.
     """
-    self.email = self.get_profile().encrypted_email
+    self.email = self.userprofile.encrypted_email
     self.original_email_user(subject, message, from_email)
     self.email = '*****'  # note -- this isn't stored.
 
@@ -246,7 +233,7 @@ def my_password_reset_form_save(
 
     # unencrypt emails
     for user in self.users_cache:
-        user.email = user.get_profile().encrypted_email
+        user.email = user.userprofile.encrypted_email
 
     # send emails
     self.original_save(domain_override,

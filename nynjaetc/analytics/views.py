@@ -2,7 +2,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from annoying.decorators import render_to
 from django.contrib.auth.models import User
-from nynjaetc.main.models import Section, UserProfile
+from nynjaetc.main.models import Section
 from nynjaetc.main.models import SectionQuizAnsweredCorrectly
 from django.http import HttpResponse
 from django.conf import settings
@@ -39,7 +39,7 @@ def analytics_table_testing(request):
 
 
 def table_to_csv(request, table):
-    response = HttpResponse(mimetype='text/csv')
+    response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=nynjaetc.csv'
     writer = csv.writer(response)
     for row in table:
@@ -178,10 +178,8 @@ def generate_row_info(the_user, all_sections, all_questions):
     user_questions = make_user_questions(all_questions, responses)
 
     the_profile = None
-    try:
-        the_profile = the_user.get_profile()
-    except UserProfile.DoesNotExist:
-        pass
+    if hasattr(the_user, 'userprofile'):
+        the_profile = the_user.userprofile
 
     return {
         'the_user': the_user,

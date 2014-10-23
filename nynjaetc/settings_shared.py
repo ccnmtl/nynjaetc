@@ -33,7 +33,6 @@ if 'test' in sys.argv or 'jenkins' in sys.argv:
     }
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
-SOUTH_TESTS_MIGRATE = False
 
 # Anything under package nynjaetc will be tested by ./manage py test.
 NOSE_ARGS = [
@@ -42,8 +41,6 @@ NOSE_ARGS = [
 ]
 
 JENKINS_TASKS = (
-    'django_jenkins.tasks.run_pylint',
-    'django_jenkins.tasks.with_coverage',
     'django_jenkins.tasks.run_pep8',
     'django_jenkins.tasks.run_pyflakes',
 )
@@ -112,14 +109,11 @@ INSTALLED_APPS = [
     'sorl.thumbnail',
     'django.contrib.admin',
     'django.contrib.staticfiles',
-    'tagging',
     'typogrify',
-    'south',
     'django_nose',
     'compressor',
     'django_statsd',
     'bootstrapform',
-    'lettuce.django',
     'debug_toolbar',
     'waffle',
     'django_jenkins',
