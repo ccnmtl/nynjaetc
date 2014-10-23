@@ -8,7 +8,7 @@ jenkins: ./ve/bin/python validate jshint jscs flake8 test
 	./bootstrap.py
 
 test: ./ve/bin/python
-	$(MANAGE) jenkins
+	$(MANAGE) jenkins --pep8-exclude=migrations
 
 flake8: ./ve/bin/python
 	$(FLAKE8) $(APP) --max-complexity=6
