@@ -1,3 +1,4 @@
+from django.core import mail
 from django.test import TestCase
 from django.test.client import Client
 from django.contrib.auth.models import User
@@ -212,3 +213,25 @@ class AltNavTest(TestCase):
     def test_create_secprof(self):
         r = self.c.get("/manage/secprof/add/")
         self.assertTrue(r.status_code, 200)
+
+
+class RegistrationTest(TestCase):
+    def setUp(self):
+        self.c = Client()
+
+    def test_get_register(self):
+        r = self.c.get("/accounts/register/")
+        self.assertEqual(r.status_code, 200)
+
+    def test_post_register(self):
+        r = self.c.post(
+            "/accounts/register/",
+            dict(
+                username='foo',
+                email='test@example.com',
+                password1='bar',
+                password2='bar',
+            )
+        )
+        self.assertEqual(r.status_code, 302)
+        self.assertEqual(mail.outbox[0].to, [u'test@example.com'])
