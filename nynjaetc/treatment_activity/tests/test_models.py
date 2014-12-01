@@ -1,6 +1,8 @@
 from django.test import TestCase
 from .factories import (
-    TreatmentNodeFactory, TreatmentPathFactory, TreatmentActivityBlockFactory)
+    TreatmentNodeFactory, TreatmentPathFactory, TreatmentActivityBlockFactory,
+    GenotypeActivityBlockFactory
+)
 
 
 class TreatmentNodeTest(TestCase):
@@ -61,3 +63,27 @@ class TreatmentActivityBlockTest(TestCase):
         tn = TreatmentNodeFactory()
         tp = TreatmentPathFactory(tree=tn)
         self.assertEqual(list(tab.treatment_paths()), [tp])
+
+
+class GenotypeActivityBlockTest(TestCase):
+    def test_needs_submit(self):
+        gab = GenotypeActivityBlockFactory()
+        self.assertFalse(gab.needs_submit())
+
+    def test_edit_form(self):
+        gab = GenotypeActivityBlockFactory()
+        f = gab.edit_form()
+        self.assertIsNotNone(f)
+
+    def test_unlocked(self):
+        gab = GenotypeActivityBlockFactory()
+        self.assertTrue(gab.unlocked(None))
+
+    def test_to_json(self):
+        gab = GenotypeActivityBlockFactory()
+        self.assertEqual(gab.to_json(), {})
+
+    def test_import_from_dict(self):
+        gab = GenotypeActivityBlockFactory()
+        gab.import_from_dict({})
+        self.assertEqual(gab.to_json(), {})
