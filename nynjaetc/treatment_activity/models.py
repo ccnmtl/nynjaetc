@@ -160,6 +160,12 @@ class GenotypeActivityBlock(models.Model):
     def unlocked(self, user):
         return True
 
+    def to_json(self):
+        return {}
+
+    def import_from_dict(self, d):
+        pass
+
 
 class GenotypeActivityBlockForm(forms.ModelForm):
     class Meta:

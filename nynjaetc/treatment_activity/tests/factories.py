@@ -1,6 +1,8 @@
 import factory
 from nynjaetc.treatment_activity.models import (
-    TreatmentNode, TreatmentPath, TreatmentActivityBlock)
+    TreatmentNode, TreatmentPath, TreatmentActivityBlock,
+    GenotypeActivityBlock
+)
 
 
 def TreatmentNodeFactory(name="treatmentnode", type='RT', duration=0,
@@ -27,3 +29,7 @@ class TreatmentPathFactory(factory.DjangoModelFactory):
 
 class TreatmentActivityBlockFactory(factory.DjangoModelFactory):
     FACTORY_FOR = TreatmentActivityBlock
+
+
+class GenotypeActivityBlockFactory(factory.DjangoModelFactory):
+    FACTORY_FOR = GenotypeActivityBlock
