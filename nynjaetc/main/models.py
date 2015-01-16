@@ -228,6 +228,7 @@ def my_password_reset_form_save(
         self, domain_override=None,
         subject_template_name='registration/password_reset_subject.txt',
         email_template_name='registration/password_reset_email.html',
+        html_email_template_name=None,
         use_https=False, token_generator=default_token_generator,
         from_email=None, request=None):
 
