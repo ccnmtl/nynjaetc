@@ -2,6 +2,7 @@ from smoketest import SmokeTest
 from django.contrib.auth.models import User
 from quizblock.models import Question
 from django.conf import settings
+import os
 
 
 class DBConnectivity(SmokeTest):
@@ -28,3 +29,33 @@ class HRSA_ID_QuestionCheck(SmokeTest):
         id = settings.HRSA_ID_FIELD[-2:]
         q = Question.objects.get(id=id)
         self.assertTrue("HRSA unique ID" in q.text)
+
+
+def is_exe(fpath):
+    return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
+
+
+def check_fullpath(program):
+    if is_exe(program):
+        return program
+    return None
+
+
+def which(program):
+    fpath, fname = os.path.split(program)
+    if fpath:
+        return check_fullpath(program)
+    else:
+        for path in os.environ["PATH"].split(os.pathsep):
+            path = path.strip('"')
+            exe_file = os.path.join(path, program)
+            if is_exe(exe_file):
+                return exe_file
+    return None
+
+
+class LesscCheck(SmokeTest):
+    def test_lessc_exists(self):
+        """ we rely on lessc for styling, so let's
+        make sure the executable exists in our path """
+        self.assertTrue(which('lessc') is not None)
