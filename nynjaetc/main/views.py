@@ -279,13 +279,17 @@ def get_site(request):
 
 
 class ResendActivationEmailView(View):
+    @method_decorator(csrf_protect)
+    def dispatch(self, *args, **kwargs):
+        return super(
+            ResendActivationEmailView, self).dispatch(*args, **kwargs)
+
     def get(self, request):
         t = loader.get_template(
             'registration/resend_activation_email_form.html')
         c = RequestContext(request, {})
         return HttpResponse(t.render(c))
 
-    @method_decorator(csrf_protect)
     def post(self, request):
         email = request.POST.get('email', '')
         form_template = loader.get_template(
