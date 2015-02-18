@@ -34,6 +34,8 @@ pycrypto==2.6
 cssselect==0.8
 BeautifulSoup==3.2.1
 sqlparse==0.1.11
+boto==2.34.0
+python-dateutil==2.2
 
 djangowind==0.13.2
 sorl==3.1
@@ -63,3 +65,5 @@ django-impersonate==0.8.0
 django-registration-redux==1.1
 django-fields==0.2.0
 factory_boy==2.1.1
+django-storages-redux==1.2.2
+django-cacheds3storage==0.1.1

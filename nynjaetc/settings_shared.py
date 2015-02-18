@@ -176,16 +176,9 @@ DEFAULT_FROM_EMAIL = SERVER_EMAIL
 # One-week activation window; you may, of course, use a different value.
 ACCOUNT_ACTIVATION_DAYS = 7
 
-# put any static media here to override app served static media
-STATICMEDIA_MOUNTS = (
-    ('/sitemedia', 'sitemedia'),
-)
-
 STATIC_URL = "/media/"
-STATICFILES_DIRS = (
-    os.path.abspath(os.path.join(os.path.dirname(__file__), "../media/")),
-)
-STATIC_ROOT = ""
+STATICFILES_DIRS = ("media/",)
+STATIC_ROOT = "/tmp/nynjaetc/static"
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
