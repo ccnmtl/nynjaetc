@@ -61,7 +61,7 @@ django-pagetree==1.0.5
 django-pageblocks==1.0.0
 django-quizblock==1.0.3
 django-stagingcontext==0.1.0
-django-impersonate==0.8.0
+django-impersonate==0.9
 django-registration-redux==1.1
 django-fields==0.2.0
 factory_boy==2.1.1
