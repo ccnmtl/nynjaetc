@@ -45,7 +45,7 @@ django-templatetag-sugar==0.1
 django-paging==0.2.2
 django-annoying==0.8.0
 django-nose==1.2
-django-appconf==0.4.1
+django-appconf==0.6
 django_compressor==1.4
 django-statsd-mozilla==0.3.11
 raven==5.1.1
