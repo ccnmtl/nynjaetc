@@ -82,9 +82,8 @@ def get_pretest(hierarchy="main"):
 
 def whether_to_show_nav(section, user):
     suppress_nav_sections = Section.objects.filter(
-        sectionpreference__preference__slug=
-        'suppress_nav_until_pre_test_submitted'
-    )
+        sectionpreference__preference__slug=(
+            'suppress_nav_until_pre_test_submitted'))
     if is_in_one_of(section, suppress_nav_sections):
         return has_submitted_pretest(user, hierarchy=section.hierarchy.name)
     return True
@@ -290,6 +289,19 @@ class ResendActivationEmailView(View):
         c = RequestContext(request, {})
         return HttpResponse(t.render(c))
 
+    def get_profile(self, email, request):
+        if email == '':
+            return (None, RequestContext(
+                request, {'error': 'no_email_entered', 'email': email}))
+        try:
+            user_profile = UserProfile.find_user_profiles_by_plaintext_email(
+                email)
+            return (user_profile[0].user.registrationprofile_set.get(), None)
+        except:
+            return (None, RequestContext(
+                request,
+                {'error': 'no_email_found', 'email': email}))
+
     def post(self, request):
         email = request.POST.get('email', '')
         form_template = loader.get_template(
@@ -297,17 +309,8 @@ class ResendActivationEmailView(View):
         confirm_template = loader.get_template(
             'registration/resend_activation_email_confirm.html')
 
-        if email == '':
-            c = RequestContext(request,
-                               {'error': 'no_email_entered', 'email': email})
-            return HttpResponse(form_template.render(c))
-        try:
-            user_profile = UserProfile.find_user_profiles_by_plaintext_email(
-                email)
-            reg_profile = user_profile[0].user.registrationprofile_set.get()
-        except:
-            c = RequestContext(request,
-                               {'error': 'no_email_found', 'email': email})
+        reg_profile, c = self.get_profile(email, request)
+        if c is not None:
             return HttpResponse(form_template.render(c))
 
         if reg_profile.activation_key == 'ALREADY_ACTIVATED':
@@ -319,7 +322,7 @@ class ResendActivationEmailView(View):
             c = RequestContext(request, {'error': 'expired', 'email': email})
             return HttpResponse(form_template.render(c))
 
-        #ok success.
+        # ok success.
         site = get_site(request)
 
         reg_profile.send_activation_email(site)

@@ -1,4 +1,3 @@
-#Django settings for nynjaetc project.
 import os.path
 import sys
 

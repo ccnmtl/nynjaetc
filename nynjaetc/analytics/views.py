@@ -92,10 +92,10 @@ def find_the_questions(sections_in_order):
     in the sections."""
     quizzes_we_want = settings.QUIZZES_TO_REPORT
 
-    #first get all the questions in pagetree order:
+    # first get all the questions in pagetree order:
     all_questions = get_questions_in_pagetree_order(sections_in_order)
 
-    #filter out most of the questions
+    # filter out most of the questions
     result = questions_we_want(all_questions, quizzes_we_want)
     return result
 
