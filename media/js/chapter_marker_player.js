@@ -17,14 +17,14 @@
 jQuery(videoInit);
 
 function videoInit () {
-/*
+    /*
 
-Part 1
-<iframe width="560" height="315" src="http://www.youtube.com/embed/?rel=0" frameborder="0" allowfullscreen></iframe>
+    Part 1
+    <iframe width="560" height="315" src="http://www.youtube.com/embed/?rel=0" frameborder="0" allowfullscreen></iframe>
 
-Part 2
-<iframe width="560" height="315" src="http://www.youtube.com/embed/?rel=0" frameborder="0" allowfullscreen></iframe>
-*/
+    Part 2
+    <iframe width="560" height="315" src="http://www.youtube.com/embed/?rel=0" frameborder="0" allowfullscreen></iframe>
+    */
     var videoOneId = 'APsV5aFubCM';
     var videoTwoId = 'M1UKzxYJUJY';
 
@@ -79,22 +79,22 @@ Part 2
 
 // BEGIN_INCLUDE(namespace)
 window.ChapterMarkerPlayer = {
-  // Inserts a new YouTube iframe player and chapter markers as a child of an
-  // existing HTML element on a page.
+    // Inserts a new YouTube iframe player and chapter markers as a child of an
+    // existing HTML element on a page.
     insert: function(params) {
-// END_INCLUDE(namespace)
-    // We need to reserve 30px for the player's control bar when automatically sizing the player.
+        // END_INCLUDE(namespace)
+        // We need to reserve 30px for the player's control bar when automatically sizing the player.
         var YOUTUBE_CONTROLS_HEIGHT = 30;
-    // Assume a 9:16 (width:height) ratio when we need to calculate a player's height.
+        // Assume a 9:16 (width:height) ratio when we need to calculate a player's height.
         var PLAYER_HEIGHT_TO_WIDTH_RATIO = 9 / 16;
         var DEFAULT_PLAYER_WIDTH = 400;
-// BEGIN_INCLUDE(validation1)
-    // params contains the following required and optional parameter names and values:
-    //   videoId: (required) The YouTube video id of the video to be embedded.
-    //   chapters: (required) Mapping of times (seconds since the video's start) to chapter titles.
-    //   width: (optional) The width of the embedded player. 400px is used by default.
-    //   playerOptions: (optional) An object corresponding to the options that can be passed to the
-    //                  YT.Player constructor. See https://developers.google.com/youtube/iframe_api_reference#Loading_a_Video_Player
+        // BEGIN_INCLUDE(validation1)
+        // params contains the following required and optional parameter names and values:
+        //   videoId: (required) The YouTube video id of the video to be embedded.
+        //   chapters: (required) Mapping of times (seconds since the video's start) to chapter titles.
+        //   width: (optional) The width of the embedded player. 400px is used by default.
+        //   playerOptions: (optional) An object corresponding to the options that can be passed to the
+        //                  YT.Player constructor. See https://developers.google.com/youtube/iframe_api_reference#Loading_a_Video_Player
 
         if (!('videoId' in params)) {
             throw ('The "videoId" parameter must be set to ' +
@@ -105,29 +105,29 @@ window.ChapterMarkerPlayer = {
             throw ('The "chapters" parameter must be set to ' +
                    'the mapping of times to chapter titles.');
         }
-// END_INCLUDE(validation1)
-// BEGIN_INCLUDE(time_sort)
+        // END_INCLUDE(validation1)
+        // BEGIN_INCLUDE(time_sort)
         var times = [];
         for (var time in params.chapters) {
             if (params.chapters.hasOwnProperty(time)) {
                 times.push(time);
             }
         }
-    // Sort the times numerically for display purposes.
-    // See https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/sort#Examples
+        // Sort the times numerically for display purposes.
+        // See https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/sort#Examples
         times.sort(function(a, b) {
             return a - b;
         });
-// END_INCLUDE(time_sort)
+        // END_INCLUDE(time_sort)
         var width = params.width || DEFAULT_PLAYER_WIDTH;
 
         if ('YT' in window && 'Player' in window.YT) {
-      // If the iframe player API is already available, proceed to loading the player using the API.
+            // If the iframe player API is already available, proceed to loading the player using the API.
             insertPlayerAndAddChapterMarkers(params);
         } else {
-      // Load the API, and add a callback to the queue to load the player once the API is available.
+            // Load the API, and add a callback to the queue to load the player once the API is available.
             if (!('onYouTubePlayerAPIReady' in window)) {
-// BEGIN_INCLUDE(invoke_callbacks)
+                // BEGIN_INCLUDE(invoke_callbacks)
                 var cmp = window.ChapterMarkerPlayer;
                 window.onYouTubePlayerAPIReady = function() {
                     for (var i = 0;
@@ -136,57 +136,52 @@ window.ChapterMarkerPlayer = {
                         cmp.onYouTubePlayerAPIReadyCallbacks[i]();
                     }
                 };
-// END_INCLUDE(invoke_callbacks)
-// BEGIN_INCLUDE(load_api)
-        // Dynamic <script> tag insertion will effectively load the iframe Player API on demand.
-        // We only want to do this once, so it's protected by the
-        // !('onYouTubePlayerAPIReady' in window) check.
+                // END_INCLUDE(invoke_callbacks)
+                // BEGIN_INCLUDE(load_api)
+                // Dynamic <script> tag insertion will effectively load the iframe Player API on demand.
+                // We only want to do this once, so it's protected by the
+                // !('onYouTubePlayerAPIReady' in window) check.
                 var scriptTag = document.createElement('script');
-        // This scheme-relative URL will use HTTPS if the host page is accessed via HTTPS,
-        // and HTTP otherwise.
+                // This scheme-relative URL will use HTTPS if the host page is accessed via HTTPS,
+                // and HTTP otherwise.
                 scriptTag.src = '//www.youtube.com/player_api';
                 var firstScriptTag = document.getElementsByTagName(
                         'script')[0];
                 firstScriptTag.parentNode.insertBefore(
                          scriptTag, firstScriptTag);
-// END_INCLUDE(load_api)
+                // END_INCLUDE(load_api)
             }
-// BEGIN_INCLUDE(queue_callbacks)
-      // We need to handle the situation where multiple ChapterMarkerPlayer.insert() calls are made
-      // before the YT.Player API is loaded. We do this by maintaining an array of functions, each
-      // of which adds a specific player and chapters. The functions will be executed when
-      // onYouTubePlayerAPIReady() is invoked by the YT.Player API.
+            // BEGIN_INCLUDE(queue_callbacks)
+            // We need to handle the situation where multiple ChapterMarkerPlayer.insert() calls are made
+            // before the YT.Player API is loaded. We do this by maintaining an array of functions, each
+            // of which adds a specific player and chapters. The functions will be executed when
+            // onYouTubePlayerAPIReady() is invoked by the YT.Player API.
             window.ChapterMarkerPlayer.onYouTubePlayerAPIReadyCallbacks.push(
                 function() {
                     insertPlayerAndAddChapterMarkers(params);
                 });
-// END_INCLUDE(queue_callbacks)
+            // END_INCLUDE(queue_callbacks)
         }
 
-// BEGIN_INCLUDE(load_player)
-    // Calls the YT.Player constructor with the appropriate options to add the iframe player
-    // instance to a parent element.
-    // This is a private method that isn't exposed via the ChapterMarkerPlayer namespace.
+        // BEGIN_INCLUDE(load_player)
+        // Calls the YT.Player constructor with the appropriate options to add the iframe player
+        // instance to a parent element.
+        // This is a private method that isn't exposed via the ChapterMarkerPlayer namespace.
         function initializePlayer(containerElement, params) {
-      //console.log ('params is');
-      //console.log (params);
-
             var playerContainer = document.createElement('div');
             containerElement.appendChild(playerContainer);
 
-      // Attempt to use any custom player options that were passed in via params.playerOptions.
-      // Fall back to reasonable defaults as needed.
+            // Attempt to use any custom player options that were passed in via params.playerOptions.
+            // Fall back to reasonable defaults as needed.
             var playerOptions = params.playerOptions || {};
-      //console.log ('playerOptions.playerVars are');
-      //console.log (playerOptions.playerVars);
             return new YT.Player(playerContainer, {
-        // Maintain a 16:9 aspect ratio for the player based on the width passed in via params.
-        // Override can be done via params.playerOptions if needed
+                // Maintain a 16:9 aspect ratio for the player based on the width passed in via params.
+                // Override can be done via params.playerOptions if needed
                 height: playerOptions.height ||
                 width * PLAYER_HEIGHT_TO_WIDTH_RATIO + YOUTUBE_CONTROLS_HEIGHT,
                 width: playerOptions.width || width,
-        // Unless playerVars are explicitly provided, use a reasonable default of { autohide: 1 },
-        // which hides the controls when the mouse isn't over the player.
+                // Unless playerVars are explicitly provided, use a reasonable default of { autohide: 1 },
+                // which hides the controls when the mouse isn't over the player.
                 playerVars: playerOptions.playerVars || {autohide: 1},
                 videoId: params.videoId,
                 events: {
@@ -199,10 +194,10 @@ window.ChapterMarkerPlayer = {
             });
         }
 
-// END_INCLUDE(load_player)
+        // END_INCLUDE(load_player)
 
-// BEGIN_INCLUDE(format_timestamp)
-    // Takes a number of seconds and returns a #h##m##s string.
+        // BEGIN_INCLUDE(format_timestamp)
+        // Takes a number of seconds and returns a #h##m##s string.
         function formatTimestamp(timestamp) {
             var hours = Math.floor(timestamp / 3600);
             var minutes = Math.floor((timestamp - (hours * 3600)) / 60);
@@ -221,12 +216,12 @@ window.ChapterMarkerPlayer = {
             return formattedTimestamp;
         }
 
-// END_INCLUDE(format_timestamp)
+        // END_INCLUDE(format_timestamp)
 
-// BEGIN_INCLUDE(add_chapter_markers)
-    // Adds a sorted list of chapters below the player. Each chapter has an onclick handler that
-    // calls the iframe player API to seek to a specific timestamp in the video.
-    // This is a private method that isn't exposed via the ChapterMarkerPlayer namespace.
+        // BEGIN_INCLUDE(add_chapter_markers)
+        // Adds a sorted list of chapters below the player. Each chapter has an onclick handler that
+        // calls the iframe player API to seek to a specific timestamp in the video.
+        // This is a private method that isn't exposed via the ChapterMarkerPlayer namespace.
         function addChapterMarkers(containerElement, player) {
             var ol = document.createElement('ol');
             ol.setAttribute('class', 'chapter-list');
@@ -249,27 +244,27 @@ window.ChapterMarkerPlayer = {
             }
         }
 
-// END_INCLUDE(add_chapter_markers)
+        // END_INCLUDE(add_chapter_markers)
 
-    // Convenience method to call both initializePlayer and addChapterMarkers.
-    // This is a private method that isn't exposed via the ChapterMarkerPlayer namespace.
+        // Convenience method to call both initializePlayer and addChapterMarkers.
+        // This is a private method that isn't exposed via the ChapterMarkerPlayer namespace.
         function insertPlayerAndAddChapterMarkers(params) {
-// BEGIN_INCLUDE(validation2)
+            // BEGIN_INCLUDE(validation2)
             var containerElement = document.getElementById(params.container);
             if (!containerElement) {
                 throw ('The "container" parameter must be set ' +
                        'to the id of a existing HTML element.');
             }
-// END_INCLUDE(validation2)
+            // END_INCLUDE(validation2)
 
             var player = initializePlayer(containerElement, params);
             addChapterMarkers(containerElement, player);
         }
     },
-// BEGIN_INCLUDE(callback_array)
-  // This is used to keep track of the callback functions that need to be invoked when the iframe
-  // API has been loaded. It avoids a race condition that would lead to issues if multiple
-  // ChapterMarkerPlayer.insert() calls are made before the API is available.
+    // BEGIN_INCLUDE(callback_array)
+    // This is used to keep track of the callback functions that need to be invoked when the iframe
+    // API has been loaded. It avoids a race condition that would lead to issues if multiple
+    // ChapterMarkerPlayer.insert() calls are made before the API is available.
     onYouTubePlayerAPIReadyCallbacks: []
-// END_INCLUDE(callback_array)
+    // END_INCLUDE(callback_array)
 };
