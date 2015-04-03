@@ -35,7 +35,7 @@ pycrypto==2.6.1
 cssselect==0.8
 BeautifulSoup==3.2.1
 sqlparse==0.1.14
-boto==2.34.0
+boto==2.36.0
 python-dateutil==2.2
 
 djangowind==0.13.2
