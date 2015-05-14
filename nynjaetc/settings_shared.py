@@ -31,13 +31,7 @@ if 'test' in sys.argv or 'jenkins' in sys.argv:
         }
     }
 
-TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
-
-# Anything under package nynjaetc will be tested by ./manage py test.
-NOSE_ARGS = [
-    '--with-coverage',
-    '--cover-package=nynjaetc',
-]
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 JENKINS_TASKS = (
     'django_jenkins.tasks.run_pep8',
@@ -110,7 +104,6 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.staticfiles',
     'typogrify',
-    'django_nose',
     'compressor',
     'django_statsd',
     'bootstrapform',
