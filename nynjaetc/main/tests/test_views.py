@@ -243,3 +243,41 @@ class RegistrationTest(TestCase):
         self.c.login(username="testuser", password="test")
         r = self.c.get("/password/change/")
         self.assertEqual(r.status_code, 200)
+
+    def test_reset_password_form(self):
+        u = User.objects.create(username="testuser")
+        u.set_password("test")
+        u.save()
+        r = self.c.get("/password/reset/")
+        self.assertEqual(r.status_code, 200)
+
+    def test_reset_password_form_post_user_not_found(self):
+        r = self.c.post("/password/reset/", {'email': 'foo@foo.com'},
+                        follow=True)
+        self.assertEqual(r.status_code, 200)
+        self.assertTrue('email' in r.context['form'].errors)
+        self.assertEquals(
+            r.context['form'].errors['email'][0],
+            'No user found matching the email address foo@foo.com')
+
+    def test_reset_password_form_post_unusable_password(self):
+        user = User(username='testuser', password='test', email='foo@foo.com')
+        user.set_unusable_password()
+        user.save()
+
+        r = self.c.post("/password/reset/", {'email': 'foo@foo.com'},
+                        follow=True)
+        self.assertEqual(r.status_code, 200)
+        self.assertTrue('email' in r.context['form'].errors)
+        self.assertEquals(r.context['form'].errors['email'][0],
+                          'This user\'s password cannot be changed')
+
+    def test_reset_password_form_post(self):
+        u = User.objects.create(username="testuser", email='foo@foo.com')
+        u.set_password("test")
+        u.save()
+        r = self.c.post("/password/reset/", {'email': 'foo@foo.com'},
+                        follow=True)
+        self.assertEqual(r.status_code, 200)
+        self.assertEquals(r.context['title'], 'Password reset successful')
+        self.assertFalse('form' in r.context)
