@@ -1,13 +1,18 @@
+import os.path
+
+from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from django.conf import settings
+from django.contrib.auth.views import password_change, password_change_done, \
+    password_reset, password_reset_done, password_reset_complete, \
+    password_reset_confirm
 from django.views.generic import TemplateView
 from registration.backends.default.views import ActivationView
 
-import nynjaetc.main.views as views
 import nynjaetc.main.regviews as regviews
+import nynjaetc.main.views as views
 
-import os.path
+
 admin.autodiscover()
 
 site_media_root = os.path.join(os.path.dirname(__file__), "../media")
@@ -45,6 +50,26 @@ urlpatterns = patterns(
     ('^credits/$', 'nynjaetc.main.views.background',
      {'content_to_show': 'credits'}),
 
+    # override the default urls for password
+    url(r'^password/change/$',
+        password_change,
+        name='password_change'),
+    url(r'^password/change/done/$',
+        password_change_done,
+        name='password_change_done'),
+    url(r'^password/reset/$',
+        password_reset,
+        name='password_reset'),
+    url(r'^password/reset/done/$',
+        password_reset_done,
+        name='password_reset_done'),
+    url(r'^password/reset/complete/$',
+        password_reset_complete,
+        name='password_reset_complete'),
+    url(r'^password/reset/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
+        password_reset_confirm,
+        name='password_reset_confirm'),
+
     # have to pull in a bunch of registration's urls
     # so we can override one. :(
     url(r'^accounts/activate/complete/$',
@@ -67,7 +92,6 @@ urlpatterns = patterns(
         name='registration_register'),
 
     (r'^resend_activation_email/$', views.ResendActivationEmailView.as_view()),
-    (r'^password_change/$', 'django.contrib.auth.views.password_change'),
 
     (r'manage/$', TemplateView.as_view(template_name='main/manage.html')),
     (r'manage/altnav/$', views.AltNavListView.as_view()),

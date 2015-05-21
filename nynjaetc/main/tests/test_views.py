@@ -235,3 +235,11 @@ class RegistrationTest(TestCase):
         )
         self.assertEqual(r.status_code, 302)
         self.assertEqual(mail.outbox[0].to, [u'test@example.com'])
+
+    def test_change_password_form(self):
+        u = User.objects.create(username="testuser")
+        u.set_password("test")
+        u.save()
+        self.c.login(username="testuser", password="test")
+        r = self.c.get("/password/change/")
+        self.assertEqual(r.status_code, 200)
