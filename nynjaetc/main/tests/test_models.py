@@ -1,6 +1,5 @@
 from django.test import TestCase
 from django.test.utils import override_settings
-from django.contrib.auth.hashers import UNUSABLE_PASSWORD_PREFIX
 from django import forms
 from .factories import (
     UserFactory, SectionFactory, SectionTimestampFactory,
@@ -230,17 +229,16 @@ class TestMyPasswordResetFormCleanEmail(TestCase):
         self.assertEqual(email, "foo@example.com")
 
     def test_with_unusable_user(self):
-        u = UserFactory(is_active=True, email="foo@example.com",
-                        password=UNUSABLE_PASSWORD_PREFIX)
+        u = UserFactory(is_active=True, email="foo@example.com")
+        u.set_unusable_password()
+        u.save()
+
         up, _created = UserProfile.objects.get_or_create(user=u)
         dpr = DummyPasswordResetForm()
         dpr.cleaned_data['email'] = "foo@example.com"
-        raised = False
-        try:
+
+        with self.assertRaises(forms.ValidationError):
             my_password_reset_form_clean_email(dpr)
-        except forms.ValidationError:
-            raised = True
-        self.assertTrue(raised)
 
 
 class TestMyClean(TestCase):

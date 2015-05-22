@@ -13,6 +13,7 @@ class UserFactory(factory.DjangoModelFactory):
     FACTORY_FOR = User
     username = factory.Sequence(lambda n: "user%03d" % n)
     is_staff = True
+    password = factory.PostGenerationMethodCall('set_password', 'test')
 
 
 class UserProfileFactory(factory.DjangoModelFactory):
