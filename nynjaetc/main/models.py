@@ -234,6 +234,7 @@ def my_password_reset_form_save(
     # unencrypt emails
     for user in self.users_cache:
         user.email = user.userprofile.encrypted_email
+        user.save()
 
     # send emails
     self.original_save(domain_override,
@@ -245,6 +246,7 @@ def my_password_reset_form_save(
     # re-encrypt emails
     for user in self.users_cache:
         user.email = "*****"
+        user.save()
 PasswordResetForm.save = my_password_reset_form_save
 
 
