@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseForbidden
 from nynjaetc.treatment_activity.models import TreatmentPath, TreatmentNode
-import simplejson
+from json import loads, dumps
 
 
 @login_required
@@ -19,7 +19,7 @@ def get_next_steps(request, path_id, node_id):
     if prev:
         data['node'] = prev.id
 
-    return HttpResponse(simplejson.dumps(data, indent=2),
+    return HttpResponse(dumps(data, indent=2),
                         content_type="application/json")
 
 
@@ -27,7 +27,7 @@ def get_to_decision_point(node, steps_json):
     next_steps = []
     prev = None
     if node.is_decisionpoint():
-        steps = simplejson.loads(steps_json)
+        steps = loads(steps_json)
         decision = steps[len(steps) - 1]['decision']
         node = node.child_from_decision(decision)
 
@@ -48,7 +48,7 @@ def choose_treatment_path(request):
     if not request.is_ajax() or request.method != "POST":
         return HttpResponseForbidden()
 
-    params = simplejson.loads(request.POST.get('state'))
+    params = loads(request.POST.get('state'))
     cirrhosis = params.get('cirrhosis', None)
     status = params.get('status', None)
     drug = params.get('drug', None)
@@ -58,7 +58,7 @@ def choose_treatment_path(request):
     if cirrhosis is None or status is None or drug is None:
         data = {"error": "Missing required parameters"}
 
-        return HttpResponse(simplejson.dumps(data, indent=2),
+        return HttpResponse(dumps(data, indent=2),
                             content_type="application/json")
     try:
         path = TreatmentPath.objects.get(cirrhosis=cirrhosis,
@@ -72,5 +72,5 @@ def choose_treatment_path(request):
             % (cirrhosis, status, drug)
         data = {"error": msg}
 
-        return HttpResponse(simplejson.dumps(data, indent=2),
+        return HttpResponse(dumps(data, indent=2),
                             content_type="application/json")
