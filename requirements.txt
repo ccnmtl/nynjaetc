@@ -37,7 +37,6 @@ python-dateutil==2.2
 djangowind==0.13.3
 sorl==3.1
 django-indexer==0.3.0
-django-templatetag-sugar==0.1
 django-paging==0.2.5
 django-annoying==0.8.1
 django-appconf==1.0.1
