@@ -103,7 +103,6 @@ INSTALLED_APPS = [
     'sorl.thumbnail',
     'django.contrib.admin',
     'django.contrib.staticfiles',
-    'typogrify',
     'compressor',
     'django_statsd',
     'bootstrapform',
