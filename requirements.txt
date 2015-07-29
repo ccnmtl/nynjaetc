@@ -10,7 +10,7 @@ pyflakes==0.8.1
 mccabe==0.3.1
 flake8==2.2.5
 lxml==3.4.4
-fuzzywuzzy==0.4.0
+fuzzywuzzy==0.6.0
 sure==1.2.12
 ipython==3.0.0
 ipdb==0.8
