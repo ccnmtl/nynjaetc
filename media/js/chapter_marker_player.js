@@ -16,22 +16,20 @@
 
 jQuery(videoInit);
 
-function videoInit () {
-    /*
+function videoInit() {
+    //    Part 1
+    //    <iframe width="560" height="315" src="http://www.youtube.com/embed/?rel=0" frameborder="0" allowfullscreen></iframe>
+    //
+    //    Part 2
+    //    <iframe width="560" height="315" src="http://www.youtube.com/embed/?rel=0" frameborder="0" allowfullscreen></iframe>
 
-    Part 1
-    <iframe width="560" height="315" src="http://www.youtube.com/embed/?rel=0" frameborder="0" allowfullscreen></iframe>
-
-    Part 2
-    <iframe width="560" height="315" src="http://www.youtube.com/embed/?rel=0" frameborder="0" allowfullscreen></iframe>
-    */
     var videoOneId = 'APsV5aFubCM';
     var videoTwoId = 'M1UKzxYJUJY';
 
-    if (jQuery ('#video_1_container').length > 0) {
+    if (jQuery('#video_1_container').length > 0) {
         window.ChapterMarkerPlayer.insert({
             container: 'video_1_container',
-            playerOptions : {'playerVars': {'rel': 0}},
+            playerOptions: {'playerVars': {'rel': 0}},
             videoId: videoOneId,
             width: 600,
             chapters: {
@@ -52,10 +50,10 @@ function videoInit () {
         });
     }
 
-    if (jQuery ('#video_2_container').length > 0) {
+    if (jQuery('#video_2_container').length > 0) {
         window.ChapterMarkerPlayer.insert({
             container: 'video_2_container',
-            playerOptions : {'playerVars': {'rel': 0}},
+            playerOptions: {'playerVars': {'rel': 0}},
             videoId: videoTwoId,
             width: 600,
             chapters: {
