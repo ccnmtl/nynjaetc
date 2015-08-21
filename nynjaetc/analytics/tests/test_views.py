@@ -92,6 +92,7 @@ class HelpersTest(TestCase):
 
     def test_generate_row(self):
         with self.settings(ENDURING_MATERIALS_SECTION_ID=self.section1.id):
+            self.u.last_login = datetime.now()
             r = generate_row(
                 self.u, [self.section1], [], False)
             self.assertEquals(len(r), 7)

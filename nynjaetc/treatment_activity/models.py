@@ -120,6 +120,7 @@ class TreatmentActivityBlock(models.Model):
 class TreatmentActivityBlockForm(forms.ModelForm):
     class Meta:
         model = TreatmentActivityBlock
+        exclude = []
 
 
 class GenotypeActivityBlock(models.Model):
@@ -170,3 +171,4 @@ class GenotypeActivityBlock(models.Model):
 class GenotypeActivityBlockForm(forms.ModelForm):
     class Meta:
         model = GenotypeActivityBlock
+        exclude = []

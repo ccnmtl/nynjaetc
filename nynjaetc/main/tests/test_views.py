@@ -279,5 +279,5 @@ class RegistrationTest(TestCase):
         r = self.c.post("/password/reset/", {'email': 'foo@foo.com'},
                         follow=True)
         self.assertEqual(r.status_code, 200)
-        self.assertEquals(r.context['title'], 'Password reset successful')
+        self.assertEquals(r.context['title'], 'Password reset sent')
         self.assertFalse('form' in r.context)
