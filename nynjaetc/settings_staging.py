@@ -10,6 +10,9 @@ locals().update(
         STATIC_ROOT=STATIC_ROOT,
     ))
 
+STATSD_PREFIX = 'nynjaetc-staging'
+HRSA_ID_FIELD = 'question17'
+
 try:
     from local_settings import *
 except ImportError:
