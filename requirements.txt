@@ -64,3 +64,7 @@ django-fields==0.2.0
 factory_boy==2.4.1
 django-storages-redux==1.2.3
 django-cacheds3storage==0.1.1
+gunicorn==19.3.0
+django-ga-context==0.1.0
+
+ccnmtlsettings==0.1.0
