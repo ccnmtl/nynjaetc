@@ -25,8 +25,8 @@ def is_in_one_of(section, set_of_parents):
     or the descendant of one of,
     a set of possible parent sections."""
     result = (
-        section in set_of_parents
-        or any([is_descendant_of(section, q) for q in set_of_parents]))
+        section in set_of_parents or
+        any([is_descendant_of(section, q) for q in set_of_parents]))
     return result
 
 
