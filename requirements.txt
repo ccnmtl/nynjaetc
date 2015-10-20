@@ -56,7 +56,7 @@ django-treebeard==3.0
 django-markwhat==1.4
 django-pagetree==1.1.7
 django-pageblocks==1.0.3
-django-quizblock==1.1.1
+django-quizblock==1.1.4
 django-stagingcontext==0.1.0
 django-impersonate==0.9.1
 django-registration-redux==1.1
